@@ -1,20 +1,23 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+Hello! I'm Shakibul Islam Prohor, a passionate Full Stack Web Developer with experience building modern, responsive, and user-friendly websites.
 
-# Run and deploy your AI Studio app
+I specialize in custom business websites, e-commerce platforms, admin dashboards, portfolio websites, and web applications. My goal is to deliver clean code, fast performance, SEO-friendly structure, and a great user experience.
 
-This contains everything you need to run your app locally.
+My Services:
+• Full Stack Web Development
+• Responsive Website Design
+• E-commerce Website Development
+• Business & Company Websites
+• Admin Dashboard Development
+• Landing Pages
+• UI/UX Design
+• Website Bug Fixing
+• Performance & SEO Optimization
 
-View your app in AI Studio: https://ai.studio/apps/587bb8f5-ec9f-43da-b36a-bcee83e0cfc8
+Why Choose Me?
+✔ Clean & Maintainable Code
+✔ Fast Communication
+✔ On-Time Delivery
+✔ 100% Client Satisfaction
+✔ Professional Support
 
-## Run Locally
-
-**Prerequisites:**  Node.js
-
-
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+Let's bring your ideas to life with a modern, high-quality website.
