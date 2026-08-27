@@ -229,11 +229,8 @@
       </main>
     </div>
 
-    <script>
-      // Automatically redirect real browsers to the interactive clean about route
-      if (typeof window !== "undefined" && window.location.pathname.includes("index-about.html")) {
-        window.location.replace("/about");
-      }
-    </script>
+    <!-- Interactive React Applet Mount -->
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

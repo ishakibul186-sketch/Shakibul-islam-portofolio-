@@ -224,11 +224,8 @@
       </main>
     </div>
 
-    <script>
-      // Automatically redirect real browsers to the interactive clean projects route
-      if (typeof window !== "undefined" && window.location.pathname.includes("index-projects.html")) {
-        window.location.replace("/my-projects");
-      }
-    </script>
+    <!-- Interactive React Applet Mount -->
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

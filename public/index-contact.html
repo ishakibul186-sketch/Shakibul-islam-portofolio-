@@ -219,11 +219,8 @@
       </main>
     </div>
 
-    <script>
-      // Automatically redirect real browsers to the interactive clean contact route
-      if (typeof window !== "undefined" && window.location.pathname.includes("index-contact.html")) {
-        window.location.replace("/contact");
-      }
-    </script>
+    <!-- Interactive React Applet Mount -->
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

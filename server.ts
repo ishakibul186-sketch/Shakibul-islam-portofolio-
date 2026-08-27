@@ -98,6 +98,21 @@ ${message}`,
   } else {
     const distPath = path.join(process.cwd(), "dist");
     app.use(express.static(distPath));
+    app.get("/my-projects", (req, res) => {
+      res.sendFile(path.join(distPath, "index-projects.html"));
+    });
+    app.get("/about", (req, res) => {
+      res.sendFile(path.join(distPath, "index-about.html"));
+    });
+    app.get("/skills", (req, res) => {
+      res.sendFile(path.join(distPath, "index-skills.html"));
+    });
+    app.get("/blog", (req, res) => {
+      res.sendFile(path.join(distPath, "index-blog.html"));
+    });
+    app.get("/contact", (req, res) => {
+      res.sendFile(path.join(distPath, "index-contact.html"));
+    });
     app.get("*", (req, res) => {
       res.sendFile(path.join(distPath, "index.html"));
     });
