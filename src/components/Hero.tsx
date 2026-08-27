@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { ArrowRight, Download, Github, Linkedin, Twitter } from "lucide-react";
+import { ArrowRight, Download, Facebook, Github, Linkedin, Twitter } from "lucide-react";
 
 export default function Hero() {
   return (
@@ -69,15 +69,17 @@ export default function Hero() {
             className="mt-16 flex items-center gap-6"
           >
             {[
-              { icon: Github, href: "https://github.com" },
-              { icon: Linkedin, href: "https://linkedin.com" },
-              { icon: Twitter, href: "https://twitter.com" },
+              { icon: Github, href: "https://github.com/ishakibul186-sketch", label: "GitHub" },
+              { icon: Facebook, href: "https://www.facebook.com/prohor245", label: "Facebook" },
+              { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
+              { icon: Twitter, href: "https://twitter.com", label: "Twitter" },
             ].map((social, index) => (
               <a
                 key={index}
                 href={social.href}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={social.label}
                 className="p-3 glass rounded-full text-white/70 hover:text-white hover:scale-110 transition-all"
               >
                 <social.icon size={20} />

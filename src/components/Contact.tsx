@@ -107,39 +107,57 @@ export default function Contact() {
             </p>
 
             <div className="space-y-6 mb-8">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full glass flex items-center justify-center text-purple-400">
+              <a 
+                href="mailto:ishakibul186@gmail.com" 
+                className="flex items-center gap-4 group hover:opacity-90 transition-opacity"
+              >
+                <div className="w-12 h-12 rounded-full glass flex items-center justify-center text-purple-400 group-hover:bg-purple-500/20 transition-colors">
                   <Mail size={20} />
                 </div>
                 <div>
                   <p className="text-sm text-white/50">Email</p>
-                  <p className="font-medium">contact@prohor.dev</p>
+                  <p className="font-medium text-white">ishakibul186@gmail.com</p>
                 </div>
-              </div>
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full glass flex items-center justify-center text-cyan-400">
+              </a>
+              <a 
+                href="tel:018129282535" 
+                className="flex items-center gap-4 group hover:opacity-90 transition-opacity"
+              >
+                <div className="w-12 h-12 rounded-full glass flex items-center justify-center text-cyan-400 group-hover:bg-cyan-500/20 transition-colors">
                   <Phone size={20} />
                 </div>
                 <div>
                   <p className="text-sm text-white/50">Phone</p>
-                  <p className="font-medium">+1 (234) 567-890</p>
+                  <p className="font-medium text-white">018129282535</p>
                 </div>
-              </div>
+              </a>
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-full glass flex items-center justify-center text-pink-400">
                   <MapPin size={20} />
                 </div>
                 <div>
                   <p className="text-sm text-white/50">Location</p>
-                  <p className="font-medium">Dhaka, Bangladesh</p>
+                  <p className="font-medium text-white">Dhaka, Bangladesh</p>
                 </div>
               </div>
             </div>
 
             <div className="flex gap-4">
-              {[Github, Linkedin, Twitter, Facebook].map((Icon, i) => (
-                <a key={i} href="#" className="w-10 h-10 rounded-full glass flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-all">
-                  <Icon size={18} />
+              {[
+                { icon: Github, href: "https://github.com/ishakibul186-sketch", label: "GitHub" },
+                { icon: Facebook, href: "https://www.facebook.com/prohor245", label: "Facebook" },
+                { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
+                { icon: Twitter, href: "https://twitter.com", label: "Twitter" },
+              ].map((item, i) => (
+                <a 
+                  key={i} 
+                  href={item.href} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  aria-label={item.label}
+                  className="w-10 h-10 rounded-full glass flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 hover:scale-110 transition-all"
+                >
+                  <item.icon size={18} />
                 </a>
               ))}
             </div>

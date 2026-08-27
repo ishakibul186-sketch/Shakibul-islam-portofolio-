@@ -1,5 +1,6 @@
 {
   "name": "Shakibul Islam Prohor - Portfolio",
-  "description": "A modern, responsive personal portfolio website for a Full Stack Developer named Prohor, featuring a dark theme, glassmorphism, and smooth animations.",
-  "requestFramePermissions": []
+  "description": "Official personal portfolio website of Shakibul Islam Prohor, a Full Stack Developer & Software Engineer featuring modern React web applications, blog articles, and project showcases.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

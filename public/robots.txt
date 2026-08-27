@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+Allow: /my-projects
+Allow: /my-projects/*
+Allow: /about
+Allow: /skills
+Allow: /blog
+Allow: /contact
+Allow: /articles
+Allow: /articles/*
+Disallow: /admin
+Disallow: /admin/*
+
+Sitemap: https://shakibul-islam-portofolio.vercel.app/sitemap.xml

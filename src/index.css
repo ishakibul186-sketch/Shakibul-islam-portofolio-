@@ -24,6 +24,52 @@
   html {
     scroll-behavior: smooth;
   }
+
+  /* Basic prose styles since we didn't install the plugin */
+  .prose {
+    color: #cbd5e1;
+    line-height: 1.75;
+  }
+  .prose h1, .prose h2, .prose h3 {
+    color: white;
+    margin-top: 2em;
+    margin-bottom: 1em;
+    font-weight: 700;
+  }
+  .prose p {
+    margin-bottom: 1.5em;
+  }
+  .prose ul, .prose ol {
+    margin-left: 1.5em;
+    margin-bottom: 1.5em;
+  }
+  .prose li {
+    margin-bottom: 0.5em;
+  }
+  .prose blockquote {
+    border-left: 4px solid #7000FF;
+    padding-left: 1em;
+    font-style: italic;
+    color: #94a3b8;
+  }
+  .prose code {
+    background: #1e1b4b;
+    padding: 0.2em 0.4em;
+    border-radius: 0.3em;
+    font-size: 0.9em;
+  }
+  .prose pre {
+    background: #0f172a;
+    padding: 1em;
+    border-radius: 0.5em;
+    overflow-x: auto;
+    margin-bottom: 1.5em;
+  }
+  .prose img {
+    border-radius: 1em;
+    margin-top: 2em;
+    margin-bottom: 2em;
+  }
 }
 
 @layer utilities {
@@ -57,3 +103,4 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
