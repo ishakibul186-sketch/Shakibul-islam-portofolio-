@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Facebook, Github, Linkedin, Mail, MapPin, Phone, Twitter, CheckCircle2, Loader2 } from "lucide-react";
+import { submitContactMessage } from "../lib/contactUtils";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -46,17 +47,23 @@ export default function Contact() {
     setLoading(true);
 
     try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      // 1. Save directly to Firebase Realtime DB at /Portofolio-Contractmassage/{index} & update totalstring
+      const dbResult = await submitContactMessage(formData);
 
-      const result = await response.json();
+      // 2. Dispatch email notification via server API (optional/fallback handled gracefully)
+      try {
+        await fetch("/api/contact", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+      } catch (e) {
+        console.warn("Server email dispatch notice:", e);
+      }
 
-      if (response.ok && result.success) {
+      if (dbResult.success) {
         // Save details for popup display
         setSentDetails({ name, email, subject, message });
         
@@ -71,7 +78,7 @@ export default function Contact() {
         // Show success modal
         setShowModal(true);
       } else {
-        setErrorMsg(result.error || "Something went wrong. Please try again.");
+        setErrorMsg("Failed to save message. Please try again.");
       }
     } catch (err: any) {
       setErrorMsg("Failed to connect to the server. Please try again later.");

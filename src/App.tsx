@@ -21,6 +21,8 @@ import AdminLayout from "./pages/admin/AdminLayout";
 import ProjectsAdmin from "./admin/pages/ProjectsAdmin";
 import Dashboard from "./admin/pages/Dashboard";
 import AddArticle from "./admin/pages/AddArticle";
+import ContactMessages from "./admin/pages/ContactMessages";
+import EmailManagement from "./admin/pages/EmailManagement";
 
 interface HomePageProps {
   initialSection?: string;
@@ -176,6 +178,8 @@ function MainApp() {
                 >
                   <Route index element={<ProjectsAdmin />} />
                   <Route path="projects" element={<ProjectsAdmin />} />
+                  <Route path="messages" element={<ContactMessages />} />
+                  <Route path="email-management" element={<EmailManagement />} />
                   <Route path="articles" element={<Dashboard />} />
                   <Route path="articles/add" element={<AddArticle />} />
                   <Route path="articles/edit/:id" element={<AddArticle />} />

@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
-import { Calendar, Clock, User, ArrowLeft, Loader2, Tag, Share2, Copy, Check, X, Twitter, Linkedin, Facebook } from "lucide-react";
+import { Calendar, Clock, User, ArrowLeft, Loader2, Tag, Share2, Copy, Check, X, Twitter, Linkedin, Facebook, ArrowUpRight } from "lucide-react";
 import { ref, onValue } from "firebase/database";
 import { db } from "../lib/firebase";
 import { Article } from "../types/article";
+import { DEFAULT_ARTICLES } from "../data/defaultArticles";
+import { getCachedArticles, saveArticlesToCache } from "../lib/articleUtils";
 import ReactMarkdown from "react-markdown";
 import { Helmet } from "react-helmet-async";
 import Navbar from "../components/Navbar";
@@ -12,21 +14,66 @@ import Footer from "../components/Footer";
 
 export default function ArticleDetails() {
   const { id } = useParams<{ id: string }>();
-  const [article, setArticle] = useState<Article | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [article, setArticle] = useState<Article | null>(() => {
+    const cached = getCachedArticles();
+    return cached.find((a) => a.id === id || a.slug === id) || DEFAULT_ARTICLES.find((a) => a.id === id || a.slug === id) || null;
+  });
+  const [allArticles, setAllArticles] = useState<Article[]>(() => getCachedArticles());
+  const [loading, setLoading] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     if (!id) return;
 
+    // Check cached first
+    const cachedArticles = getCachedArticles();
+    const cachedMatch = cachedArticles.find((a) => a.id === id || a.slug === id) || DEFAULT_ARTICLES.find((a) => a.id === id || a.slug === id);
+    if (cachedMatch) {
+      setArticle(cachedMatch);
+    }
+
     const articleRef = ref(db, `articles/${id}`);
-    const unsubscribe = onValue(articleRef, (snapshot) => {
-      setArticle(snapshot.val());
-      setLoading(false);
+    const unsubscribe = onValue(
+      articleRef, 
+      (snapshot) => {
+        const val = snapshot.val();
+        if (val) {
+          setArticle(val);
+        } else if (cachedMatch) {
+          setArticle(cachedMatch);
+        }
+        setLoading(false);
+      },
+      (err) => {
+        console.error("Error fetching article from Firebase:", err);
+        if (cachedMatch) {
+          setArticle(cachedMatch);
+        }
+        setLoading(false);
+      }
+    );
+
+    // Also load other articles for recommendation
+    const allRef = ref(db, "articles");
+    const unsubAll = onValue(allRef, (snapshot) => {
+      const val = snapshot.val();
+      if (val) {
+        const list = Object.entries(val).map(([aid, item]) => ({
+          id: aid,
+          ...(item as any),
+        }));
+        if (list.length > 0) {
+          setAllArticles(list);
+          saveArticlesToCache(list);
+        }
+      }
     });
 
-    return () => unsubscribe();
+    return () => {
+      unsubscribe();
+      unsubAll();
+    };
   }, [id]);
 
   const handleCopyUrl = () => {
@@ -41,7 +88,7 @@ export default function ArticleDetails() {
     linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`,
   };
 
-  if (loading) {
+  if (loading && !article) {
     return (
       <div className="min-h-screen bg-[#030014] flex items-center justify-center">
         <Loader2 className="w-12 h-12 animate-spin text-purple-500" />
@@ -52,14 +99,18 @@ export default function ArticleDetails() {
   if (!article) {
     return (
       <div className="min-h-screen bg-[#030014] flex flex-col items-center justify-center text-white px-6 text-center">
-        <h1 className="text-4xl font-bold mb-4">Article Not Found</h1>
-        <p className="text-white/60 mb-8">The article you are looking for might have been removed or renamed.</p>
-        <Link to="/" className="px-6 py-3 bg-gradient-to-r from-purple-600 to-cyan-600 rounded-full font-medium">
-          Back to Home
+        <h1 className="text-4xl font-bold mb-4 font-display">Article Not Found</h1>
+        <p className="text-white/60 mb-8 max-w-md">The article you are looking for might have been removed or renamed.</p>
+        <Link to="/#blog" className="px-6 py-3 bg-gradient-to-r from-purple-600 to-cyan-600 rounded-full font-medium shadow-lg shadow-purple-600/30">
+          Back to Blog
         </Link>
       </div>
     );
   }
+
+  const relatedArticles = allArticles
+    .filter((a) => a.id !== article.id)
+    .slice(0, 3);
 
   return (
     <div className="min-h-screen bg-[#030014] text-white">
@@ -188,6 +239,61 @@ export default function ArticleDetails() {
                 </span>
               ))}
             </div>
+
+            {/* Related Articles Section */}
+            {relatedArticles.length > 0 && (
+              <div className="mt-16 pt-12 border-t border-white/10">
+                <div className="flex items-center justify-between mb-8">
+                  <div>
+                    <h3 className="text-2xl font-bold font-display text-white">
+                      More <span className="text-gradient">Articles</span>
+                    </h3>
+                    <p className="text-xs text-white/50 mt-1">Explore more technical breakdowns and architecture guides</p>
+                  </div>
+                  <Link
+                    to="/#blog"
+                    className="text-xs font-semibold text-cyan-400 hover:text-cyan-300 inline-flex items-center gap-1"
+                  >
+                    View All <ArrowUpRight size={14} />
+                  </Link>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {relatedArticles.map((rel) => (
+                    <Link
+                      key={rel.id}
+                      to={`/articles/${rel.id}`}
+                      className="group glass-card rounded-2xl overflow-hidden flex flex-col hover:border-purple-500/40 transition-all"
+                    >
+                      <div className="h-36 overflow-hidden relative">
+                        <img
+                          src={rel.image || "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=600&auto=format&fit=crop"}
+                          alt={rel.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                        <span className="absolute top-3 left-3 px-2.5 py-0.5 text-[10px] font-semibold bg-black/60 backdrop-blur-md rounded-full text-white/90 border border-white/10">
+                          {rel.category}
+                        </span>
+                      </div>
+                      <div className="p-4 flex flex-col flex-1">
+                        <h4 className="text-sm font-bold text-white group-hover:text-purple-300 transition-colors line-clamp-2 mb-2">
+                          {rel.title}
+                        </h4>
+                        <p className="text-xs text-white/50 line-clamp-2 flex-1 mb-3">
+                          {rel.excerpt}
+                        </p>
+                        <div className="flex items-center justify-between text-[11px] text-white/40 pt-2 border-t border-white/5 mt-auto">
+                          <span>{rel.readingTime}</span>
+                          <span className="text-cyan-400 group-hover:translate-x-0.5 transition-transform inline-flex items-center">
+                            Read <ArrowUpRight size={12} className="ml-0.5" />
+                          </span>
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
           </motion.div>
         </div>
       </main>

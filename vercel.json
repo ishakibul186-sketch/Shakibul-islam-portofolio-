@@ -1,28 +1,9 @@
 {
   "rewrites": [
     {
-      "source": "/my-projects",
-      "destination": "/index-projects.html"
-    },
-    {
-      "source": "/about",
-      "destination": "/index-about.html"
-    },
-    {
-      "source": "/skills",
-      "destination": "/index-skills.html"
-    },
-    {
-      "source": "/blog",
-      "destination": "/index-blog.html"
-    },
-    {
-      "source": "/contact",
-      "destination": "/index-contact.html"
-    },
-    {
       "source": "/((?!api/|.*\\..*).*)",
       "destination": "/index.html"
     }
   ]
 }
+

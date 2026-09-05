@@ -4,6 +4,7 @@ import { ref, get, onValue } from "firebase/database";
 import { db } from "../lib/firebase";
 import { Project } from "../types/project";
 import { getCachedProjects } from "../lib/projectUtils";
+import { DEFAULT_PROJECTS } from "../data/defaultProjects";
 import { Helmet } from "react-helmet-async";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -34,7 +35,9 @@ export default function ProjectDetails() {
   const [project, setProject] = useState<Project | null>(() => {
     if (!id) return null;
     const cached = getCachedProjects();
-    return cached.find((p) => p.id === id) || null;
+    const foundCached = cached.find((p) => p.id === id || String(p.numericId) === id);
+    if (foundCached) return foundCached;
+    return DEFAULT_PROJECTS.find((p) => p.id === id || String(p.numericId) === id) || null;
   });
 
   const [loading, setLoading] = useState(!project);
@@ -59,11 +62,25 @@ export default function ProjectDetails() {
             coreServices: val.coreServices || [],
             images: val.images || [],
           });
+        } else {
+          // If not in Firebase directly by key, check DEFAULT_PROJECTS
+          const defaultFound = DEFAULT_PROJECTS.find(
+            (p) => p.id === id || String(p.numericId) === id
+          );
+          if (defaultFound) {
+            setProject(defaultFound);
+          }
         }
         setLoading(false);
       },
       (error) => {
         console.error("Error fetching project:", error);
+        const defaultFound = DEFAULT_PROJECTS.find(
+          (p) => p.id === id || String(p.numericId) === id
+        );
+        if (defaultFound) {
+          setProject(defaultFound);
+        }
         setLoading(false);
       }
     );
@@ -135,25 +152,27 @@ export default function ProjectDetails() {
     <div className="min-h-screen bg-[#030014] text-white flex flex-col selection:bg-purple-500/30">
       {/* SEO & Open Graph Meta Tags */}
       <Helmet>
-        <title>{`${project.title} | Shakibul Islam Prohor Projects`}</title>
-        <meta name="description" content={project.description || "Project details and architecture specification."} />
-        <link rel="canonical" href={`https://shakibul-islam-portofolio.vercel.app/my-projects/${project.id}`} />
+        <title>{project.metaTitle || `${project.title} | Shakibul Islam Prohor Projects`}</title>
+        <meta name="title" content={project.metaTitle || `${project.title} | Shakibul Islam Prohor Projects`} />
+        <meta name="description" content={project.metaDescription || project.description || "Project details and architecture specification."} />
+        {project.metaKeywords && <meta name="keywords" content={project.metaKeywords} />}
+        <link rel="canonical" href={project.metaCanonicalUrl || `https://shakibul-islam-portofolio.vercel.app/my-projects/${project.id}`} />
         <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
         
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="article" />
         <meta property="og:site_name" content="Shakibul Islam Prohor Portfolio" />
-        <meta property="og:url" content={`https://shakibul-islam-portofolio.vercel.app/my-projects/${project.id}`} />
-        <meta property="og:title" content={`${project.title} | Software Engineering Project`} />
-        <meta property="og:description" content={project.description} />
-        <meta property="og:image" content={project.thumbnail || "https://shakibul-islam-portofolio.vercel.app/prohor.png"} />
-        <meta property="og:image:alt" content={project.title} />
+        <meta property="og:url" content={project.metaCanonicalUrl || `https://shakibul-islam-portofolio.vercel.app/my-projects/${project.id}`} />
+        <meta property="og:title" content={project.metaTitle || `${project.title} – Software Engineering Project`} />
+        <meta property="og:description" content={project.metaDescription || project.description} />
+        <meta property="og:image" content={project.metaOgImage || project.thumbnail || "https://shakibul-islam-portofolio.vercel.app/prohor.png"} />
+        <meta property="og:image:alt" content={`${project.title} Screenshot Preview`} />
 
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={`${project.title} | Shakibul Islam Prohor`} />
-        <meta name="twitter:description" content={project.description} />
-        <meta name="twitter:image" content={project.thumbnail || "https://shakibul-islam-portofolio.vercel.app/prohor.png"} />
+        <meta name="twitter:title" content={project.metaTitle || `${project.title} | Shakibul Islam Prohor`} />
+        <meta name="twitter:description" content={project.metaDescription || project.description} />
+        <meta name="twitter:image" content={project.metaOgImage || project.thumbnail || "https://shakibul-islam-portofolio.vercel.app/prohor.png"} />
 
         {/* Schema.org SoftwareApplication */}
         <script type="application/ld+json">
@@ -161,10 +180,10 @@ export default function ProjectDetails() {
             "@context": "https://schema.org",
             "@type": "SoftwareApplication",
             "name": project.title,
-            "description": project.description,
-            "url": `https://shakibul-islam-portofolio.vercel.app/my-projects/${project.id}`,
-            "image": project.thumbnail || "https://shakibul-islam-portofolio.vercel.app/prohor.png",
-            "applicationCategory": project.category || "DeveloperApplication",
+            "description": project.metaDescription || project.description,
+            "url": project.metaCanonicalUrl || `https://shakibul-islam-portofolio.vercel.app/my-projects/${project.id}`,
+            "image": project.metaOgImage || project.thumbnail || "https://shakibul-islam-portofolio.vercel.app/prohor.png",
+            "applicationCategory": project.metaCategory || project.category || "DeveloperApplication",
             "operatingSystem": "Web",
             "author": {
               "@type": "Person",

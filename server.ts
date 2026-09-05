@@ -56,14 +56,7 @@ async function startServer() {
         to: gmailUser, // Send to yourself
         replyTo: email, // Reply-to the user's actual email
         subject: `[Portfolio Contact] ${subject}`,
-        text: `You received a new message from your portfolio contact form:
-
-Name: ${name}
-Email: ${email}
-Subject: ${subject}
-
-Message:
-${message}`,
+        text: `You received a new message from your portfolio contact form:\n\nName: ${name}\nEmail: ${email}\nSubject: ${subject}\n\nMessage:\n${message}`,
         html: `<div style="font-family: Arial, sans-serif; padding: 20px; color: #333; max-width: 600px; border: 1px solid #ddd; border-radius: 8px;">
           <h2 style="color: #7000FF; border-bottom: 2px solid #7000FF; padding-bottom: 10px;">New Portfolio Message</h2>
           <p><strong>Name:</strong> ${name}</p>
@@ -88,7 +81,119 @@ ${message}`,
     }
   });
 
-  // Vite integration
+  // API endpoint for admin replying to contact message
+  app.post("/api/reply-message", async (req, res) => {
+    const { to, recipientName, subject, html, text } = req.body;
+
+    if (!to || !subject || !html) {
+      return res.status(400).json({ error: "Recipient email, subject, and message content are required" });
+    }
+
+    const gmailUser = process.env.GMAIL_USER;
+    const gmailPass = process.env.GMAIL_APP_PASSWORD;
+
+    if (!gmailUser || !gmailPass) {
+      console.warn("GMAIL credentials missing in environment. Simulating reply dispatch.");
+      return res.status(200).json({
+        success: true,
+        simulated: true,
+        message: "Email reply queued and saved (SMTP credentials not configured in secrets).",
+      });
+    }
+
+    try {
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: gmailUser,
+          pass: gmailPass,
+        },
+      });
+
+      const mailOptions = {
+        from: `"Shakibul Islam Prohor" <${gmailUser}>`,
+        to: to,
+        subject: subject,
+        text: text || "Please view this email in an HTML-compatible email client.",
+        html: html,
+      };
+
+      await transporter.sendMail(mailOptions);
+      return res.status(200).json({ success: true, message: `Email reply sent to ${to}` });
+    } catch (error: any) {
+      console.error("Error sending reply email:", error);
+      return res.status(500).json({
+        error: "Failed to send email via SMTP",
+        details: error.message,
+      });
+    }
+  });
+
+  // API endpoint for broadcasting emails to multiple recipients
+  app.post("/api/send-broadcast", async (req, res) => {
+    const { recipients, subject, html, text } = req.body;
+
+    if (!Array.isArray(recipients) || recipients.length === 0 || !subject || !html) {
+      return res.status(400).json({ error: "Recipients list, subject, and HTML content are required" });
+    }
+
+    const gmailUser = process.env.GMAIL_USER;
+    const gmailPass = process.env.GMAIL_APP_PASSWORD;
+
+    if (!gmailUser || !gmailPass) {
+      console.warn("GMAIL credentials missing in environment. Simulating broadcast dispatch.");
+      return res.status(200).json({
+        success: true,
+        simulated: true,
+        count: recipients.length,
+        message: `Broadcast saved and queued for ${recipients.length} recipients.`,
+      });
+    }
+
+    try {
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: gmailUser,
+          pass: gmailPass,
+        },
+      });
+
+      // Send mail in batch (using BCC or individual)
+      const mailOptions = {
+        from: `"Shakibul Islam Prohor" <${gmailUser}>`,
+        to: gmailUser,
+        bcc: recipients,
+        subject: subject,
+        text: text || "Please view this email in an HTML-compatible email client.",
+        html: html,
+      };
+
+      await transporter.sendMail(mailOptions);
+      return res.status(200).json({
+        success: true,
+        count: recipients.length,
+        message: `Broadcast dispatched successfully to ${recipients.length} recipients`,
+      });
+    } catch (error: any) {
+      console.error("Error sending broadcast email:", error);
+      return res.status(500).json({
+        error: "Failed to dispatch broadcast emails via SMTP",
+        details: error.message,
+      });
+    }
+  });
+
+  // Serve static about.html for /about URL (for SEO crawlers and direct visits)
+  app.get(["/about", "/about/"], (req, res) => {
+    const filePath =
+      process.env.NODE_ENV !== "production"
+        ? path.join(process.cwd(), "about.html")
+        : path.join(process.cwd(), "dist", "about.html");
+    res.sendFile(filePath);
+  });
+
+  // Vite middleware for development / Static files for production
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
       server: { middlewareMode: true },
@@ -98,21 +203,7 @@ ${message}`,
   } else {
     const distPath = path.join(process.cwd(), "dist");
     app.use(express.static(distPath));
-    app.get("/my-projects", (req, res) => {
-      res.sendFile(path.join(distPath, "index-projects.html"));
-    });
-    app.get("/about", (req, res) => {
-      res.sendFile(path.join(distPath, "index-about.html"));
-    });
-    app.get("/skills", (req, res) => {
-      res.sendFile(path.join(distPath, "index-skills.html"));
-    });
-    app.get("/blog", (req, res) => {
-      res.sendFile(path.join(distPath, "index-blog.html"));
-    });
-    app.get("/contact", (req, res) => {
-      res.sendFile(path.join(distPath, "index-contact.html"));
-    });
+
     app.get("*", (req, res) => {
       res.sendFile(path.join(distPath, "index.html"));
     });
@@ -126,3 +217,4 @@ ${message}`,
 startServer().catch((err) => {
   console.error("Error starting server:", err);
 });
+

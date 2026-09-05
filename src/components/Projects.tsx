@@ -5,6 +5,7 @@ import { ref, onValue } from "firebase/database";
 import { db } from "../lib/firebase";
 import { Project } from "../types/project";
 import { getCachedProjects, saveProjectsToCache, sortProjectsZA } from "../lib/projectUtils";
+import { DEFAULT_PROJECTS } from "../data/defaultProjects";
 import { ExternalLink, Github, ArrowRight, FolderGit2, Sparkles } from "lucide-react";
 
 export default function Projects() {
@@ -32,14 +33,21 @@ export default function Projects() {
             }
           });
 
-          const sorted = sortProjectsZA(list);
-          setProjects(sorted);
-          saveProjectsToCache(sorted);
+          if (list.length > 0) {
+            const sorted = sortProjectsZA(list);
+            setProjects(sorted);
+            saveProjectsToCache(sorted);
+          } else {
+            setProjects(DEFAULT_PROJECTS);
+          }
+        } else {
+          setProjects(DEFAULT_PROJECTS);
         }
         setLoading(false);
       },
       (error) => {
         console.error("Error fetching homepage projects:", error);
+        setProjects((prev) => (prev.length > 0 ? prev : DEFAULT_PROJECTS));
         setLoading(false);
       }
     );

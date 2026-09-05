@@ -12,7 +12,9 @@ import {
   ChevronLeft,
   ExternalLink,
   ShieldCheck,
-  Sparkles
+  Sparkles,
+  Inbox,
+  Send
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 
@@ -25,6 +27,8 @@ export default function AdminLayout() {
 
   const menuItems = [
     { name: "Dashboard", icon: LayoutDashboard, path: "/admin" },
+    { name: "Contact Messages", icon: Inbox, path: "/admin/messages" },
+    { name: "Email Management", icon: Send, path: "/admin/email-management" },
     { name: "My Projects", icon: FolderGit2, path: "/admin/projects" },
     { name: "Latest Articles", icon: FileText, path: "/admin/articles" },
     { name: "Add Article", icon: PlusCircle, path: "/admin/articles/add" },

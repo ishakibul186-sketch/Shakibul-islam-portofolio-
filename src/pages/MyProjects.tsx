@@ -9,6 +9,7 @@ import {
   saveProjectsToCache, 
   sortProjectsZA 
 } from "../lib/projectUtils";
+import { DEFAULT_PROJECTS } from "../data/defaultProjects";
 import { Helmet } from "react-helmet-async";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -53,19 +54,21 @@ export default function MyProjects() {
             }
           });
 
-          const sorted = sortProjectsZA(list);
-          setProjects(sorted);
-          saveProjectsToCache(sorted);
-        } else {
-          // If DB is empty, use initial fallback showcase if needed
-          if (projects.length === 0) {
-            setProjects([]);
+          if (list.length > 0) {
+            const sorted = sortProjectsZA(list);
+            setProjects(sorted);
+            saveProjectsToCache(sorted);
+          } else {
+            setProjects(DEFAULT_PROJECTS);
           }
+        } else {
+          setProjects(DEFAULT_PROJECTS);
         }
         setLoading(false);
       },
       (error) => {
         console.error("Error fetching projects:", error);
+        setProjects((prev) => (prev.length > 0 ? prev : DEFAULT_PROJECTS));
         setLoading(false);
       }
     );

@@ -3,6 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ref, push, set, get } from "firebase/database";
 import { db } from "../../lib/firebase";
 import { Article } from "../../types/article";
+import { DEFAULT_ARTICLES } from "../../data/defaultArticles";
+import { getCachedArticles, saveArticlesToCache } from "../../lib/articleUtils";
 import Cropper from "react-easy-crop";
 import { getCroppedImg } from "../../lib/cropImage";
 import { 
@@ -15,7 +17,8 @@ import {
   Info,
   Search,
   Check,
-  FileText
+  FileText,
+  Sparkles
 } from "lucide-react";
 
 export default function AddArticle() {
@@ -28,11 +31,11 @@ export default function AddArticle() {
     title: "",
     excerpt: "",
     content: "",
-    category: "Development",
+    category: "Architecture",
     tags: [],
     image: "",
     date: new Date().toISOString().split("T")[0],
-    readingTime: "5 min read",
+    readingTime: "6 min read",
     author: "Shakibul Islam Prohor",
     slug: "",
     seo: {
@@ -54,11 +57,19 @@ export default function AddArticle() {
   useEffect(() => {
     if (id) {
       setFetching(true);
+      const defaultMatch = DEFAULT_ARTICLES.find((a) => a.id === id || a.slug === id);
+      if (defaultMatch) {
+        setFormData(defaultMatch);
+      }
+
       const articleRef = ref(db, `articles/${id}`);
       get(articleRef).then((snapshot) => {
         if (snapshot.exists()) {
           setFormData(snapshot.val());
         }
+        setFetching(false);
+      }).catch((err) => {
+        console.error("Error fetching article:", err);
         setFetching(false);
       });
     }
@@ -141,8 +152,15 @@ export default function AddArticle() {
 
       if (id) {
         await set(ref(db, `articles/${id}`), finalData);
+        const existing = getCachedArticles();
+        const updated = existing.map((a) => (a.id === id ? ({ ...a, ...finalData } as Article) : a));
+        saveArticlesToCache(updated);
       } else {
-        await push(ref(db, "articles"), finalData);
+        const newRef = await push(ref(db, "articles"), finalData);
+        if (newRef.key) {
+          const existing = getCachedArticles();
+          saveArticlesToCache([{ id: newRef.key, ...finalData } as Article, ...existing]);
+        }
       }
       navigate("/admin/articles");
     } catch (error) {
@@ -166,7 +184,7 @@ export default function AddArticle() {
       {/* Header */}
       <div className="flex items-center gap-4 pb-4 border-b border-slate-200">
         <button 
-          onClick={() => navigate("/admin")}
+          onClick={() => navigate("/admin/articles")}
           className="p-2 bg-slate-100 hover:bg-slate-200 rounded-xl transition-all text-slate-600 hover:text-slate-900"
         >
           <ArrowLeft size={18} />

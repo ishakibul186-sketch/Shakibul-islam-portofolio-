@@ -4,28 +4,49 @@ import { ArrowUpRight, Calendar, Clock, Loader2 } from "lucide-react";
 import { ref, onValue, query, orderByKey, limitToLast } from "firebase/database";
 import { db } from "../lib/firebase";
 import { Article } from "../types/article";
+import { DEFAULT_ARTICLES } from "../data/defaultArticles";
+import { getCachedArticles, saveArticlesToCache } from "../lib/articleUtils";
 import { Link } from "react-router-dom";
 
 export default function Blog() {
-  const [articles, setArticles] = useState<Article[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [articles, setArticles] = useState<Article[]>(() => {
+    const cached = getCachedArticles();
+    return cached.length > 0 ? cached.slice(0, 6) : DEFAULT_ARTICLES.slice(0, 6);
+  });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const articlesRef = query(ref(db, "articles"), orderByKey(), limitToLast(6));
     
-    const unsubscribe = onValue(articlesRef, (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
-        const articleList = Object.entries(data).map(([id, value]) => ({
-          id,
-          ...(value as any),
-        })).reverse() as Article[];
-        setArticles(articleList);
-      } else {
-        setArticles([]);
+    const unsubscribe = onValue(
+      articlesRef, 
+      (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          const articleList = Object.entries(data).map(([id, value]) => ({
+            id,
+            ...(value as any),
+          })).reverse() as Article[];
+          if (articleList.length > 0) {
+            setArticles(articleList);
+            saveArticlesToCache(articleList);
+          } else {
+            const cached = getCachedArticles();
+            setArticles(cached.slice(0, 6));
+          }
+        } else {
+          const cached = getCachedArticles();
+          setArticles(cached.slice(0, 6));
+        }
+        setLoading(false);
+      },
+      (error) => {
+        console.error("Firebase articles fetch error:", error);
+        const cached = getCachedArticles();
+        setArticles(cached.slice(0, 6));
+        setLoading(false);
       }
-      setLoading(false);
-    });
+    );
 
     return () => unsubscribe();
   }, []);
