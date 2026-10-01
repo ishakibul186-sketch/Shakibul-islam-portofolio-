@@ -216,12 +216,11 @@ async function startServer() {
       }
     };
 
+    // ONLY specific project details and specific article/blog details are server-side rendered
     app.get(["/my-projects/:id", "/my-projects/:id/", "/projects/:id", "/projects/:id/"], handleSeoRouteDev);
-    app.get(["/articles/:id", "/articles/:id/"], handleSeoRouteDev);
-    app.get(["/my-projects", "/my-projects/"], handleSeoRouteDev);
-    app.get(["/skills", "/skills/", "/blog", "/blog/", "/contact", "/contact/"], handleSeoRouteDev);
-    app.get(["/404", "/404/"], handleSeoRouteDev);
+    app.get(["/articles/:id", "/articles/:id/", "/blog/:id", "/blog/:id/"], handleSeoRouteDev);
 
+    // All other routes (index, contact, skills, my-projects list, blog list, admin) use standard client-side routing
     app.use(vite.middlewares);
   } else {
     const distPath = path.join(process.cwd(), "dist");
@@ -229,7 +228,7 @@ async function startServer() {
     // Serve static build assets (JS, CSS, images, etc.) without automatic index.html fallback
     app.use(express.static(distPath, { index: false }));
 
-    // Handle dynamic SEO routes in production
+    // Handle dynamic SEO routes in production for specific projects and specific articles only
     const handleSeoRouteProd = async (req: express.Request, res: express.Response) => {
       try {
         const indexPath = path.join(distPath, "index.html");
@@ -243,13 +242,12 @@ async function startServer() {
     };
 
     app.get(["/my-projects/:id", "/my-projects/:id/", "/projects/:id", "/projects/:id/"], handleSeoRouteProd);
-    app.get(["/articles/:id", "/articles/:id/"], handleSeoRouteProd);
-    app.get(["/my-projects", "/my-projects/"], handleSeoRouteProd);
-    app.get(["/skills", "/skills/", "/blog", "/blog/", "/contact", "/contact/"], handleSeoRouteProd);
-    app.get(["/404", "/404/"], handleSeoRouteProd);
+    app.get(["/articles/:id", "/articles/:id/", "/blog/:id", "/blog/:id/"], handleSeoRouteProd);
 
-    // Fallback for all other routes (Home, Admin, etc.)
-    app.get("*", handleSeoRouteProd);
+    // Fallback for all other routes (Home, Contact, Skills, Admin, etc.) - pure client-side SPA routing
+    app.get("*", (req, res) => {
+      res.sendFile(path.join(distPath, "index.html"));
+    });
   }
 
   app.listen(PORT, "0.0.0.0", () => {

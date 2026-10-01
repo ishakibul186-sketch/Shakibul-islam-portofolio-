@@ -14,14 +14,6 @@
       "destination": "/api"
     },
     {
-      "source": "/my-projects",
-      "destination": "/api?route=/my-projects"
-    },
-    {
-      "source": "/my-projects/",
-      "destination": "/api?route=/my-projects"
-    },
-    {
       "source": "/my-projects/:id",
       "destination": "/api?route=/my-projects/:id"
     },
@@ -34,40 +26,12 @@
       "destination": "/api?route=/articles/:id"
     },
     {
-      "source": "/skills",
-      "destination": "/api?route=/skills"
-    },
-    {
-      "source": "/skills/",
-      "destination": "/api?route=/skills"
-    },
-    {
-      "source": "/blog",
-      "destination": "/api?route=/blog"
-    },
-    {
-      "source": "/blog/",
-      "destination": "/api?route=/blog"
-    },
-    {
-      "source": "/contact",
-      "destination": "/api?route=/contact"
-    },
-    {
-      "source": "/contact/",
-      "destination": "/api?route=/contact"
-    },
-    {
-      "source": "/404",
-      "destination": "/api?route=/404"
-    },
-    {
-      "source": "/404/",
-      "destination": "/api?route=/404"
+      "source": "/blog/:id",
+      "destination": "/api?route=/articles/:id"
     },
     {
       "source": "/((?!api/|assets/|.*\\..*).*)",
-      "destination": "/api"
+      "destination": "/index.html"
     }
   ]
 }

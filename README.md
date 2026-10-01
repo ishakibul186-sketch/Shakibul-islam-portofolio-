@@ -6,31 +6,32 @@
 [![Tailwind CSS v4](https://img.shields.io/badge/Tailwind_CSS_v4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 [![Firebase](https://img.shields.io/badge/Firebase_12-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)](https://firebase.google.com/)
 [![Express.js](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
+[![Vercel](https://img.shields.io/badge/Vercel_Serverless-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
 
-> **Official portfolio, technical showcase, and content management platform of Shakibul Islam Prohor** — Full Stack Developer & Software Engineer based in Dhaka, Bangladesh.
+> **Official portfolio, dynamic showcase, and CMS platform of Shakibul Islam Prohor** — Full Stack Developer & Software Engineer based in Dhaka, Bangladesh. Engineered with hybrid SSR + CSR architecture, real-time dynamic SEO injection, responsive cyberpunk design, and automated email services.
 
 ---
 
 ## Table of Contents
 
 - [Overview](#overview)
+- [Architecture & Routing (Hybrid SSR + CSR)](#architecture--routing-hybrid-ssr--csr)
 - [Key Features](#key-features)
-  - [Interactive Portfolio Single-Page Application](#1-interactive-portfolio-single-page-application)
-  - [Projects Showcase (`/my-projects`)](#2-projects-showcase-my-projects)
-  - [Technical Blog & Articles (`/blog` & `/articles/:id`)](#3-technical-blog--articles-blog--articlesid)
-  - [Admin CMS Dashboard (`/admin`)](#4-admin-cms-dashboard-admin)
-  - [Contact & Inquiry Engine](#5-contact--inquiry-engine)
-  - [Advanced SEO & Search Engine Optimization](#6-advanced-seo--search-engine-optimization)
+  - [1. Interactive Cyberpunk Portfolio (SPA)](#1-interactive-cyberpunk-portfolio-spa)
+  - [2. Projects Showcase & Deep-Dive Details](#2-projects-showcase--deep-dive-details)
+  - [3. Technical Articles & Blog Engine](#3-technical-articles--blog-engine)
+  - [4. Admin CMS Dashboard & Keyword Studio](#4-admin-cms-dashboard--keyword-studio)
+  - [5. Communication & Broadcast Engine](#5-communication--broadcast-engine)
+  - [6. Dynamic SEO, Social Cards & OpenGraph](#6-dynamic-seo-social-cards--opengraph)
 - [Tech Stack](#tech-stack)
-- [Project Architecture](#project-architecture)
+- [Project Directory Structure](#project-directory-structure)
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
-  - [Environment Variables Setup](#environment-variables-setup)
-  - [Running the Development Server](#running-the-development-server)
+  - [Environment Variables](#environment-variables)
+  - [Running Development Server](#running-development-server)
   - [Building for Production](#building-for-production)
-- [SEO & Search Console Configuration](#seo--search-console-configuration)
-- [Deployment](#deployment)
+- [Deployment on Vercel](#deployment-on-vercel)
 - [Author & Social Profiles](#author--social-profiles)
 - [License](#license)
 
@@ -38,53 +39,76 @@
 
 ## Overview
 
-This project is a modern, high-performance, full-stack personal portfolio and content platform. Built with **React 19**, **TypeScript**, **Tailwind CSS v4**, **Motion**, **Firebase**, and **Express.js**, it serves as an interactive showcase of software engineering projects, technical tutorials, and professional background.
+This application is a production-grade personal portfolio, project showcase, and content platform. It combines a client-side SPA (Single-Page Application) for instant page transitions with targeted Server-Side Rendering (SSR) for search crawlers and social share previews.
 
 ### Live URLs:
-- **Production Website:** [https://shakibul-islam-portofolio.vercel.app](https://shakibul-islam-portofolio.vercel.app)
+- **Production Site:** [https://shakibul-islam-portofolio.vercel.app](https://shakibul-islam-portofolio.vercel.app)
 - **Projects Showcase:** [https://shakibul-islam-portofolio.vercel.app/my-projects](https://shakibul-islam-portofolio.vercel.app/my-projects)
+- **Specific Project Example:** [https://shakibul-islam-portofolio.vercel.app/my-projects/5](https://shakibul-islam-portofolio.vercel.app/my-projects/5)
+- **Technical Blog:** [https://shakibul-islam-portofolio.vercel.app/blog](https://shakibul-islam-portofolio.vercel.app/blog)
 - **About Me:** [https://shakibul-islam-portofolio.vercel.app/about](https://shakibul-islam-portofolio.vercel.app/about)
-- **Technical Skills:** [https://shakibul-islam-portofolio.vercel.app/skills](https://shakibul-islam-portofolio.vercel.app/skills)
-- **Blog & Tutorials:** [https://shakibul-islam-portofolio.vercel.app/blog](https://shakibul-islam-portofolio.vercel.app/blog)
+- **Skills Grid:** [https://shakibul-islam-portofolio.vercel.app/skills](https://shakibul-islam-portofolio.vercel.app/skills)
 - **Contact:** [https://shakibul-islam-portofolio.vercel.app/contact](https://shakibul-islam-portofolio.vercel.app/contact)
+
+---
+
+## Architecture & Routing (Hybrid SSR + CSR)
+
+The platform utilizes a **hybrid routing strategy** that maximizes performance and search visibility:
+
+| Page Category | Routes | Rendering Method | Description |
+| :--- | :--- | :--- | :--- |
+| **Project Details** | `/my-projects/:id`, `/projects/:id` | **Server-Side Rendered (SSR)** | Pre-fetches project data from Firebase RTDB and dynamically injects title, description, custom meta keywords, canonical tags, JSON-LD schema, and HTML snippet before serving to browser/crawlers. |
+| **Article Details** | `/articles/:id`, `/blog/:id` | **Server-Side Rendered (SSR)** | Pre-fetches article contents, tags, and cover image, injecting rich OpenGraph and Article schema markup. |
+| **General Pages** | `/`, `/about`, `/skills`, `/contact`, `/my-projects`, `/blog`, `/admin` | **Client-Side Routing (CSR)** | Served instantly from Vercel's Edge CDN / static `dist/index.html`. React Router v7 handles client-side transitions without invoking serverless functions. |
+
+### Vercel Serverless Function & Fail-Safe Architecture
+* **`api/index.ts`:** Central serverless handler for SSR and API endpoints. Fully ES Module (`"type": "module"`) compliant.
+* **`api/_lib/`:** Modular internal library containing `seoInjector.ts` and `embeddedTemplate.ts`. The underscore prefix `_` prevents Vercel from exposing internal helpers as public endpoints or causing file name collisions.
+* **`scripts/sync-template.js`:** Build-time script that embeds the compiled production HTML into `api/_lib/embeddedTemplate.ts`. This guarantees that direct URL visits and page refreshes never encounter 500 Internal Server Errors, even in ephemeral serverless containers.
 
 ---
 
 ## Key Features
 
-### 1. Interactive Portfolio Single-Page Application
-- **Cyberpunk / Cosmic Theme:** Deep space dark background (`#030014`), neon gradients (purple, cyan, emerald), and responsive glassmorphic cards.
-- **Fluid Micro-Animations:** Smooth section transitions, interactive floating elements, and hover dynamics powered by `motion/react`.
-- **Responsive Layout:** Optimized from ultra-wide displays down to mobile screens with touch-friendly navigation.
-- **Sections Included:** Hero with dynamic roles, About Me, Technical Skills Grid, Professional Experience, Services, Featured Projects, Latest Articles, and Direct Contact.
+### 1. Interactive Cyberpunk Portfolio (SPA)
+- **Theme:** Cyberpunk dark cosmic palette (`#030014`), violet/cyan ambient glows, and glassmorphic translucent panels.
+- **Fluid Motion:** Section entry transitions, magnetic hover states, and smooth spring physics powered by `motion/react`.
+- **Mobile First & Fully Responsive:** Responsive breakpoints from 320px mobile screens up to 4K displays.
+- **Components:** Interactive Hero with rotating roles, About section, Experience timeline, Services grid, Skills categorization, and Interactive Contact.
 
-### 2. Projects Showcase (`/my-projects`)
-- **Category Filtering:** Filter projects by *All*, *Full Stack*, *React / Next.js*, *Frontend*, *AI & ML*, or *Cloud / Backend*.
-- **Search & Sort:** Live search by title, tech stack keywords, or descriptions.
-- **Detailed Project Pages (`/my-projects/:id`):** Deep dives including architecture overviews, key challenges, technology badges, live preview links, and GitHub repository references.
+### 2. Projects Showcase & Deep-Dive Details
+- **Dynamic Projects Showcase (`/my-projects`):** Filter by category (*All*, *Full Stack*, *React / Next.js*, *Frontend*, *AI & ML*, *Cloud / Backend*), with live real-time keyword search.
+- **Individual Project View (`/my-projects/:id`):** 
+  - Dynamic SEO title, custom meta keywords, OpenGraph card, and Twitter preview tags.
+  - High-resolution thumbnail preview, project summary, challenge breakdown, core services tags, and feature list.
+  - Direct links to live deployment and GitHub source repository.
 
-### 3. Technical Blog & Articles (`/blog` & `/articles/:id`)
-- **Markdown Rendering:** Full markdown support with syntax highlighting, lists, blockquotes, and tables via `react-markdown`.
-- **Dynamic Meta & Reading Time:** Auto-calculated reading time, author metadata, publish date, and category tags.
-- **Share & Engagement:** One-click sharing to Twitter/X, LinkedIn, Facebook, and direct clipboard copying.
+### 3. Technical Articles & Blog Engine
+- **Markdown Tutorials (`/blog` & `/articles/:id`):** Full markdown compilation with syntax highlighting, lists, quotes, and responsive tables via `react-markdown`.
+- **Reading Metadata:** Automatic reading time calculation, publication timestamp, author badge, and tag filter.
+- **Social Sharing:** Instant share triggers for X/Twitter, LinkedIn, Facebook, and link copy.
 
-### 4. Admin CMS Dashboard (`/admin`)
-- **Secure Authentication:** Firebase Authentication protection with session persistence and custom route guards.
-- **Project Manager:** Add, edit, delete, and feature projects in real-time.
-- **Blog Publisher:** Rich markdown editor with live preview, category selectors, cover photo upload, and instant database synchronization.
-- **Image Cropper & Uploader:** Built-in `react-easy-crop` modal for cropping and optimizing thumbnails before publishing.
+### 4. Admin CMS Dashboard & Keyword Studio
+- **Secure Authentication:** Protected with Firebase Authentication and persistent session state.
+- **Project Management:** Create, edit, delete, and feature projects with instant cloud database sync.
+- **Meta Keywords Studio:**
+  - Interactive badge system for adding, previewing, and removing keywords.
+  - Bulk comma-separated pasting and raw text / tag mode toggle.
+  - One-click **Auto-Generate SEO** tool that automatically creates optimized meta keywords and descriptions from project features.
+- **Article Publisher:** Rich markdown editor with live side-by-side preview and image cover management.
+- **Image Cropper:** Integrated `react-easy-crop` interface for aspect-ratio cropping and optimizing banners before uploading.
 
-### 5. Contact & Inquiry Engine
-- **Full-Stack Express API:** `/api/contact` endpoint validates input and delivers formatted emails.
-- **Nodemailer SMTP Integration:** Real-time email dispatch directly to `ishakibul186@gmail.com` with auto-reply-to configuration.
-- **Form Validation & Feedback:** Instant toast feedback, input regex validation, and loading indicators.
+### 5. Communication & Broadcast Engine
+- **Contact Form (`/api/contact`):** Validated contact inquiry form that dispatches HTML emails via Nodemailer Gmail SMTP directly to the developer.
+- **Admin Reply API (`/api/reply-message`):** Send direct email replies to client inquiries from the admin panel.
+- **Broadcast Email API (`/api/send-broadcast`):** Dispatch announcements and newsletters to subscriber lists with BCC protection.
 
-### 6. Advanced SEO & Search Engine Optimization
-- **Clean URLs:** Clean paths (`/my-projects`, `/about`, `/skills`, `/blog`, `/contact`) mapped seamlessly via React Router v7 and `vercel.json` rewrites.
-- **Dynamic Head Metadata:** Managed per-page via `react-helmet-async` for titles, descriptions, canonical tags, and OpenGraph/Twitter social cards.
-- **JSON-LD Schema Markup:** Structured data for `Person`, `WebSite`, `Blog`, `BlogPosting`, `AboutPage`, `ContactPage`, and `CollectionPage`.
-- **Google Search Console Verification:** Automated verification via meta tag and standalone `googlead42dd66f9e0cb82.html` file.
-- **Sitemap & Robots Directives:** Dynamic `sitemap.xml` with image metadata and a strict `robots.txt` configuration.
+### 6. Dynamic SEO, Social Cards & OpenGraph
+- **Custom Keywords Prioritization:** Project-specific keywords entered in the admin panel are prioritized on `<meta name="keywords">`.
+- **JSON-LD Structured Data:** Injected schemas for `SoftwareApplication`, `BlogPosting`, `Person`, and `WebSite`.
+- **Google Search Console Ready:** Includes verified meta tags and `/public/googlead42dd66f9e0cb82.html`.
+- **Sitemap & Robots:** Validated `/public/sitemap.xml` with image nodes and `/public/robots.txt`.
 
 ---
 
@@ -98,66 +122,69 @@ This project is a modern, high-performance, full-stack personal portfolio and co
 - **Animation:** [Motion](https://motion.dev/)
 - **Icons:** [Lucide React](https://lucide.dev/)
 - **Routing:** [React Router v7](https://reactrouter.com/)
-- **SEO & Meta:** [React Helmet Async](https://github.com/staylor/react-helmet-async)
+- **Client Meta Tags:** [React Helmet Async](https://github.com/staylor/react-helmet-async)
 - **Markdown:** [React Markdown](https://github.com/remarkjs/react-markdown)
+- **Image Cropping:** [React Easy Crop](https://github.com/ValentinH/react-easy-crop)
 
 ### Backend & Cloud
 - **Server:** [Express.js](https://expressjs.com/) (Node.js runtime)
-- **Database & Auth:** [Firebase Realtime Database](https://firebase.google.com/) / [Cloud Firestore](https://firebase.google.com/docs/firestore) & Firebase Auth
-- **Email Service:** [Nodemailer](https://nodemailer.com/) (Gmail SMTP)
-- **Development Tooling:** [TSX](https://github.com/privatenumber/tsx), [esbuild](https://esbuild.github.io/)
-- **Hosting:** [Vercel](https://vercel.com/) / [Google Cloud Run](https://cloud.google.com/run)
+- **Serverless Runtime:** [Vercel Serverless Functions](https://vercel.com/docs/functions)
+- **Database & Auth:** [Firebase Realtime Database](https://firebase.google.com/) & Firebase Authentication
+- **Email Delivery:** [Nodemailer](https://nodemailer.com/) (Gmail SMTP)
+- **Bundler & Tools:** [esbuild](https://esbuild.github.io/), [TSX](https://github.com/privatenumber/tsx)
 
 ---
 
-## Project Architecture
+## Project Directory Structure
 
 ```
-├── .env.example               # Template for required environment variables
-├── index.html                 # Main HTML entry point with SEO & verification tags
-├── metadata.json              # Application metadata & platform configurations
-├── package.json               # Project manifest & npm scripts
-├── public/
-│   ├── googlead42dd66f9e0cb82.html  # Google Search Console HTML verification
-│   ├── prohor-v2.png          # Official profile avatar & social share image
-│   ├── robots.txt             # Search crawler directives
-│   └── sitemap.xml            # XML sitemap with images & clean routes
-├── server.ts                  # Express backend & Nodemailer contact API
-├── src/
-│   ├── App.tsx                # Application routes, theme wrappers, & SEO managers
-│   ├── main.tsx               # React application entry point
-│   ├── index.css              # Global styles & Tailwind CSS v4 imports
-│   ├── types/                 # TypeScript interfaces & types
-│   ├── lib/                   # Utility helpers & Firebase initialization
-│   ├── context/
-│   │   └── AuthContext.tsx    # Firebase authentication context & state
-│   ├── components/            # Reusable UI components
-│   │   ├── About.tsx          # Biography & background section
-│   │   ├── Blog.tsx           # Article listing component
-│   │   ├── Contact.tsx        # Interactive contact form & social links
-│   │   ├── Experience.tsx     # Career & development experience timeline
-│   │   ├── Footer.tsx         # Site footer & copyright
-│   │   ├── Hero.tsx           # Hero section with animated typography
-│   │   ├── LoadingScreen.tsx  # Initial aesthetic loading animation
-│   │   ├── Navbar.tsx         # Responsive top navigation & mobile menu
-│   │   ├── Projects.tsx       # Featured project cards
-│   │   ├── Services.tsx       # Core services offered
-│   │   └── Skills.tsx         # Technical stack & proficiency metrics
-│   ├── pages/                 # Full view pages
-│   │   ├── ArticleDetails.tsx # Individual blog article reader view
-│   │   ├── MyProjects.tsx     # Comprehensive projects showcase & filter
-│   │   └── ProjectDetails.tsx # Deep-dive project view
-│   └── admin/                 # CMS Admin portal
-│       ├── pages/
-│       │   ├── Dashboard.tsx  # Content management dashboard
-│       │   ├── Login.tsx      # Admin authentication page
-│       │   ├── AddProject.tsx # Project creation & image cropper
-│       │   ├── EditProject.tsx# Project editor
-│       │   ├── AddArticle.tsx # Markdown blog article publisher
-│       │   └── EditArticle.tsx# Article editor
-├── tsconfig.json              # TypeScript configuration
-├── vercel.json                # Vercel SPA routing & rewrites configuration
-└── vite.config.ts             # Vite build & Tailwind plugin setup
+├── .env.example                  # Environment variable blueprint
+├── .gitignore                    # Git ignore file (excludes build & temp files)
+├── index.html                    # Single-page HTML entry template
+├── metadata.json                 # Project capabilities & studio metadata
+├── package.json                  # Scripts & dependencies
+├── tsconfig.json                 # TypeScript strict compiler config
+├── vercel.json                   # Vercel rewrites & serverless routing config
+├── vite.config.ts                # Vite config with Tailwind CSS v4 plugin
+├── server.ts                     # Local Express development server & full-stack runner
+├── api/                          # Vercel Serverless Function entry point
+│   └── index.ts                  # Fully self-contained serverless handler (SSR & API endpoints)
+├── public/                       # Static public assets
+│   ├── googlead42dd66f9e0cb82.html  # Google Search Console ownership file
+│   ├── prohor-v2.png             # Avatar & default social preview banner
+│   ├── robots.txt                # Search engine crawler instructions
+│   └── sitemap.xml               # Search engine XML sitemap
+└── src/
+    ├── main.tsx                  # React 19 client entry point
+    ├── App.tsx                   # Routes definition & App layout
+    ├── index.css                 # Global CSS & Tailwind v4 theme definitions
+    ├── context/
+    │   └── AuthContext.tsx       # Firebase authentication state provider
+    ├── types/
+    │   └── project.ts            # Project & article TypeScript interfaces
+    ├── lib/
+    │   └── firebase.ts           # Firebase SDK initialization
+    ├── components/               # UI components
+    │   ├── Navbar.tsx            # Responsive glass navigation bar
+    │   ├── Hero.tsx              # Animated hero section
+    │   ├── About.tsx             # Biography & statistics
+    │   ├── Skills.tsx            # Technical stack badges & skill levels
+    │   ├── Experience.tsx        # Career timeline & milestones
+    │   ├── Projects.tsx          # Featured projects preview
+    │   ├── Blog.tsx              # Featured articles preview
+    │   ├── Contact.tsx           # Contact form & social connections
+    │   └── Footer.tsx            # Footer & copyright credits
+    ├── pages/                    # Main views
+    │   ├── MyProjects.tsx        # Projects list with real-time filters
+    │   ├── ProjectDetails.tsx    # Individual project details & Helmet tags
+    │   └── ArticleDetails.tsx    # Individual article reader view
+    └── admin/                    # Admin CMS Portal
+        └── pages/
+            ├── Dashboard.tsx     # Admin overview & metrics
+            ├── Login.tsx         # Secure admin login
+            ├── ProjectsAdmin.tsx # Project management, SEO keywords studio, & cropper
+            ├── ArticlesAdmin.tsx # Blog article manager & markdown editor
+            └── MessagesAdmin.tsx # Contact messages viewer & reply system
 ```
 
 ---
@@ -165,94 +192,95 @@ This project is a modern, high-performance, full-stack personal portfolio and co
 ## Getting Started
 
 ### Prerequisites
-- **Node.js**: `v18.0.0` or higher
-- **npm** or **yarn** / **pnpm**
-- A **Firebase Project** (for Firestore and Auth)
-- A **Gmail Account** with an *App Password* (for the contact form email service)
+- **Node.js:** `v18.0.0` or higher
+- **npm:** `v9.0.0` or higher
+- A **Firebase Project** with Realtime Database / Firestore and Authentication enabled.
+- A **Gmail Account** with an *App Password* generated for SMTP email dispatch.
 
 ### Installation
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/ishakibul186-sketch/portfolio.git
-   cd portfolio
+   git clone https://github.com/ishakibul186-sketch/Shakibul-islam-portofolio-.git
+   cd Shakibul-islam-portofolio-
    ```
 
-2. **Install dependencies:**
+2. **Install all dependencies:**
    ```bash
    npm install
    ```
 
-### Environment Variables Setup
+### Environment Variables
 
-Create a `.env` file in the root directory by copying `.env.example`:
+Copy the `.env.example` file to create your local `.env`:
 
 ```bash
 cp .env.example .env
 ```
 
-Configure your environment variables:
+Fill in the necessary variables:
 
 ```env
-# Server / Email Configuration (Server-Side Only)
+# Server / Email Configuration (Nodemailer SMTP)
 GMAIL_USER=your_email@gmail.com
-GMAIL_APP_PASSWORD=your_16_digit_gmail_app_password
+GMAIL_APP_PASSWORD=your_16_character_app_password
 
-# Firebase Client Configuration (Optional / Client-side)
+# Client Firebase Configuration (Optional if hardcoded or client-initialized)
 VITE_FIREBASE_API_KEY=your_firebase_api_key
 VITE_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
 VITE_FIREBASE_PROJECT_ID=your_project_id
 VITE_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
-VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
 VITE_FIREBASE_APP_ID=your_app_id
 ```
 
-### Running the Development Server
+### Running Development Server
 
-Start the full-stack development environment (Express API + Vite Dev Server):
+Start the full-stack dev server (Express backend + Vite development middlewares):
 
 ```bash
 npm run dev
 ```
+
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ### Building for Production
 
-Compile the client bundle and bundle the backend server:
+To build the client bundle, compile server files, and synchronize the embedded SSR template:
 
 ```bash
 npm run build
 ```
 
-To run the production server locally:
+This runs:
+1. `vite build` — bundles client assets to `dist/`.
+2. `esbuild server.ts` — bundles Express server to `dist/server.cjs`.
+3. `node scripts/sync-template.js` — syncs the compiled HTML into `api/_lib/embeddedTemplate.ts`.
+
+To test the production build locally:
 ```bash
 npm start
 ```
 
 ---
 
-## SEO & Search Console Configuration
+## Deployment on Vercel
 
-This project includes built-in SEO enhancements:
+The project is pre-configured for seamless zero-config deployment on **Vercel**:
 
-1. **Google Search Console**:
-   - Verification HTML File: `/public/googlead42dd66f9e0cb82.html`
-   - Verification Meta Tag in `/index.html` (`google-site-verification: googlead42dd66f9e0cb82`)
-2. **Sitemap**: `/public/sitemap.xml` with `<image:image>` tags and daily/weekly update frequency.
-3. **Robots**: `/public/robots.txt` granting access to all public clean routes.
-4. **Structured Data**: JSON-LD scripts in `<head>` for rich snippet rendering on Google, Bing, and DuckDuckGo.
-
----
-
-## Deployment
-
-### Vercel Deployment
-This repository is configured for automatic continuous deployment on **Vercel**:
-- `vercel.json` provides rewrite rules ensuring client-side routes (`/my-projects`, `/about`, `/skills`, `/blog`, `/contact`, `/articles/:id`) resolve without 404 errors.
-- Set `GMAIL_USER` and `GMAIL_APP_PASSWORD` in the **Vercel Project Settings > Environment Variables**.
-
-### Google Cloud Run / Docker
-The application binds to `0.0.0.0:3000` and can be built directly using the provided build scripts.
+1. **Push your code to GitHub:**
+   ```bash
+   git push origin main
+   ```
+2. **Import the repository into Vercel:**
+   - Framework Preset: **Vite**
+   - Root Directory: `./`
+   - Build Command: `npm run build`
+   - Output Directory: `dist`
+3. **Set Environment Variables in Vercel:**
+   - `GMAIL_USER` = your gmail address
+   - `GMAIL_APP_PASSWORD` = your app password
+4. **Deploy:** Vercel automatically deploys the client assets to edge CDN and maps `/api/index.ts` for dynamic project details (`/my-projects/:id`), articles (`/articles/:id`), and email services (`/api/contact`).
 
 ---
 
@@ -260,6 +288,7 @@ The application binds to `0.0.0.0:3000` and can be built directly using the prov
 
 **Shakibul Islam Prohor**  
 *Full Stack Developer & Software Engineer*  
+
 - 🌐 **Portfolio:** [shakibul-islam-portofolio.vercel.app](https://shakibul-islam-portofolio.vercel.app/)
 - 💻 **GitHub:** [@ishakibul186-sketch](https://github.com/ishakibul186-sketch)
 - 📸 **Instagram:** [@about_prohor](https://www.instagram.com/about_prohor/)
@@ -271,4 +300,4 @@ The application binds to `0.0.0.0:3000` and can be built directly using the prov
 
 ## License
 
-This project is open-source and available under the [MIT License](LICENSE).
+This project is licensed under the [MIT License](LICENSE).
