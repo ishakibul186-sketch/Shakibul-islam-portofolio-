@@ -165,14 +165,14 @@ export default function ProjectDetails() {
         <meta property="og:url" content={project.metaCanonicalUrl || `https://shakibul-islam-portofolio.vercel.app/my-projects/${project.id}`} />
         <meta property="og:title" content={project.metaTitle || `${project.title} – Software Engineering Project`} />
         <meta property="og:description" content={project.metaDescription || project.description} />
-        <meta property="og:image" content={project.metaOgImage || project.thumbnail || "https://shakibul-islam-portofolio.vercel.app/prohor.png"} />
+        <meta property="og:image" content={project.metaOgImage || project.thumbnail || "https://shakibul-islam-portofolio.vercel.app/prohor-v2.png"} />
         <meta property="og:image:alt" content={`${project.title} Screenshot Preview`} />
 
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={project.metaTitle || `${project.title} | Shakibul Islam Prohor`} />
         <meta name="twitter:description" content={project.metaDescription || project.description} />
-        <meta name="twitter:image" content={project.metaOgImage || project.thumbnail || "https://shakibul-islam-portofolio.vercel.app/prohor.png"} />
+        <meta name="twitter:image" content={project.metaOgImage || project.thumbnail || "https://shakibul-islam-portofolio.vercel.app/prohor-v2.png"} />
 
         {/* Schema.org SoftwareApplication */}
         <script type="application/ld+json">
@@ -182,7 +182,7 @@ export default function ProjectDetails() {
             "name": project.title,
             "description": project.metaDescription || project.description,
             "url": project.metaCanonicalUrl || `https://shakibul-islam-portofolio.vercel.app/my-projects/${project.id}`,
-            "image": project.metaOgImage || project.thumbnail || "https://shakibul-islam-portofolio.vercel.app/prohor.png",
+            "image": project.metaOgImage || project.thumbnail || "https://shakibul-islam-portofolio.vercel.app/prohor-v2.png",
             "applicationCategory": project.metaCategory || project.category || "DeveloperApplication",
             "operatingSystem": "Web",
             "author": {

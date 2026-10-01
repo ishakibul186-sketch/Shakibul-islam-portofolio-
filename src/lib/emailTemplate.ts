@@ -43,7 +43,7 @@ export function generateBrandedEmailHtml(options: GenerateEmailOptions): string 
                 <tr>
                   <td width="64" valign="middle">
                     <img 
-                      src="https://shakibul-islam-portofolio.vercel.app/prohor.png" 
+                      src="https://shakibul-islam-portofolio.vercel.app/prohor-v2.png" 
                       alt="Shakibul Islam Prohor" 
                       width="58" 
                       height="58" 

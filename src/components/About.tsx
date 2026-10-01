@@ -26,7 +26,7 @@ export default function About() {
           >
             <div className="aspect-square rounded-3xl overflow-hidden glass-card p-2 relative z-10">
               <img
-                src="/prohor.png"
+                src="/prohor-v2.png"
                 alt="Prohor"
                 className="w-full h-full object-cover rounded-2xl transition-all duration-500"
                 referrerPolicy="no-referrer"

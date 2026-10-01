@@ -1,8 +1,10 @@
 import express from "express";
 import path from "path";
+import fs from "fs";
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 import { createServer as createViteServer } from "vite";
+import { injectDynamicSeo } from "./src/server/seoInjector";
 
 // Load environment variables
 dotenv.config();
@@ -193,20 +195,61 @@ async function startServer() {
     res.sendFile(filePath);
   });
 
-  // Vite middleware for development / Static files for production
+  // Vite middleware for development / Static files for production with Dynamic SEO Injection
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: "spa",
     });
+
+    // Handle dynamic SEO routes in development before Vite SPA fallback
+    const handleSeoRouteDev = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+      try {
+        const indexPath = path.join(process.cwd(), "index.html");
+        let template = fs.readFileSync(indexPath, "utf-8");
+        template = await vite.transformIndexHtml(req.originalUrl, template);
+        const html = await injectDynamicSeo(template, req.path, req.params);
+        res.status(200).set({ "Content-Type": "text/html; charset=utf-8" }).send(html);
+      } catch (err) {
+        console.error("Error in development SSR SEO handler:", err);
+        next(err);
+      }
+    };
+
+    app.get(["/my-projects/:id", "/my-projects/:id/", "/projects/:id", "/projects/:id/"], handleSeoRouteDev);
+    app.get(["/articles/:id", "/articles/:id/"], handleSeoRouteDev);
+    app.get(["/my-projects", "/my-projects/"], handleSeoRouteDev);
+    app.get(["/skills", "/skills/", "/blog", "/blog/", "/contact", "/contact/"], handleSeoRouteDev);
+    app.get(["/404", "/404/"], handleSeoRouteDev);
+
     app.use(vite.middlewares);
   } else {
     const distPath = path.join(process.cwd(), "dist");
-    app.use(express.static(distPath));
 
-    app.get("*", (req, res) => {
-      res.sendFile(path.join(distPath, "index.html"));
-    });
+    // Serve static build assets (JS, CSS, images, etc.) without automatic index.html fallback
+    app.use(express.static(distPath, { index: false }));
+
+    // Handle dynamic SEO routes in production
+    const handleSeoRouteProd = async (req: express.Request, res: express.Response) => {
+      try {
+        const indexPath = path.join(distPath, "index.html");
+        const template = fs.readFileSync(indexPath, "utf-8");
+        const html = await injectDynamicSeo(template, req.path, req.params);
+        res.status(200).set({ "Content-Type": "text/html; charset=utf-8" }).send(html);
+      } catch (err) {
+        console.error("Error in production SSR SEO handler:", err);
+        res.sendFile(path.join(distPath, "index.html"));
+      }
+    };
+
+    app.get(["/my-projects/:id", "/my-projects/:id/", "/projects/:id", "/projects/:id/"], handleSeoRouteProd);
+    app.get(["/articles/:id", "/articles/:id/"], handleSeoRouteProd);
+    app.get(["/my-projects", "/my-projects/"], handleSeoRouteProd);
+    app.get(["/skills", "/skills/", "/blog", "/blog/", "/contact", "/contact/"], handleSeoRouteProd);
+    app.get(["/404", "/404/"], handleSeoRouteProd);
+
+    // Fallback for all other routes (Home, Admin, etc.)
+    app.get("*", handleSeoRouteProd);
   }
 
   app.listen(PORT, "0.0.0.0", () => {

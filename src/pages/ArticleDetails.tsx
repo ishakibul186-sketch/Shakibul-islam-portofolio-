@@ -127,7 +127,7 @@ export default function ArticleDetails() {
         <meta property="og:url" content={`https://shakibul-islam-portofolio.vercel.app/articles/${id}`} />
         <meta property="og:title" content={article.seo?.title || article.title} />
         <meta property="og:description" content={article.seo?.description || article.excerpt} />
-        <meta property="og:image" content={article.image || "https://shakibul-islam-portofolio.vercel.app/prohor.png"} />
+        <meta property="og:image" content={article.image || "https://shakibul-islam-portofolio.vercel.app/prohor-v2.png"} />
         <meta property="article:published_time" content={article.date} />
         <meta property="article:author" content={article.author || "Shakibul Islam Prohor"} />
         <meta property="article:section" content={article.category} />
@@ -137,7 +137,7 @@ export default function ArticleDetails() {
         <meta name="twitter:url" content={`https://shakibul-islam-portofolio.vercel.app/articles/${id}`} />
         <meta name="twitter:title" content={article.seo?.title || article.title} />
         <meta name="twitter:description" content={article.seo?.description || article.excerpt} />
-        <meta name="twitter:image" content={article.image || "https://shakibul-islam-portofolio.vercel.app/prohor.png"} />
+        <meta name="twitter:image" content={article.image || "https://shakibul-islam-portofolio.vercel.app/prohor-v2.png"} />
 
         {/* Schema.org BlogPosting Structured Data */}
         <script type="application/ld+json">
@@ -146,7 +146,7 @@ export default function ArticleDetails() {
             "@type": "BlogPosting",
             "headline": article.title,
             "description": article.seo?.description || article.excerpt,
-            "image": article.image || "https://shakibul-islam-portofolio.vercel.app/prohor.png",
+            "image": article.image || "https://shakibul-islam-portofolio.vercel.app/prohor-v2.png",
             "datePublished": article.date,
             "author": {
               "@type": "Person",

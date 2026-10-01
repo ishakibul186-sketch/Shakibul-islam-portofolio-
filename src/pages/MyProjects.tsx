@@ -108,14 +108,14 @@ export default function MyProjects() {
         <meta property="og:title" content="My Projects & Software Portfolio | Shakibul Islam Prohor" />
         <meta property="og:description" content="Explore full stack web applications, AI systems, and production software engineered by Shakibul Islam Prohor." />
         <meta property="og:url" content="https://shakibul-islam-portofolio.vercel.app/my-projects" />
-        <meta property="og:image" content="https://shakibul-islam-portofolio.vercel.app/prohor.png" />
+        <meta property="og:image" content="https://shakibul-islam-portofolio.vercel.app/prohor-v2.png" />
         <meta property="og:image:alt" content="Shakibul Islam Prohor Projects Showcase" />
 
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="My Projects & Software Portfolio | Shakibul Islam Prohor" />
         <meta name="twitter:description" content="Explore full stack web applications, AI systems, and production software built by Shakibul Islam Prohor." />
-        <meta name="twitter:image" content="https://shakibul-islam-portofolio.vercel.app/prohor.png" />
+        <meta name="twitter:image" content="https://shakibul-islam-portofolio.vercel.app/prohor-v2.png" />
 
         {/* Schema.org CollectionPage */}
         <script type="application/ld+json">

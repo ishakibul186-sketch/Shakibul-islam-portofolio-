@@ -17,6 +17,7 @@ import Footer from "./components/Footer";
 import ArticleDetails from "./pages/ArticleDetails";
 import MyProjects from "./pages/MyProjects";
 import ProjectDetails from "./pages/ProjectDetails";
+import NotFound from "./pages/NotFound";
 import AdminLayout from "./pages/admin/AdminLayout";
 import ProjectsAdmin from "./admin/pages/ProjectsAdmin";
 import Dashboard from "./admin/pages/Dashboard";
@@ -63,10 +64,10 @@ function HomePage({ initialSection, meta }: HomePageProps) {
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
         <meta property="og:url" content={canonical} />
-        <meta property="og:image" content="https://shakibul-islam-portofolio.vercel.app/prohor.png" />
+        <meta property="og:image" content="https://shakibul-islam-portofolio.vercel.app/prohor-v2.png" />
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={description} />
-        <meta name="twitter:image" content="https://shakibul-islam-portofolio.vercel.app/prohor.png" />
+        <meta name="twitter:image" content="https://shakibul-islam-portofolio.vercel.app/prohor-v2.png" />
       </Helmet>
       <Navbar />
       <main>
@@ -185,8 +186,9 @@ function MainApp() {
                   <Route path="articles/edit/:id" element={<AddArticle />} />
                 </Route>
 
-                {/* Catch-all fallback */}
-                <Route path="*" element={<Navigate to="/" replace />} />
+                {/* 404 Not Found Page */}
+                <Route path="/404" element={<NotFound />} />
+                <Route path="*" element={<NotFound />} />
               </Routes>
             </div>
           </div>

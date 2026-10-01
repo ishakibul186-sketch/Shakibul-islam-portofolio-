@@ -3,8 +3,13 @@ export default function Footer() {
     <footer className="py-8 border-t border-white/10 relative z-10">
       <div className="container px-6 mx-auto max-w-7xl">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="text-2xl font-bold font-display tracking-tighter">
-            PROHOR<span className="text-purple-500">.</span>
+          <div className="flex items-center gap-2.5 text-2xl font-bold font-display tracking-tighter">
+            <img 
+              src="/prohor-v2.png" 
+              alt="PROHOR Logo" 
+              className="w-8 h-8 rounded-full object-cover ring-2 ring-purple-500/30" 
+            />
+            <span>PROHOR<span className="text-purple-500">.</span></span>
           </div>
           
           <p className="text-sm text-white/50 text-center md:text-left">

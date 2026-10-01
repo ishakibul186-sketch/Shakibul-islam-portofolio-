@@ -38,8 +38,13 @@ export default function Navbar() {
     >
       <div className="container px-6 mx-auto max-w-7xl">
         <div className="flex items-center justify-between">
-          <Link to="/" className="text-2xl font-bold font-display tracking-tighter">
-            PROHOR<span className="text-purple-500">.</span>
+          <Link to="/" className="flex items-center gap-2.5 text-2xl font-bold font-display tracking-tighter group">
+            <img 
+              src="/prohor-v2.png" 
+              alt="PROHOR Logo" 
+              className="w-8 h-8 rounded-full object-cover ring-2 ring-purple-500/30 group-hover:ring-purple-400 transition-all" 
+            />
+            <span>PROHOR<span className="text-purple-500">.</span></span>
           </Link>
 
           {/* Desktop Nav */}
