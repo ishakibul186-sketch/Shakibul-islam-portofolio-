@@ -155,7 +155,12 @@ export default function ProjectDetails() {
         <title>{project.metaTitle || `${project.title} | Shakibul Islam Prohor Projects`}</title>
         <meta name="title" content={project.metaTitle || `${project.title} | Shakibul Islam Prohor Projects`} />
         <meta name="description" content={project.metaDescription || project.description || "Project details and architecture specification."} />
-        {project.metaKeywords && <meta name="keywords" content={project.metaKeywords} />}
+        {((project.metaKeywords as string) || (Array.isArray((project as any).keywords) ? (project as any).keywords.join(", ") : "")) && (
+          <meta 
+            name="keywords" 
+            content={(project.metaKeywords as string) || (Array.isArray((project as any).keywords) ? (project as any).keywords.join(", ") : "")} 
+          />
+        )}
         <link rel="canonical" href={project.metaCanonicalUrl || `https://shakibul-islam-portofolio.vercel.app/my-projects/${project.id}`} />
         <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
         

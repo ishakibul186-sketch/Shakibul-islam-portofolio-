@@ -78,6 +78,8 @@ export default function ProjectsAdmin() {
 
   const [featureInput, setFeatureInput] = useState("");
   const [serviceInput, setServiceInput] = useState("");
+  const [keywordInput, setKeywordInput] = useState("");
+  const [keywordsList, setKeywordsList] = useState<string[]>([]);
 
   // Cropper State for Thumbnail
   const [imageToCrop, setImageToCrop] = useState<string | null>(null);
@@ -137,6 +139,14 @@ export default function ProjectsAdmin() {
   const handleOpenModal = (projectToEdit?: Project) => {
     if (projectToEdit) {
       setEditingProject(projectToEdit);
+      const rawKeywords = 
+        projectToEdit.metaKeywords || 
+        (Array.isArray((projectToEdit as any).keywords) ? (projectToEdit as any).keywords.join(", ") : "");
+      const parsedKeywords = rawKeywords
+        ? rawKeywords.split(",").map((k: string) => k.trim()).filter(Boolean)
+        : [];
+      setKeywordsList(parsedKeywords);
+
       setFormData({
         ...projectToEdit,
         features: projectToEdit.features || [],
@@ -144,13 +154,14 @@ export default function ProjectsAdmin() {
         images: projectToEdit.images || [],
         metaTitle: projectToEdit.metaTitle || "",
         metaDescription: projectToEdit.metaDescription || "",
-        metaKeywords: projectToEdit.metaKeywords || "",
+        metaKeywords: parsedKeywords.join(", "),
         metaCanonicalUrl: projectToEdit.metaCanonicalUrl || "",
         metaOgImage: projectToEdit.metaOgImage || "",
         metaCategory: projectToEdit.metaCategory || "",
       });
     } else {
       setEditingProject(null);
+      setKeywordsList([]);
       setFormData({
         title: "",
         description: "",
@@ -172,6 +183,7 @@ export default function ProjectsAdmin() {
     }
     setFeatureInput("");
     setServiceInput("");
+    setKeywordInput("");
     setIsModalOpen(true);
   };
 
@@ -180,6 +192,8 @@ export default function ProjectsAdmin() {
     setEditingProject(null);
     setIsCropping(false);
     setImageToCrop(null);
+    setKeywordInput("");
+    setKeywordsList([]);
   };
 
   // Helper: Auto Generate Recommended SEO fields
@@ -194,22 +208,23 @@ export default function ProjectsAdmin() {
       ? formData.description.replace(/<[^>]*>?/gm, "").slice(0, 155)
       : `Explore the architecture, tech stack, and live demo of ${projTitle} engineered by Shakibul Islam Prohor.`;
     
-    const keywordsList: string[] = [
+    const keywordsListGenerated: string[] = [
       projTitle,
-      `${projTitle} Live Demo`,
-      `${projTitle} Source Code`,
+      `${projTitle} Software`,
+      `${projTitle} Web Application`,
       ...(formData.coreServices || []),
-      ...(formData.features?.slice(0, 4) || []),
-      "Shakibul Islam Prohor Projects",
-      "Full Stack Developer Portfolio",
-      "Software Engineering"
+      ...(formData.features?.slice(0, 3) || []),
+      formData.category || "Full Stack",
     ];
+
+    const uniqueKeywords = Array.from(new Set(keywordsListGenerated.map((k) => k.trim()).filter(Boolean)));
+    setKeywordsList(uniqueKeywords);
 
     setFormData((prev) => ({
       ...prev,
       metaTitle: `${projTitle} | Full Stack Software Project`,
       metaDescription: cleanDesc,
-      metaKeywords: Array.from(new Set(keywordsList)).join(", "),
+      metaKeywords: uniqueKeywords.join(", "),
       metaCategory: prev.category || "Full Stack Web Application",
     }));
 
@@ -326,6 +341,69 @@ export default function ProjectsAdmin() {
     }));
   };
 
+  // SEO Keywords manager (one-by-one and batch paste support)
+  const addKeyword = (e?: React.KeyboardEvent | React.MouseEvent) => {
+    if (e && "key" in e && e.key !== "Enter" && e.key !== ",") return;
+    if (e && "preventDefault" in e) e.preventDefault();
+    if (!keywordInput.trim()) return;
+
+    // Support comma-separated pasting or multiple tokens
+    const tokens = keywordInput
+      .split(",")
+      .map((k) => k.trim())
+      .filter((k) => k.length > 0);
+
+    const updated = Array.from(new Set([...keywordsList, ...tokens]));
+    setKeywordsList(updated);
+    setFormData((prev) => ({
+      ...prev,
+      metaKeywords: updated.join(", "),
+    }));
+    setKeywordInput("");
+  };
+
+  const removeKeyword = (indexToRemove: number) => {
+    const updated = keywordsList.filter((_, idx) => idx !== indexToRemove);
+    setKeywordsList(updated);
+    setFormData((prev) => ({
+      ...prev,
+      metaKeywords: updated.join(", "),
+    }));
+  };
+
+  const clearAllKeywords = () => {
+    setKeywordsList([]);
+    setFormData((prev) => ({
+      ...prev,
+      metaKeywords: "",
+    }));
+  };
+
+  const addRecommendedKeywords = () => {
+    const projTitle = formData.title?.trim() || "";
+    const suggestions: string[] = [];
+    if (projTitle) {
+      suggestions.push(projTitle);
+      suggestions.push(`${projTitle} System`);
+      suggestions.push(`${projTitle} Software`);
+    }
+    if (formData.category) {
+      suggestions.push(formData.category);
+    }
+    if (Array.isArray(formData.coreServices)) {
+      suggestions.push(...formData.coreServices);
+    }
+    suggestions.push("Shakibul Islam Prohor Projects", "Full Stack Developer");
+
+    const clean = Array.from(new Set([...keywordsList, ...suggestions.map((s) => s.trim()).filter(Boolean)]));
+    setKeywordsList(clean);
+    setFormData((prev) => ({
+      ...prev,
+      metaKeywords: clean.join(", "),
+    }));
+    showToast("Recommended keywords added to project!", "success");
+  };
+
   // 4. Save Project (Create / Update) & update totalstring
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -336,10 +414,14 @@ export default function ProjectsAdmin() {
 
     setSubmitting(true);
     try {
+      const finalKeywordsStr = keywordsList.length > 0 
+        ? keywordsList.join(", ") 
+        : (formData.metaKeywords || "");
+
       if (editingProject) {
         // Update existing project
         const projectRef = ref(db, `projects/${editingProject.id}`);
-        const updatedData: Project = {
+        const updatedData: Project & { keywords?: string[] } = {
           ...(editingProject as Project),
           ...formData,
           id: editingProject.id,
@@ -355,7 +437,8 @@ export default function ProjectsAdmin() {
           status: formData.status || "Live",
           metaTitle: formData.metaTitle || "",
           metaDescription: formData.metaDescription || "",
-          metaKeywords: formData.metaKeywords || "",
+          metaKeywords: finalKeywordsStr,
+          keywords: keywordsList,
           metaCanonicalUrl: formData.metaCanonicalUrl || "",
           metaOgImage: formData.metaOgImage || "",
           metaCategory: formData.metaCategory || "",
@@ -378,7 +461,7 @@ export default function ProjectsAdmin() {
         const newId = `${nextIndex}`;
         const newProjectRef = ref(db, `projects/${newId}`);
 
-        const newProjectData: Project = {
+        const newProjectData: Project & { keywords?: string[] } = {
           id: newId,
           numericId: nextIndex,
           title: formData.title || "",
@@ -393,7 +476,8 @@ export default function ProjectsAdmin() {
           status: formData.status || "Live",
           metaTitle: formData.metaTitle || "",
           metaDescription: formData.metaDescription || "",
-          metaKeywords: formData.metaKeywords || "",
+          metaKeywords: finalKeywordsStr,
+          keywords: keywordsList,
           metaCanonicalUrl: formData.metaCanonicalUrl || "",
           metaOgImage: formData.metaOgImage || "",
           metaCategory: formData.metaCategory || "",
@@ -1202,22 +1286,95 @@ export default function ProjectsAdmin() {
                     </p>
                   </div>
 
-                  {/* Meta Keywords */}
-                  <div className="space-y-1.5 md:col-span-2">
-                    <label className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
-                      <Search size={13} className="text-indigo-600" /> Search Engine Keywords (Comma Separated)
-                    </label>
-                    <input
-                      type="text"
-                      name="metaKeywords"
-                      value={formData.metaKeywords || ""}
-                      onChange={handleInputChange}
-                      placeholder="e.g. React, TypeScript, Node.js, Web Architecture, Live Demo, Shakibul Islam Prohor Projects"
-                      className="w-full px-3.5 py-2.5 text-xs bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-hidden font-sans text-slate-800"
-                    />
-                    <p className="text-[10px] text-slate-400">
-                      Keywords help search engines understand the exact domain context and technical tags of this project.
-                    </p>
+                  {/* Meta Keywords - One by One Tag Manager */}
+                  <div className="space-y-2 md:col-span-2 p-3.5 rounded-xl bg-slate-50/80 border border-slate-200">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <label className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
+                        <Search size={13} className="text-indigo-600" /> Search Engine Keywords (Tag-by-Tag Adder)
+                      </label>
+                      <div className="flex items-center gap-2">
+                        <span className="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-indigo-50 text-indigo-700 border border-indigo-100">
+                          {keywordsList.length} keywords added
+                        </span>
+                        {keywordsList.length > 0 && (
+                          <button
+                            type="button"
+                            onClick={clearAllKeywords}
+                            className="text-[10px] text-red-600 hover:text-red-700 font-medium hover:underline"
+                          >
+                            Clear All
+                          </button>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Input field with Add button */}
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="text"
+                        value={keywordInput}
+                        onChange={(e) => setKeywordInput(e.target.value)}
+                        onKeyDown={addKeyword}
+                        placeholder="Type a keyword and press Enter or comma (e.g. Pharmacy POS, React, Inventory)..."
+                        className="flex-1 px-3.5 py-2.5 text-xs bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-hidden font-sans text-slate-800 shadow-2xs"
+                      />
+                      <button
+                        type="button"
+                        onClick={addKeyword}
+                        className="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors shrink-0 shadow-xs"
+                      >
+                        <Plus size={14} /> Add
+                      </button>
+                    </div>
+
+                    {/* Interactive Keyword Badges / Chips */}
+                    <div className="min-h-[42px] p-2 bg-white rounded-xl border border-slate-200/80 flex flex-wrap gap-1.5 items-center">
+                      {keywordsList.length === 0 ? (
+                        <p className="text-[11px] text-slate-400 italic px-1">
+                          No keywords added yet. Type above and press Enter, or click &ldquo;Suggest Recommended&rdquo; below.
+                        </p>
+                      ) : (
+                        keywordsList.map((keyword, idx) => (
+                          <span
+                            key={idx}
+                            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium bg-gradient-to-r from-indigo-50 to-purple-50 text-indigo-900 border border-indigo-100 shadow-2xs group hover:border-red-200 transition-colors"
+                          >
+                            <Tag size={11} className="text-indigo-500 shrink-0" />
+                            <span>{keyword}</span>
+                            <button
+                              type="button"
+                              onClick={() => removeKeyword(idx)}
+                              className="text-slate-400 hover:text-red-600 rounded-sm p-0.5 transition-colors"
+                              title={`Remove ${keyword}`}
+                            >
+                              <X size={12} />
+                            </button>
+                          </span>
+                        ))
+                      )}
+                    </div>
+
+                    {/* Quick Helper Tools & Live Preview */}
+                    <div className="flex flex-wrap items-center justify-between gap-2 pt-1">
+                      <button
+                        type="button"
+                        onClick={addRecommendedKeywords}
+                        className="text-[11px] text-indigo-600 hover:text-indigo-700 font-semibold flex items-center gap-1 hover:underline"
+                      >
+                        <Sparkles size={12} /> + Suggest Recommended From Tech Stack
+                      </button>
+                      <p className="text-[10px] text-slate-400">
+                        Keywords will be sent to Google Search Console &amp; HTML meta tags in this exact order.
+                      </p>
+                    </div>
+
+                    {/* Live Preview of metaKeywords string */}
+                    {keywordsList.length > 0 && (
+                      <div className="p-2 rounded-lg bg-slate-100/70 border border-slate-200/60 text-[10px] text-slate-600 break-words font-mono">
+                        <span className="font-semibold text-slate-700 font-sans">Output preview: </span>
+                        {keywordsList.join(", ")}
+                      </div>
+                    )}
                   </div>
 
                   {/* Custom Canonical URL */}

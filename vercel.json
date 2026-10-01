@@ -1,9 +1,74 @@
 {
+  "version": 2,
+  "functions": {
+    "api/index.ts": {
+      "includeFiles": "dist/**"
+    }
+  },
   "rewrites": [
     {
-      "source": "/((?!api/|.*\\..*).*)",
-      "destination": "/index.html"
+      "source": "/about",
+      "destination": "/about.html"
+    },
+    {
+      "source": "/about/",
+      "destination": "/about.html"
+    },
+    {
+      "source": "/api/:path*",
+      "destination": "/api/index"
+    },
+    {
+      "source": "/my-projects/:id*",
+      "destination": "/api/index?route=/my-projects/:id*"
+    },
+    {
+      "source": "/projects/:id*",
+      "destination": "/api/index?route=/projects/:id*"
+    },
+    {
+      "source": "/articles/:id*",
+      "destination": "/api/index?route=/articles/:id*"
+    },
+    {
+      "source": "/my-projects",
+      "destination": "/api/index?route=/my-projects"
+    },
+    {
+      "source": "/my-projects/",
+      "destination": "/api/index?route=/my-projects"
+    },
+    {
+      "source": "/skills",
+      "destination": "/api/index?route=/skills"
+    },
+    {
+      "source": "/skills/",
+      "destination": "/api/index?route=/skills"
+    },
+    {
+      "source": "/blog",
+      "destination": "/api/index?route=/blog"
+    },
+    {
+      "source": "/blog/",
+      "destination": "/api/index?route=/blog"
+    },
+    {
+      "source": "/contact",
+      "destination": "/api/index?route=/contact"
+    },
+    {
+      "source": "/contact/",
+      "destination": "/api/index?route=/contact"
+    },
+    {
+      "source": "/404",
+      "destination": "/api/index?route=/404"
+    },
+    {
+      "source": "/((?!api/|assets/|.*\\..*).*)",
+      "destination": "/api/index"
     }
   ]
 }
-

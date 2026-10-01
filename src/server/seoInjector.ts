@@ -194,9 +194,37 @@ export async function injectDynamicSeo(
     if (project) {
       title = project.metaTitle || (project.title ? `${project.title} | Shakibul Islam Prohor` : title);
       description = project.metaDescription || project.description || description;
-      if (project.metaKeywords) {
-        keywords = project.metaKeywords;
+
+      // Extract custom SEO keywords specified by the user
+      let projectKeywords: string[] = [];
+      if (typeof project.metaKeywords === "string" && project.metaKeywords.trim()) {
+        projectKeywords = project.metaKeywords.split(",").map((k: string) => k.trim()).filter(Boolean);
+      } else if (Array.isArray(project.keywords)) {
+        projectKeywords = project.keywords.map((k: any) => String(k).trim()).filter(Boolean);
+      } else if (Array.isArray(project.metaKeywords)) {
+        projectKeywords = (project.metaKeywords as any[]).map((k: any) => String(k).trim()).filter(Boolean);
       }
+
+      // If no custom keywords, synthesize domain-relevant keywords from title, category, and tech stack
+      if (projectKeywords.length === 0) {
+        if (project.title) projectKeywords.push(project.title);
+        if (project.category) projectKeywords.push(project.category);
+        if (Array.isArray(project.coreServices)) {
+          projectKeywords.push(...project.coreServices);
+        }
+        if (Array.isArray(project.features)) {
+          projectKeywords.push(...project.features.slice(0, 3));
+        }
+      }
+
+      // Project custom keywords come FIRST; general portfolio keywords only at the end
+      const uniqueProjectKeywords = Array.from(new Set(projectKeywords));
+      if (uniqueProjectKeywords.length > 0) {
+        keywords = `${uniqueProjectKeywords.join(", ")}, Shakibul Islam Prohor, Full Stack Developer`;
+      } else {
+        keywords = "Shakibul Islam Prohor, Full Stack Developer, Software Engineer, Portfolio, React, Node.js";
+      }
+
       canonical = resolveCanonicalUrl(cleanPath, project.metaCanonicalUrl);
       image = resolveOgImage(project.metaOgImage, project.thumbnail);
       category = project.metaCategory || project.category || category;
