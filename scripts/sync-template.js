@@ -11,7 +11,11 @@ try {
     html = fs.readFileSync(fallbackIndex, "utf-8");
   }
 
-  const outPath = path.join(process.cwd(), "api", "embeddedTemplate.ts");
+  const outDir = path.join(process.cwd(), "api", "_lib");
+  if (!fs.existsSync(outDir)) {
+    fs.mkdirSync(outDir, { recursive: true });
+  }
+  const outPath = path.join(outDir, "embeddedTemplate.ts");
   const code = `// Auto-generated embedded fallback HTML template for Vercel
 export const EMBEDDED_INDEX_HTML = ${JSON.stringify(html)};
 `;

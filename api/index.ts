@@ -1,7 +1,7 @@
 import path from "path";
 import fs from "fs";
-import { injectDynamicSeo } from "./seoInjector";
-import { EMBEDDED_INDEX_HTML } from "./embeddedTemplate";
+import { injectDynamicSeo } from "./_lib/seoInjector";
+import { EMBEDDED_INDEX_HTML } from "./_lib/embeddedTemplate";
 
 /**
  * Universal safe helper to locate HTML template across local and Vercel serverless environments.

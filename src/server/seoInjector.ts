@@ -1,1 +1,1 @@
-export * from "../../api/seoInjector";
+export * from "../../api/_lib/seoInjector";
