@@ -80,6 +80,7 @@ export default function ProjectsAdmin() {
   const [serviceInput, setServiceInput] = useState("");
   const [keywordInput, setKeywordInput] = useState("");
   const [keywordsList, setKeywordsList] = useState<string[]>([]);
+  const [keywordMode, setKeywordMode] = useState<"tags" | "text">("tags");
 
   // Cropper State for Thumbnail
   const [imageToCrop, setImageToCrop] = useState<string | null>(null);
@@ -139,12 +140,12 @@ export default function ProjectsAdmin() {
   const handleOpenModal = (projectToEdit?: Project) => {
     if (projectToEdit) {
       setEditingProject(projectToEdit);
-      const rawKeywords = 
-        projectToEdit.metaKeywords || 
-        (Array.isArray((projectToEdit as any).keywords) ? (projectToEdit as any).keywords.join(", ") : "");
-      const parsedKeywords = rawKeywords
-        ? rawKeywords.split(",").map((k: string) => k.trim()).filter(Boolean)
-        : [];
+      let parsedKeywords: string[] = [];
+      if (Array.isArray((projectToEdit as any).keywords) && (projectToEdit as any).keywords.length > 0) {
+        parsedKeywords = (projectToEdit as any).keywords.map((k: any) => String(k).trim()).filter(Boolean);
+      } else if (typeof projectToEdit.metaKeywords === "string" && projectToEdit.metaKeywords.trim()) {
+        parsedKeywords = projectToEdit.metaKeywords.split(",").map((k: string) => k.trim()).filter(Boolean);
+      }
       setKeywordsList(parsedKeywords);
 
       setFormData({
@@ -184,6 +185,7 @@ export default function ProjectsAdmin() {
     setFeatureInput("");
     setServiceInput("");
     setKeywordInput("");
+    setKeywordMode("tags");
     setIsModalOpen(true);
   };
 
@@ -341,15 +343,15 @@ export default function ProjectsAdmin() {
     }));
   };
 
-  // SEO Keywords manager (one-by-one and batch paste support)
+  // SEO Keywords manager (one-by-one, batch paste, and direct text support)
   const addKeyword = (e?: React.KeyboardEvent | React.MouseEvent) => {
     if (e && "key" in e && e.key !== "Enter" && e.key !== ",") return;
     if (e && "preventDefault" in e) e.preventDefault();
     if (!keywordInput.trim()) return;
 
-    // Support comma-separated pasting or multiple tokens
+    // Support comma-separated or newline-separated tokens
     const tokens = keywordInput
-      .split(",")
+      .split(/[,,\n]+/)
       .map((k) => k.trim())
       .filter((k) => k.length > 0);
 
@@ -376,6 +378,19 @@ export default function ProjectsAdmin() {
     setFormData((prev) => ({
       ...prev,
       metaKeywords: "",
+    }));
+  };
+
+  const handleRawKeywordsChange = (val: string) => {
+    const tokens = val
+      .split(/[,,\n]+/)
+      .map((k) => k.trim())
+      .filter(Boolean);
+    const unique = Array.from(new Set(tokens));
+    setKeywordsList(unique);
+    setFormData((prev) => ({
+      ...prev,
+      metaKeywords: val,
     }));
   };
 
@@ -414,8 +429,20 @@ export default function ProjectsAdmin() {
 
     setSubmitting(true);
     try {
-      const finalKeywordsStr = keywordsList.length > 0 
-        ? keywordsList.join(", ") 
+      // If user typed something in keywordInput and clicked submit without pressing Enter, commit it
+      let finalKeywordsArray = [...keywordsList];
+      if (keywordInput.trim()) {
+        const pendingTokens = keywordInput
+          .split(/[,,\n]+/)
+          .map((k) => k.trim())
+          .filter(Boolean);
+        finalKeywordsArray = Array.from(new Set([...finalKeywordsArray, ...pendingTokens]));
+        setKeywordsList(finalKeywordsArray);
+        setKeywordInput("");
+      }
+
+      const finalKeywordsStr = finalKeywordsArray.length > 0 
+        ? finalKeywordsArray.join(", ") 
         : (formData.metaKeywords || "");
 
       if (editingProject) {
@@ -438,7 +465,7 @@ export default function ProjectsAdmin() {
           metaTitle: formData.metaTitle || "",
           metaDescription: formData.metaDescription || "",
           metaKeywords: finalKeywordsStr,
-          keywords: keywordsList,
+          keywords: finalKeywordsArray,
           metaCanonicalUrl: formData.metaCanonicalUrl || "",
           metaOgImage: formData.metaOgImage || "",
           metaCategory: formData.metaCategory || "",
@@ -477,7 +504,7 @@ export default function ProjectsAdmin() {
           metaTitle: formData.metaTitle || "",
           metaDescription: formData.metaDescription || "",
           metaKeywords: finalKeywordsStr,
-          keywords: keywordsList,
+          keywords: finalKeywordsArray,
           metaCanonicalUrl: formData.metaCanonicalUrl || "",
           metaOgImage: formData.metaOgImage || "",
           metaCategory: formData.metaCategory || "",
@@ -1286,21 +1313,47 @@ export default function ProjectsAdmin() {
                     </p>
                   </div>
 
-                  {/* Meta Keywords - One by One Tag Manager */}
-                  <div className="space-y-2 md:col-span-2 p-3.5 rounded-xl bg-slate-50/80 border border-slate-200">
+                  {/* Meta Keywords - One by One Tag & Text Manager */}
+                  <div className="space-y-2.5 md:col-span-2 p-4 rounded-xl bg-slate-50/90 border border-slate-200">
                     <div className="flex flex-wrap items-center justify-between gap-2">
-                      <label className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
-                        <Search size={13} className="text-indigo-600" /> Search Engine Keywords (Tag-by-Tag Adder)
-                      </label>
                       <div className="flex items-center gap-2">
+                        <label className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
+                          <Search size={13} className="text-indigo-600" /> Search Engine Meta Keywords
+                        </label>
                         <span className="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-indigo-50 text-indigo-700 border border-indigo-100">
-                          {keywordsList.length} keywords added
+                          {keywordsList.length} keywords configured
                         </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="inline-flex rounded-lg border border-slate-200 bg-white p-0.5 shadow-2xs">
+                          <button
+                            type="button"
+                            onClick={() => setKeywordMode("tags")}
+                            className={`px-2 py-1 text-[10px] font-semibold rounded-md transition-colors cursor-pointer ${
+                              keywordMode === "tags"
+                                ? "bg-indigo-600 text-white shadow-2xs"
+                                : "text-slate-600 hover:text-slate-900"
+                            }`}
+                          >
+                            Tag Adder
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setKeywordMode("text")}
+                            className={`px-2 py-1 text-[10px] font-semibold rounded-md transition-colors cursor-pointer ${
+                              keywordMode === "text"
+                                ? "bg-indigo-600 text-white shadow-2xs"
+                                : "text-slate-600 hover:text-slate-900"
+                            }`}
+                          >
+                            Direct Text
+                          </button>
+                        </div>
                         {keywordsList.length > 0 && (
                           <button
                             type="button"
                             onClick={clearAllKeywords}
-                            className="text-[10px] text-red-600 hover:text-red-700 font-medium hover:underline"
+                            className="text-[10px] text-red-600 hover:text-red-700 font-medium hover:underline px-1 cursor-pointer"
                           >
                             Clear All
                           </button>
@@ -1308,70 +1361,88 @@ export default function ProjectsAdmin() {
                       </div>
                     </div>
 
-                    {/* Input field with Add button */}
-                    <div className="flex items-center gap-2">
-                      <input
-                        type="text"
-                        value={keywordInput}
-                        onChange={(e) => setKeywordInput(e.target.value)}
-                        onKeyDown={addKeyword}
-                        placeholder="Type a keyword and press Enter or comma (e.g. Pharmacy POS, React, Inventory)..."
-                        className="flex-1 px-3.5 py-2.5 text-xs bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-hidden font-sans text-slate-800 shadow-2xs"
-                      />
-                      <button
-                        type="button"
-                        onClick={addKeyword}
-                        className="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors shrink-0 shadow-xs"
-                      >
-                        <Plus size={14} /> Add
-                      </button>
-                    </div>
-
-                    {/* Interactive Keyword Badges / Chips */}
-                    <div className="min-h-[42px] p-2 bg-white rounded-xl border border-slate-200/80 flex flex-wrap gap-1.5 items-center">
-                      {keywordsList.length === 0 ? (
-                        <p className="text-[11px] text-slate-400 italic px-1">
-                          No keywords added yet. Type above and press Enter, or click &ldquo;Suggest Recommended&rdquo; below.
-                        </p>
-                      ) : (
-                        keywordsList.map((keyword, idx) => (
-                          <span
-                            key={idx}
-                            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium bg-gradient-to-r from-indigo-50 to-purple-50 text-indigo-900 border border-indigo-100 shadow-2xs group hover:border-red-200 transition-colors"
+                    {keywordMode === "tags" ? (
+                      <>
+                        {/* Input field with Add button */}
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="text"
+                            value={keywordInput}
+                            onChange={(e) => setKeywordInput(e.target.value)}
+                            onKeyDown={addKeyword}
+                            placeholder="Type a keyword and press Enter or comma (e.g. Pharmacy POS, React, Inventory)..."
+                            className="flex-1 px-3.5 py-2.5 text-xs bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-hidden font-sans text-slate-800 shadow-2xs"
+                          />
+                          <button
+                            type="button"
+                            onClick={addKeyword}
+                            className="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors shrink-0 shadow-xs cursor-pointer"
                           >
-                            <Tag size={11} className="text-indigo-500 shrink-0" />
-                            <span>{keyword}</span>
-                            <button
-                              type="button"
-                              onClick={() => removeKeyword(idx)}
-                              className="text-slate-400 hover:text-red-600 rounded-sm p-0.5 transition-colors"
-                              title={`Remove ${keyword}`}
-                            >
-                              <X size={12} />
-                            </button>
-                          </span>
-                        ))
-                      )}
-                    </div>
+                            <Plus size={14} /> Add Keyword
+                          </button>
+                        </div>
+
+                        {/* Interactive Keyword Badges / Chips */}
+                        <div className="min-h-[46px] p-2.5 bg-white rounded-xl border border-slate-200/80 flex flex-wrap gap-1.5 items-center">
+                          {keywordsList.length === 0 ? (
+                            <p className="text-[11px] text-slate-400 italic px-1">
+                              No keywords added yet. Type a keyword above and press Enter, or click &ldquo;Suggest Recommended&rdquo; below.
+                            </p>
+                          ) : (
+                            keywordsList.map((keyword, idx) => (
+                              <span
+                                key={idx}
+                                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium bg-gradient-to-r from-indigo-50 to-purple-50 text-indigo-900 border border-indigo-100 shadow-2xs group hover:border-red-200 transition-colors"
+                              >
+                                <Tag size={11} className="text-indigo-500 shrink-0" />
+                                <span>{keyword}</span>
+                                <button
+                                  type="button"
+                                  onClick={() => removeKeyword(idx)}
+                                  className="text-slate-400 hover:text-red-600 rounded-sm p-0.5 transition-colors cursor-pointer"
+                                  title={`Remove ${keyword}`}
+                                >
+                                  <X size={12} />
+                                </button>
+                              </span>
+                            ))
+                          )}
+                        </div>
+                      </>
+                    ) : (
+                      /* Direct Comma-Separated Textarea Mode */
+                      <div className="space-y-1.5">
+                        <textarea
+                          rows={3}
+                          value={formData.metaKeywords || keywordsList.join(", ")}
+                          onChange={(e) => handleRawKeywordsChange(e.target.value)}
+                          placeholder="Type or paste comma-separated keywords (e.g. Pharmacy POS, Medical Store Billing, Inventory Software, React POS)..."
+                          className="w-full px-3.5 py-2.5 text-xs bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-hidden font-sans text-slate-800 shadow-2xs leading-relaxed"
+                        />
+                        <p className="text-[10px] text-slate-400">
+                          Separate each keyword with a comma. They will automatically be parsed into individual tags and saved to database.
+                        </p>
+                      </div>
+                    )}
 
                     {/* Quick Helper Tools & Live Preview */}
                     <div className="flex flex-wrap items-center justify-between gap-2 pt-1">
                       <button
                         type="button"
                         onClick={addRecommendedKeywords}
-                        className="text-[11px] text-indigo-600 hover:text-indigo-700 font-semibold flex items-center gap-1 hover:underline"
+                        className="text-[11px] text-indigo-600 hover:text-indigo-700 font-semibold flex items-center gap-1 hover:underline cursor-pointer"
                       >
-                        <Sparkles size={12} /> + Suggest Recommended From Tech Stack
+                        <Sparkles size={12} /> + Suggest Recommended From Tech Stack &amp; Title
                       </button>
                       <p className="text-[10px] text-slate-400">
-                        Keywords will be sent to Google Search Console &amp; HTML meta tags in this exact order.
+                        Exact keywords sent to Google Search Console &amp; injected into server HTML meta tags.
                       </p>
                     </div>
 
                     {/* Live Preview of metaKeywords string */}
                     {keywordsList.length > 0 && (
-                      <div className="p-2 rounded-lg bg-slate-100/70 border border-slate-200/60 text-[10px] text-slate-600 break-words font-mono">
-                        <span className="font-semibold text-slate-700 font-sans">Output preview: </span>
+                      <div className="p-2.5 rounded-lg bg-slate-100/70 border border-slate-200/60 text-[10px] text-slate-600 break-words font-mono">
+                        <span className="font-semibold text-slate-700 font-sans">SEO Meta Keywords Preview: </span>
                         {keywordsList.join(", ")}
                       </div>
                     )}

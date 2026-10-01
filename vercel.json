@@ -2,7 +2,7 @@
   "version": 2,
   "functions": {
     "api/index.ts": {
-      "includeFiles": "dist/**"
+      "includeFiles": "{dist/**,index.html,about.html}"
     }
   },
   "rewrites": [
@@ -19,24 +19,24 @@
       "destination": "/api/index"
     },
     {
-      "source": "/my-projects/:id*",
-      "destination": "/api/index?route=/my-projects/:id*"
-    },
-    {
-      "source": "/projects/:id*",
-      "destination": "/api/index?route=/projects/:id*"
-    },
-    {
-      "source": "/articles/:id*",
-      "destination": "/api/index?route=/articles/:id*"
-    },
-    {
       "source": "/my-projects",
       "destination": "/api/index?route=/my-projects"
     },
     {
       "source": "/my-projects/",
       "destination": "/api/index?route=/my-projects"
+    },
+    {
+      "source": "/my-projects/:id+",
+      "destination": "/api/index?route=/my-projects/:id+"
+    },
+    {
+      "source": "/projects/:id+",
+      "destination": "/api/index?route=/projects/:id+"
+    },
+    {
+      "source": "/articles/:id+",
+      "destination": "/api/index?route=/articles/:id+"
     },
     {
       "source": "/skills",
@@ -64,6 +64,10 @@
     },
     {
       "source": "/404",
+      "destination": "/api/index?route=/404"
+    },
+    {
+      "source": "/404/",
       "destination": "/api/index?route=/404"
     },
     {

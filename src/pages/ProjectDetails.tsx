@@ -112,6 +112,10 @@ export default function ProjectDetails() {
   if (loading && !project) {
     return (
       <div className="min-h-screen bg-[#030014] text-white flex flex-col">
+        <Helmet>
+          <title>Loading Project... | Shakibul Islam Prohor</title>
+          <meta name="robots" content="noindex, follow" />
+        </Helmet>
         <Navbar />
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center space-y-4">
@@ -148,6 +152,13 @@ export default function ProjectDetails() {
     );
   }
 
+  const projectKeywords = 
+    (typeof project.metaKeywords === "string" && project.metaKeywords.trim())
+      ? project.metaKeywords.trim()
+      : Array.isArray((project as any).keywords) && (project as any).keywords.length > 0
+      ? (project as any).keywords.join(", ")
+      : `${project.title}, ${project.category || "Software Project"}, ${Array.isArray(project.coreServices) ? project.coreServices.join(", ") : ""}`;
+
   return (
     <div className="min-h-screen bg-[#030014] text-white flex flex-col selection:bg-purple-500/30">
       {/* SEO & Open Graph Meta Tags */}
@@ -155,12 +166,7 @@ export default function ProjectDetails() {
         <title>{project.metaTitle || `${project.title} | Shakibul Islam Prohor Projects`}</title>
         <meta name="title" content={project.metaTitle || `${project.title} | Shakibul Islam Prohor Projects`} />
         <meta name="description" content={project.metaDescription || project.description || "Project details and architecture specification."} />
-        {((project.metaKeywords as string) || (Array.isArray((project as any).keywords) ? (project as any).keywords.join(", ") : "")) && (
-          <meta 
-            name="keywords" 
-            content={(project.metaKeywords as string) || (Array.isArray((project as any).keywords) ? (project as any).keywords.join(", ") : "")} 
-          />
-        )}
+        <meta name="keywords" content={projectKeywords} />
         <link rel="canonical" href={project.metaCanonicalUrl || `https://shakibul-islam-portofolio.vercel.app/my-projects/${project.id}`} />
         <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
         

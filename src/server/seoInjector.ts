@@ -195,17 +195,17 @@ export async function injectDynamicSeo(
       title = project.metaTitle || (project.title ? `${project.title} | Shakibul Islam Prohor` : title);
       description = project.metaDescription || project.description || description;
 
-      // Extract custom SEO keywords specified by the user
+      // Extract custom SEO keywords specified by the user from metaKeywords or keywords array
       let projectKeywords: string[] = [];
       if (typeof project.metaKeywords === "string" && project.metaKeywords.trim()) {
         projectKeywords = project.metaKeywords.split(",").map((k: string) => k.trim()).filter(Boolean);
-      } else if (Array.isArray(project.keywords)) {
+      } else if (Array.isArray(project.keywords) && project.keywords.length > 0) {
         projectKeywords = project.keywords.map((k: any) => String(k).trim()).filter(Boolean);
-      } else if (Array.isArray(project.metaKeywords)) {
+      } else if (Array.isArray(project.metaKeywords) && project.metaKeywords.length > 0) {
         projectKeywords = (project.metaKeywords as any[]).map((k: any) => String(k).trim()).filter(Boolean);
       }
 
-      // If no custom keywords, synthesize domain-relevant keywords from title, category, and tech stack
+      // If no custom keywords are saved, synthesize domain-relevant keywords from title, category, and tech stack
       if (projectKeywords.length === 0) {
         if (project.title) projectKeywords.push(project.title);
         if (project.category) projectKeywords.push(project.category);
@@ -217,10 +217,10 @@ export async function injectDynamicSeo(
         }
       }
 
-      // Project custom keywords come FIRST; general portfolio keywords only at the end
+      // User's specific keywords must be prominent. If available, use them directly without polluting.
       const uniqueProjectKeywords = Array.from(new Set(projectKeywords));
       if (uniqueProjectKeywords.length > 0) {
-        keywords = `${uniqueProjectKeywords.join(", ")}, Shakibul Islam Prohor, Full Stack Developer`;
+        keywords = uniqueProjectKeywords.join(", ");
       } else {
         keywords = "Shakibul Islam Prohor, Full Stack Developer, Software Engineer, Portfolio, React, Node.js";
       }
@@ -257,13 +257,21 @@ export async function injectDynamicSeo(
     result = result.replace(/<title>[\s\S]*?<\/title>/i, `<title>${escapeHtml(title)}</title>`);
     
     // Meta title
-    result = replaceOrInsertMeta(result, /<meta\s+name=["']title["']\s+content=["'][\s\S]*?["']\s*\/?>/i, `<meta name="title" content="${escapeHtml(title)}" />`);
+    result = replaceOrInsertMeta(result, /<meta\s+[^>]*?name=["']title["'][^>]*?\/?>/i, `<meta name="title" content="${escapeHtml(title)}" />`);
     
     // Meta description
-    result = replaceOrInsertMeta(result, /<meta\s+name=["']description["']\s+content=["'][\s\S]*?["']\s*\/?>/i, `<meta name="description" content="${escapeHtml(description)}" />`);
+    result = replaceOrInsertMeta(result, /<meta\s+[^>]*?name=["']description["'][^>]*?\/?>/i, `<meta name="description" content="${escapeHtml(description)}" />`);
     
-    // Meta keywords
-    result = replaceOrInsertMeta(result, /<meta\s+name=["']keywords["']\s+content=["'][\s\S]*?["']\s*\/?>/i, `<meta name="keywords" content="${escapeHtml(keywords)}" />`);
+    // Meta keywords (robust matching for any attribute ordering)
+    const keywordsRegex = /<meta\s+[^>]*?name=["']keywords["'][^>]*?\/?>/i;
+    const keywordsRegexAlt = /<meta\s+[^>]*?content=["'][^"']*?["'][^>]*?name=["']keywords["'][^>]*?\/?>/i;
+    if (keywordsRegex.test(result)) {
+      result = result.replace(keywordsRegex, `<meta name="keywords" content="${escapeHtml(keywords)}" />`);
+    } else if (keywordsRegexAlt.test(result)) {
+      result = result.replace(keywordsRegexAlt, `<meta name="keywords" content="${escapeHtml(keywords)}" />`);
+    } else {
+      result = replaceOrInsertMeta(result, keywordsRegex, `<meta name="keywords" content="${escapeHtml(keywords)}" />`);
+    }
 
     // Canonical link
     result = replaceOrInsertMeta(result, /<link\s+rel=["']canonical["']\s+href=["'][\s\S]*?["']\s*\/?>/i, `<link rel="canonical" href="${escapeHtml(canonical)}" />`);
@@ -355,9 +363,20 @@ export async function injectDynamicSeo(
 
     let result = html;
     result = result.replace(/<title>[\s\S]*?<\/title>/i, `<title>${escapeHtml(title)}</title>`);
-    result = replaceOrInsertMeta(result, /<meta\s+name=["']title["']\s+content=["'][\s\S]*?["']\s*\/?>/i, `<meta name="title" content="${escapeHtml(title)}" />`);
-    result = replaceOrInsertMeta(result, /<meta\s+name=["']description["']\s+content=["'][\s\S]*?["']\s*\/?>/i, `<meta name="description" content="${escapeHtml(description)}" />`);
-    result = replaceOrInsertMeta(result, /<meta\s+name=["']keywords["']\s+content=["'][\s\S]*?["']\s*\/?>/i, `<meta name="keywords" content="${escapeHtml(keywords)}" />`);
+    result = replaceOrInsertMeta(result, /<meta\s+[^>]*?name=["']title["'][^>]*?\/?>/i, `<meta name="title" content="${escapeHtml(title)}" />`);
+    result = replaceOrInsertMeta(result, /<meta\s+[^>]*?name=["']description["'][^>]*?\/?>/i, `<meta name="description" content="${escapeHtml(description)}" />`);
+    
+    // Meta keywords
+    const keywordsRegex = /<meta\s+[^>]*?name=["']keywords["'][^>]*?\/?>/i;
+    const keywordsRegexAlt = /<meta\s+[^>]*?content=["'][^"']*?["'][^>]*?name=["']keywords["'][^>]*?\/?>/i;
+    if (keywordsRegex.test(result)) {
+      result = result.replace(keywordsRegex, `<meta name="keywords" content="${escapeHtml(keywords)}" />`);
+    } else if (keywordsRegexAlt.test(result)) {
+      result = result.replace(keywordsRegexAlt, `<meta name="keywords" content="${escapeHtml(keywords)}" />`);
+    } else {
+      result = replaceOrInsertMeta(result, keywordsRegex, `<meta name="keywords" content="${escapeHtml(keywords)}" />`);
+    }
+
     result = replaceOrInsertMeta(result, /<link\s+rel=["']canonical["']\s+href=["'][\s\S]*?["']\s*\/?>/i, `<link rel="canonical" href="${escapeHtml(canonical)}" />`);
 
     result = replaceOrInsertMeta(result, /<meta\s+property=["']og:type["']\s+content=["'][\s\S]*?["']\s*\/?>/i, `<meta property="og:type" content="article" />`);
@@ -399,12 +418,23 @@ export async function injectDynamicSeo(
     let result = html;
     const title = "My Projects & Software Portfolio | Shakibul Islam Prohor";
     const description = "Explore full stack web applications, POS software, AI systems, and production software engineered by Shakibul Islam Prohor.";
+    const keywords = "Shakibul Islam Prohor Projects, Full Stack Projects, Web Applications, Software Portfolio, React Apps, Node.js Projects";
     const canonical = "https://shakibul-islam-portofolio.vercel.app/my-projects";
     const image = "https://shakibul-islam-portofolio.vercel.app/my-projects-banner.png";
 
     result = result.replace(/<title>[\s\S]*?<\/title>/i, `<title>${title}</title>`);
-    result = replaceOrInsertMeta(result, /<meta\s+name=["']title["']\s+content=["'][\s\S]*?["']\s*\/?>/i, `<meta name="title" content="${title}" />`);
-    result = replaceOrInsertMeta(result, /<meta\s+name=["']description["']\s+content=["'][\s\S]*?["']\s*\/?>/i, `<meta name="description" content="${description}" />`);
+    result = replaceOrInsertMeta(result, /<meta\s+[^>]*?name=["']title["'][^>]*?\/?>/i, `<meta name="title" content="${title}" />`);
+    result = replaceOrInsertMeta(result, /<meta\s+[^>]*?name=["']description["'][^>]*?\/?>/i, `<meta name="description" content="${description}" />`);
+    
+    const keywordsRegex = /<meta\s+[^>]*?name=["']keywords["'][^>]*?\/?>/i;
+    const keywordsRegexAlt = /<meta\s+[^>]*?content=["'][^"']*?["'][^>]*?name=["']keywords["'][^>]*?\/?>/i;
+    if (keywordsRegex.test(result)) {
+      result = result.replace(keywordsRegex, `<meta name="keywords" content="${escapeHtml(keywords)}" />`);
+    } else if (keywordsRegexAlt.test(result)) {
+      result = result.replace(keywordsRegexAlt, `<meta name="keywords" content="${escapeHtml(keywords)}" />`);
+    } else {
+      result = replaceOrInsertMeta(result, keywordsRegex, `<meta name="keywords" content="${escapeHtml(keywords)}" />`);
+    }
     result = replaceOrInsertMeta(result, /<link\s+rel=["']canonical["']\s+href=["'][\s\S]*?["']\s*\/?>/i, `<link rel="canonical" href="${canonical}" />`);
     result = replaceOrInsertMeta(result, /<meta\s+property=["']og:title["']\s+content=["'][\s\S]*?["']\s*\/?>/i, `<meta property="og:title" content="${title}" />`);
     result = replaceOrInsertMeta(result, /<meta\s+property=["']og:description["']\s+content=["'][\s\S]*?["']\s*\/?>/i, `<meta property="og:description" content="${description}" />`);

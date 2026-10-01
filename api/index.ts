@@ -1,31 +1,50 @@
 import path from "path";
 import fs from "fs";
+import { fileURLToPath } from "url";
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 import { injectDynamicSeo } from "../src/server/seoInjector";
+import { EMBEDDED_INDEX_HTML } from "./embeddedTemplate";
 
 dotenv.config();
 
+// ESM-compatible __dirname resolution
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 /**
- * Robust helper to locate index.html template across local and Vercel serverless environments
+ * Robust helper to locate index.html template across local and Vercel serverless environments.
+ * Falls back to bundled EMBEDDED_INDEX_HTML so it NEVER crashes or throws 500.
  */
 function getTemplateHtml(): string {
-  const possiblePaths = [
-    path.join(process.cwd(), "dist", "index.html"),
-    path.join(process.cwd(), "index.html"),
-    path.resolve(__dirname, "../dist/index.html"),
-    path.resolve(__dirname, "../../dist/index.html"),
-    path.resolve(__dirname, "dist/index.html"),
-    path.resolve(__dirname, "index.html"),
-    path.resolve(__dirname, "../index.html"),
-  ];
+  const candidates: string[] = [];
 
-  for (const p of possiblePaths) {
-    if (fs.existsSync(p)) {
-      return fs.readFileSync(p, "utf-8");
-    }
+  try {
+    candidates.push(path.join(process.cwd(), "dist", "index.html"));
+    candidates.push(path.join(process.cwd(), "index.html"));
+  } catch {}
+
+  try {
+    candidates.push(path.resolve(__dirname, "../dist/index.html"));
+    candidates.push(path.resolve(__dirname, "../../dist/index.html"));
+    candidates.push(path.resolve(__dirname, "dist/index.html"));
+    candidates.push(path.resolve(__dirname, "index.html"));
+    candidates.push(path.resolve(__dirname, "../index.html"));
+  } catch {}
+
+  for (const p of candidates) {
+    try {
+      if (fs.existsSync(p)) {
+        const content = fs.readFileSync(p, "utf-8");
+        if (content && content.length > 100) {
+          return content;
+        }
+      }
+    } catch {}
   }
-  return "";
+
+  // Guaranteed fallback to pre-compiled embedded HTML template
+  return EMBEDDED_INDEX_HTML;
 }
 
 /**
@@ -35,8 +54,14 @@ export default async function handler(req: any, res: any) {
   const url = req.url || "";
   const method = req.method || "GET";
 
+  // Target path for API calls considering rewrites and proxy headers
+  const targetApiPath = 
+    (req.headers["x-forwarded-uri"] as string) || 
+    (req.headers["x-matched-path"] as string) || 
+    url;
+
   // 1. API: Contact Form Submission
-  if (method === "POST" && (url.includes("/api/contact") || url === "/contact")) {
+  if (method === "POST" && (targetApiPath.includes("/api/contact") || targetApiPath === "/contact")) {
     const { name, email, subject, message } = req.body || {};
     if (!name || !email || !subject || !message) {
       return res.status(400).json({ error: "All fields are required" });
@@ -78,7 +103,7 @@ export default async function handler(req: any, res: any) {
   }
 
   // 2. API: Reply to Message
-  if (method === "POST" && url.includes("/api/reply-message")) {
+  if (method === "POST" && targetApiPath.includes("/api/reply-message")) {
     const { to, subject, html, text } = req.body || {};
     if (!to || !subject || !html) {
       return res.status(400).json({ error: "Recipient email, subject, and HTML are required" });
@@ -112,7 +137,7 @@ export default async function handler(req: any, res: any) {
   }
 
   // 3. API: Send Broadcast
-  if (method === "POST" && url.includes("/api/send-broadcast")) {
+  if (method === "POST" && targetApiPath.includes("/api/send-broadcast")) {
     const { recipients, subject, html, text } = req.body || {};
     if (!Array.isArray(recipients) || recipients.length === 0 || !subject || !html) {
       return res.status(400).json({ error: "Recipients, subject, and HTML are required" });
@@ -149,11 +174,21 @@ export default async function handler(req: any, res: any) {
   // 4. Handle GET / HEAD Requests for Web Pages with Dynamic Server-Side SEO
   if (method === "GET" || method === "HEAD") {
     // Resolve the clean original request path passed from Vercel rewrites or headers
-    const requestedPath = 
-      (req.query?.route as string) || 
-      (req.headers["x-forwarded-uri"] as string) || 
-      (req.headers["x-matched-path"] as string) || 
-      (url ? url.split("?")[0] : "/");
+    const queryRoute = (req.query?.route as string);
+    const forwardedUri = (req.headers["x-forwarded-uri"] as string);
+    const matchedPath = (req.headers["x-matched-path"] as string);
+    const rawUrl = url ? url.split("?")[0] : "/";
+
+    let requestedPath = "/";
+    if (queryRoute && queryRoute !== "/api" && queryRoute !== "/api/index") {
+      requestedPath = queryRoute;
+    } else if (forwardedUri && !forwardedUri.startsWith("/api")) {
+      requestedPath = forwardedUri.split("?")[0];
+    } else if (matchedPath && !matchedPath.startsWith("/api")) {
+      requestedPath = matchedPath.split("?")[0];
+    } else if (rawUrl && !rawUrl.startsWith("/api")) {
+      requestedPath = rawUrl;
+    }
 
     // Serve static about.html if requested
     if (requestedPath === "/about" || requestedPath === "/about/") {
@@ -161,22 +196,21 @@ export default async function handler(req: any, res: any) {
         path.join(process.cwd(), "about.html"),
         path.join(process.cwd(), "dist", "about.html"),
         path.resolve(__dirname, "../about.html"),
+        path.resolve(__dirname, "../../about.html"),
       ];
       for (const ap of aboutPaths) {
-        if (fs.existsSync(ap)) {
-          const content = fs.readFileSync(ap, "utf-8");
-          res.setHeader("Content-Type", "text/html; charset=utf-8");
-          return res.status(200).send(content);
-        }
+        try {
+          if (fs.existsSync(ap)) {
+            const content = fs.readFileSync(ap, "utf-8");
+            res.setHeader("Content-Type", "text/html; charset=utf-8");
+            return res.status(200).send(content);
+          }
+        } catch {}
       }
     }
 
     try {
-      let template = getTemplateHtml();
-      if (!template) {
-        template = fs.readFileSync(path.join(process.cwd(), "index.html"), "utf-8");
-      }
-
+      const template = getTemplateHtml();
       const html = await injectDynamicSeo(template, requestedPath);
       res.setHeader("Content-Type", "text/html; charset=utf-8");
       return res.status(200).send(html);
@@ -184,7 +218,7 @@ export default async function handler(req: any, res: any) {
       console.error("[Vercel SSR] Error injecting dynamic SEO:", err);
       const fallback = getTemplateHtml();
       res.setHeader("Content-Type", "text/html; charset=utf-8");
-      return res.status(200).send(fallback || "<!doctype html><html><body>Error loading page</body></html>");
+      return res.status(200).send(fallback);
     }
   }
 
