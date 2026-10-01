@@ -1,10 +1,5 @@
 {
   "version": 2,
-  "functions": {
-    "api/index.ts": {
-      "includeFiles": "{dist/**,index.html,about.html}"
-    }
-  },
   "rewrites": [
     {
       "source": "/about",
@@ -16,63 +11,63 @@
     },
     {
       "source": "/api/:path*",
-      "destination": "/api/index"
+      "destination": "/api"
     },
     {
       "source": "/my-projects",
-      "destination": "/api/index?route=/my-projects"
+      "destination": "/api?route=/my-projects"
     },
     {
       "source": "/my-projects/",
-      "destination": "/api/index?route=/my-projects"
+      "destination": "/api?route=/my-projects"
     },
     {
-      "source": "/my-projects/:id+",
-      "destination": "/api/index?route=/my-projects/:id+"
+      "source": "/my-projects/:id",
+      "destination": "/api?route=/my-projects/:id"
     },
     {
-      "source": "/projects/:id+",
-      "destination": "/api/index?route=/projects/:id+"
+      "source": "/projects/:id",
+      "destination": "/api?route=/projects/:id"
     },
     {
-      "source": "/articles/:id+",
-      "destination": "/api/index?route=/articles/:id+"
+      "source": "/articles/:id",
+      "destination": "/api?route=/articles/:id"
     },
     {
       "source": "/skills",
-      "destination": "/api/index?route=/skills"
+      "destination": "/api?route=/skills"
     },
     {
       "source": "/skills/",
-      "destination": "/api/index?route=/skills"
+      "destination": "/api?route=/skills"
     },
     {
       "source": "/blog",
-      "destination": "/api/index?route=/blog"
+      "destination": "/api?route=/blog"
     },
     {
       "source": "/blog/",
-      "destination": "/api/index?route=/blog"
+      "destination": "/api?route=/blog"
     },
     {
       "source": "/contact",
-      "destination": "/api/index?route=/contact"
+      "destination": "/api?route=/contact"
     },
     {
       "source": "/contact/",
-      "destination": "/api/index?route=/contact"
+      "destination": "/api?route=/contact"
     },
     {
       "source": "/404",
-      "destination": "/api/index?route=/404"
+      "destination": "/api?route=/404"
     },
     {
       "source": "/404/",
-      "destination": "/api/index?route=/404"
+      "destination": "/api?route=/404"
     },
     {
       "source": "/((?!api/|assets/|.*\\..*).*)",
-      "destination": "/api/index"
+      "destination": "/api"
     }
   ]
 }
