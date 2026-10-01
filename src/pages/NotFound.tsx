@@ -26,7 +26,7 @@ export default function NotFound() {
         <meta name="robots" content="noindex, follow" />
         <meta property="og:title" content="404: Page Not Found | Shakibul Islam Prohor" />
         <meta property="og:description" content="The page you requested could not be found on Shakibul Islam Prohor's portfolio." />
-        <meta property="og:image" content="https://shakibul-islam-portofolio.vercel.app/prohor-v2.png" />
+        <meta property="og:image" content="https://shakibul-islam-portofolio.vercel.app/og-image-v2.png" />
       </Helmet>
 
       <Navbar />

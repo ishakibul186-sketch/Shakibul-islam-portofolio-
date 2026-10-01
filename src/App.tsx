@@ -64,10 +64,10 @@ function HomePage({ initialSection, meta }: HomePageProps) {
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
         <meta property="og:url" content={canonical} />
-        <meta property="og:image" content="https://shakibul-islam-portofolio.vercel.app/prohor-v2.png" />
+        <meta property="og:image" content="https://shakibul-islam-portofolio.vercel.app/og-image-v2.png" />
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={description} />
-        <meta name="twitter:image" content="https://shakibul-islam-portofolio.vercel.app/prohor-v2.png" />
+        <meta name="twitter:image" content="https://shakibul-islam-portofolio.vercel.app/og-image-v2.png" />
       </Helmet>
       <Navbar />
       <main>

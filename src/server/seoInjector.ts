@@ -310,7 +310,7 @@ export async function injectDynamicSeo(
     let description = "Technical article, architecture analysis, and software development guide by Shakibul Islam Prohor.";
     let keywords = "Software Engineering, Web Development, Tutorials, TypeScript, React, Node.js";
     let canonical = `https://shakibul-islam-portofolio.vercel.app/articles/${articleId}`;
-    let image = "https://shakibul-islam-portofolio.vercel.app/prohor-v2.png";
+    let image = "https://shakibul-islam-portofolio.vercel.app/og-image-v2.png";
     let rootHtml = "";
 
     if (article) {
