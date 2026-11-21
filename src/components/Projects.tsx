@@ -61,36 +61,36 @@ export default function Projects() {
   const displayProjects = projects.slice(0, 4);
 
   return (
-    <section id="projects" className="py-24 bg-zinc-50/60 border-b border-zinc-200">
-      <div className="container px-6 mx-auto max-w-7xl">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6">
+    <section id="projects" className="py-14 md:py-20 bg-zinc-50/60 border-b border-zinc-200">
+      <div className="container px-4 sm:px-6 mx-auto max-w-6xl">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 md:mb-10 gap-4">
           <motion.div
             initial={{ opacity: 0, y: 18 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.5, ease }}
           >
-            <p className="text-xs font-semibold text-blue-600 tracking-wide mb-2">
+            <p className="text-xs font-semibold text-blue-600 tracking-wide mb-1.5">
               03. Selected Work
             </p>
-            <h2 className="text-3xl md:text-5xl font-bold font-display tracking-tight text-zinc-950">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-display tracking-tight text-zinc-950">
               Featured Projects
             </h2>
           </motion.div>
 
           <Link
             to="/my-projects"
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-white hover:bg-zinc-100 border border-zinc-200 rounded-xl text-xs font-semibold text-zinc-900 transition-colors group whitespace-nowrap shrink-0"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-white hover:bg-zinc-100 border border-zinc-200 rounded-xl text-xs font-semibold text-zinc-900 transition-colors group whitespace-nowrap shrink-0 self-start md:self-auto"
           >
             <span>View All Projects ({projects.length})</span>
-            <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform duration-200" />
+            <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform duration-200" />
           </Link>
         </div>
 
         {loading && projects.length === 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {[1, 2, 3, 4].map((n) => (
-              <div key={n} className="bg-white rounded-2xl h-96 animate-pulse border border-zinc-200" />
+              <div key={n} className="bg-white rounded-2xl h-72 animate-pulse border border-zinc-200" />
             ))}
           </div>
         ) : displayProjects.length === 0 ? (
@@ -102,7 +102,7 @@ export default function Projects() {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {displayProjects.map((project, index) => (
               <motion.article
                 key={project.id}
@@ -114,7 +114,7 @@ export default function Projects() {
               >
                 <Link
                   to={`/my-projects/${project.id}`}
-                  className="relative aspect-[16/10] overflow-hidden bg-zinc-100 block border-b border-zinc-200"
+                  className="relative aspect-[16/9] overflow-hidden bg-zinc-100 block border-b border-zinc-200"
                 >
                   <SafeImage
                     src={project.thumbnail}
@@ -124,10 +124,10 @@ export default function Projects() {
                   />
                 </Link>
 
-                <div className="p-6 sm:p-8 flex-1 flex flex-col justify-between">
+                <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between">
                   <div>
                     {/* Unboxed Metadata Line */}
-                    <div className="flex items-center gap-2 text-xs font-medium text-zinc-500 mb-2.5">
+                    <div className="flex items-center gap-2 text-xs font-medium text-zinc-500 mb-2">
                       <span>{project.category || "Full Stack"}</span>
                       {project.status && (
                         <>
@@ -138,12 +138,12 @@ export default function Projects() {
                     </div>
 
                     <Link to={`/my-projects/${project.id}`}>
-                      <h3 className="text-xl sm:text-2xl font-display font-bold text-zinc-950 mb-2.5 group-hover:text-blue-600 transition-colors duration-150">
+                      <h3 className="text-lg sm:text-xl font-display font-bold text-zinc-950 mb-2 group-hover:text-blue-600 transition-colors duration-150">
                         {project.title}
                       </h3>
                     </Link>
 
-                    <p className="text-zinc-600 mb-5 text-sm leading-relaxed line-clamp-2">
+                    <p className="text-zinc-600 mb-4 text-xs sm:text-sm leading-relaxed line-clamp-2">
                       {project.description}
                     </p>
                   </div>
@@ -151,12 +151,12 @@ export default function Projects() {
                   <div>
                     {/* Clean unboxed stack text */}
                     {project.coreServices && project.coreServices.length > 0 && (
-                      <p className="text-xs font-mono text-zinc-500 mb-6 truncate">
+                      <p className="text-xs font-mono text-zinc-500 mb-4 truncate">
                         {project.coreServices.slice(0, 4).join(" / ")}
                       </p>
                     )}
 
-                    <div className="pt-4 border-t border-zinc-200 flex items-center justify-between gap-4">
+                    <div className="pt-3.5 border-t border-zinc-200 flex items-center justify-between gap-4">
                       <div className="flex items-center gap-2">
                         {project.deployUrl && (
                           <a
@@ -199,14 +199,14 @@ export default function Projects() {
           </div>
         )}
 
-        <div className="mt-14 text-center">
+        <div className="mt-10 text-center">
           <Link
             to="/my-projects"
-            className="inline-flex items-center gap-2.5 px-7 py-3.5 bg-zinc-950 hover:bg-blue-600 text-white font-semibold text-sm rounded-xl transition-colors duration-200"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-zinc-950 hover:bg-blue-600 text-white font-semibold text-sm rounded-xl transition-colors duration-200"
           >
-            <FolderGit2 size={17} />
+            <FolderGit2 size={16} />
             <span>Browse All {projects.length} Projects</span>
-            <ArrowRight size={16} />
+            <ArrowRight size={15} />
           </Link>
         </div>
       </div>

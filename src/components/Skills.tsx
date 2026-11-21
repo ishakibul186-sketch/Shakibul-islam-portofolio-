@@ -34,47 +34,47 @@ const skills = [
 
 export default function Skills() {
   return (
-    <section id="skills" className="py-24 bg-white border-b border-zinc-200">
-      <div className="container px-6 mx-auto max-w-7xl">
+    <section id="skills" className="py-14 md:py-20 bg-white border-b border-zinc-200">
+      <div className="container px-4 sm:px-6 mx-auto max-w-6xl">
         <motion.div
-          initial={{ opacity: 0, y: 18 }}
+          initial={{ opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.5, ease }}
-          className="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-4"
+          transition={{ duration: 0.45, ease }}
+          className="flex flex-col md:flex-row md:items-end justify-between mb-8 md:mb-10 gap-3"
         >
           <div>
-            <p className="text-xs font-semibold text-blue-600 tracking-wide mb-2">
+            <p className="text-xs font-semibold text-blue-600 tracking-wide mb-1.5">
               02. Capabilities
             </p>
-            <h2 className="text-3xl md:text-5xl font-bold font-display tracking-tight text-zinc-950">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-display tracking-tight text-zinc-950">
               Technical Stack
             </h2>
           </div>
-          <p className="text-sm text-zinc-500 max-w-md">
+          <p className="text-xs sm:text-sm text-zinc-500 max-w-md">
             Production technologies I rely on daily to build fast, reliable full-stack applications.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
           {skills.map((skillGroup, groupIndex) => (
             <motion.div
               key={groupIndex}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.5, delay: groupIndex * 0.08, ease }}
-              className="bg-white border border-zinc-200 rounded-2xl p-8"
+              transition={{ duration: 0.45, delay: groupIndex * 0.06, ease }}
+              className="bg-white border border-zinc-200 rounded-2xl p-6"
             >
-              <h3 className="text-lg font-display font-bold text-zinc-950 pb-4 mb-6 border-b border-zinc-200">
+              <h3 className="text-base md:text-lg font-display font-bold text-zinc-950 pb-3 mb-5 border-b border-zinc-200">
                 {skillGroup.category}
               </h3>
 
-              <div className="space-y-5">
+              <div className="space-y-4">
                 {skillGroup.items.map((skill, index) => (
                   <div key={index}>
-                    <div className="flex justify-between items-baseline mb-2">
-                      <span className="text-sm font-medium text-zinc-800">{skill.name}</span>
+                    <div className="flex justify-between items-baseline mb-1.5">
+                      <span className="text-xs sm:text-sm font-medium text-zinc-800">{skill.name}</span>
                       <span className="text-xs font-mono tabular-nums text-zinc-500">
                         {skill.level}%
                       </span>
@@ -84,7 +84,7 @@ export default function Skills() {
                         initial={{ scaleX: 0 }}
                         whileInView={{ scaleX: skill.level / 100 }}
                         viewport={{ once: true, amount: 0.4 }}
-                        transition={{ duration: 0.75, delay: 0.1 + index * 0.06, ease }}
+                        transition={{ duration: 0.7, delay: 0.08 + index * 0.05, ease }}
                         className="h-full w-full origin-left bg-zinc-950 rounded-full"
                       />
                     </div>

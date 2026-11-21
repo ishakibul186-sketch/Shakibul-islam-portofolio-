@@ -170,9 +170,9 @@ export default function ArticleDetails() {
 
       <Navbar />
 
-      <main className="flex-1 pt-28 md:pt-32 pb-24 bg-white">
-        <div className="container px-6 mx-auto max-w-4xl">
-          <div className="flex items-center justify-between pb-6 mb-10 border-b border-zinc-200">
+      <main className="flex-1 pt-20 md:pt-24 pb-16 bg-white">
+        <div className="container px-4 sm:px-6 mx-auto max-w-4xl">
+          <div className="flex items-center justify-between pb-4 mb-6 border-b border-zinc-200">
             <Link
               to="/#blog"
               className="inline-flex items-center text-zinc-600 hover:text-zinc-950 transition-colors group text-sm font-medium"
@@ -183,7 +183,7 @@ export default function ArticleDetails() {
 
             <button
               onClick={() => setShowShareModal(true)}
-              className="flex items-center gap-2 px-4 py-2 bg-white hover:bg-zinc-50 border border-zinc-200 rounded-xl transition-colors text-xs font-semibold text-zinc-800 cursor-pointer"
+              className="flex items-center gap-2 px-3.5 py-2 bg-white hover:bg-zinc-50 border border-zinc-200 rounded-xl transition-colors text-xs font-semibold text-zinc-800 cursor-pointer"
             >
               <Share2 size={14} className="text-blue-600" />
               <span>Share</span>
@@ -195,8 +195,8 @@ export default function ArticleDetails() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45, ease }}
           >
-            <header className="mb-10">
-              <div className="flex flex-wrap items-center gap-2 text-xs text-zinc-500 font-medium mb-4 tabular-nums">
+            <header className="mb-6">
+              <div className="flex flex-wrap items-center gap-2 text-xs text-zinc-500 font-medium mb-3 tabular-nums">
                 <span className="text-blue-600 font-semibold">{article.category}</span>
                 <span aria-hidden="true">·</span>
                 <span>{article.author}</span>
@@ -212,16 +212,16 @@ export default function ArticleDetails() {
                 <span>{article.readingTime}</span>
               </div>
 
-              <h1 className="text-3xl md:text-5xl font-bold font-display leading-[1.12] tracking-tight text-zinc-950 mb-6 [text-wrap:balance]">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-display leading-[1.15] tracking-tight text-zinc-950 mb-4 [text-wrap:balance]">
                 {article.title}
               </h1>
 
-              <p className="text-lg text-zinc-600 leading-relaxed max-w-3xl">
+              <p className="text-base sm:text-lg text-zinc-600 leading-relaxed max-w-3xl">
                 {article.excerpt}
               </p>
             </header>
 
-            <div className="relative aspect-video rounded-2xl overflow-hidden mb-12 border border-zinc-200 bg-zinc-100">
+            <div className="relative aspect-video max-h-[400px] w-full rounded-2xl overflow-hidden mb-8 border border-zinc-200 bg-zinc-100">
               <SafeImage
                 src={article.image}
                 alt={article.title}
@@ -230,7 +230,7 @@ export default function ArticleDetails() {
               />
             </div>
 
-            <div className="prose max-w-[70ch] mx-auto mb-12">
+            <div className="prose max-w-[70ch] mx-auto mb-10">
               <ReactMarkdown>{article.content}</ReactMarkdown>
             </div>
 
@@ -245,10 +245,10 @@ export default function ArticleDetails() {
 
             {/* Related Articles */}
             {relatedArticles.length > 0 && (
-              <div className="mt-16 pt-12 border-t border-zinc-200">
-                <div className="flex items-center justify-between mb-8">
+              <div className="mt-12 pt-8 border-t border-zinc-200">
+                <div className="flex items-center justify-between mb-6">
                   <div>
-                    <h3 className="text-2xl font-bold font-display text-zinc-950">
+                    <h3 className="text-xl font-bold font-display text-zinc-950">
                       More Articles
                     </h3>
                     <p className="text-xs text-zinc-500 mt-1">
@@ -263,7 +263,7 @@ export default function ArticleDetails() {
                   </Link>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                   {relatedArticles.map((rel) => (
                     <Link
                       key={rel.id}

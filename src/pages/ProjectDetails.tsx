@@ -202,10 +202,10 @@ export default function ProjectDetails() {
 
       <Navbar />
 
-      <main className="flex-1 pt-28 md:pt-32 pb-24 bg-white">
-        <div className="container px-6 mx-auto max-w-6xl">
+      <main className="flex-1 pt-20 md:pt-24 pb-16 bg-white">
+        <div className="container px-4 sm:px-6 mx-auto max-w-6xl">
           {/* Navigation Bar */}
-          <div className="flex items-center justify-between pb-6 mb-8 border-b border-zinc-200">
+          <div className="flex items-center justify-between pb-4 mb-6 border-b border-zinc-200">
             <Link
               to="/my-projects"
               className="inline-flex items-center text-zinc-600 hover:text-zinc-950 transition-colors group text-sm font-medium"
@@ -216,7 +216,7 @@ export default function ProjectDetails() {
 
             <button
               onClick={() => setIsShareModalOpen(true)}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-white hover:bg-zinc-50 border border-zinc-200 rounded-xl text-xs font-semibold text-zinc-800 transition-colors cursor-pointer"
+              className="inline-flex items-center gap-2 px-3.5 py-2 bg-white hover:bg-zinc-50 border border-zinc-200 rounded-xl text-xs font-semibold text-zinc-800 transition-colors cursor-pointer"
             >
               <Share2 size={14} />
               <span>Share Project</span>
@@ -228,7 +228,7 @@ export default function ProjectDetails() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45, ease }}
-            className="space-y-3 mb-10"
+            className="space-y-2 mb-6"
           >
             <div className="flex flex-wrap items-center gap-2 text-xs text-zinc-500 font-medium">
               <span className="text-zinc-900 font-semibold">{project.category || "Full Stack"}</span>
@@ -240,7 +240,7 @@ export default function ProjectDetails() {
               )}
             </div>
 
-            <h1 className="text-3xl sm:text-5xl font-bold font-display tracking-tight text-zinc-950 [text-wrap:balance]">
+            <h1 className="text-2xl sm:text-4xl font-bold font-display tracking-tight text-zinc-950 [text-wrap:balance]">
               {project.title}
             </h1>
           </motion.div>
@@ -250,11 +250,11 @@ export default function ProjectDetails() {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.08, ease }}
-            className="bg-zinc-50 rounded-2xl overflow-hidden border border-zinc-200 mb-12 p-3 sm:p-4"
+            className="bg-zinc-50 rounded-2xl overflow-hidden border border-zinc-200 mb-8 p-2.5 sm:p-3.5"
           >
             {allImages.length > 0 ? (
-              <div className="space-y-4">
-                <div className="relative aspect-video rounded-xl overflow-hidden bg-zinc-100 border border-zinc-200">
+              <div className="space-y-3">
+                <div className="relative aspect-video max-h-[440px] w-full rounded-xl overflow-hidden bg-zinc-100 border border-zinc-200">
                   <SafeImage
                     src={allImages[activeImageIndex]}
                     alt={`${project.title} - Screenshot ${activeImageIndex + 1}`}
@@ -287,12 +287,12 @@ export default function ProjectDetails() {
                 </div>
 
                 {allImages.length > 1 && (
-                  <div className="flex gap-3 overflow-x-auto pb-1">
+                  <div className="flex gap-2.5 overflow-x-auto pb-1">
                     {allImages.map((img, idx) => (
                       <button
                         key={idx}
                         onClick={() => setActiveImageIndex(idx)}
-                        className={`relative w-24 sm:w-32 aspect-video rounded-xl overflow-hidden border-2 shrink-0 transition-all cursor-pointer ${
+                        className={`relative w-20 sm:w-28 aspect-video rounded-xl overflow-hidden border-2 shrink-0 transition-all cursor-pointer ${
                           activeImageIndex === idx
                             ? "border-blue-600 opacity-100"
                             : "border-zinc-200 opacity-60 hover:opacity-100"
@@ -310,36 +310,36 @@ export default function ProjectDetails() {
                 )}
               </div>
             ) : (
-              <div className="aspect-video flex items-center justify-center text-zinc-400 text-sm">
+              <div className="aspect-video max-h-[360px] flex items-center justify-center text-zinc-400 text-sm">
                 No images available for this project.
               </div>
             )}
           </motion.div>
 
           {/* Details Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2 space-y-8">
-              <div className="bg-white p-6 sm:p-8 rounded-2xl border border-zinc-200 space-y-4">
-                <h2 className="text-xl font-bold font-display text-zinc-950">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2 space-y-6">
+              <div className="bg-white p-5 sm:p-6 rounded-2xl border border-zinc-200 space-y-3">
+                <h2 className="text-lg font-bold font-display text-zinc-950">
                   Project Overview
                 </h2>
-                <p className="text-zinc-600 text-base leading-relaxed whitespace-pre-line">
+                <p className="text-zinc-600 text-sm sm:text-base leading-relaxed whitespace-pre-line">
                   {project.description}
                 </p>
               </div>
 
               {project.features && project.features.length > 0 && (
-                <div className="bg-white p-6 sm:p-8 rounded-2xl border border-zinc-200 space-y-5">
-                  <h2 className="text-xl font-bold font-display text-zinc-950">
+                <div className="bg-white p-5 sm:p-6 rounded-2xl border border-zinc-200 space-y-4">
+                  <h2 className="text-lg font-bold font-display text-zinc-950">
                     Key Features &amp; Architecture
                   </h2>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
                     {project.features.map((feat, idx) => (
                       <div
                         key={idx}
-                        className="flex items-start gap-3 p-4 bg-zinc-50 rounded-xl border border-zinc-200 text-sm text-zinc-700"
+                        className="flex items-start gap-2.5 p-3.5 bg-zinc-50 rounded-xl border border-zinc-200 text-xs sm:text-sm text-zinc-700"
                       >
-                        <CheckCircle2 size={16} className="text-emerald-600 shrink-0 mt-0.5" />
+                        <CheckCircle2 size={15} className="text-emerald-600 shrink-0 mt-0.5" />
                         <span>{feat}</span>
                       </div>
                     ))}
@@ -348,8 +348,8 @@ export default function ProjectDetails() {
               )}
             </div>
 
-            <div className="space-y-6">
-              <div className="bg-white p-6 rounded-2xl border border-zinc-200 space-y-3">
+            <div className="space-y-5">
+              <div className="bg-white p-5 rounded-2xl border border-zinc-200 space-y-3">
                 <h3 className="text-xs font-semibold text-zinc-500 mb-2">
                   Project Links
                 </h3>

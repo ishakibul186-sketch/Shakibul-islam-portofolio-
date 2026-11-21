@@ -37,23 +37,23 @@ export default function NotFound() {
 
       <Navbar />
 
-      <main className="flex-1 flex items-center justify-center px-6 py-28 md:py-36 bg-white">
+      <main className="flex-1 flex items-center justify-center px-4 sm:px-6 pt-20 pb-12 bg-white">
         <div className="max-w-2xl w-full text-center">
           <motion.div
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45, ease }}
           >
-            <p className="text-xs font-semibold text-blue-600 mb-3">
+            <p className="text-xs font-semibold text-blue-600 mb-2">
               Error 404
             </p>
-            <h1 className="text-7xl sm:text-8xl font-extrabold font-display tracking-tight text-zinc-950 tabular-nums mb-4">
+            <h1 className="text-6xl sm:text-7xl font-extrabold font-display tracking-tight text-zinc-950 tabular-nums mb-3">
               404
             </h1>
-            <h2 className="text-2xl sm:text-3xl font-bold font-display text-zinc-950 mb-3">
+            <h2 className="text-xl sm:text-2xl font-bold font-display text-zinc-950 mb-2">
               Page Not Found
             </h2>
-            <p className="text-sm sm:text-base text-zinc-600 max-w-md mx-auto leading-relaxed mb-8">
+            <p className="text-sm text-zinc-600 max-w-md mx-auto leading-relaxed mb-6">
               The page you are looking for might have been moved, renamed, or is temporarily unavailable.
             </p>
           </motion.div>
@@ -62,18 +62,18 @@ export default function NotFound() {
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45, delay: 0.08, ease }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-12"
+            className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-8"
           >
             <button
               onClick={() => navigate(-1)}
-              className="w-full sm:w-auto px-6 py-3 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-zinc-900 font-semibold text-sm flex items-center justify-center gap-2 transition-colors cursor-pointer"
+              className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-zinc-900 font-semibold text-sm flex items-center justify-center gap-2 transition-colors cursor-pointer"
             >
               <ArrowLeft size={16} />
               Go Back
             </button>
             <Link
               to="/"
-              className="w-full sm:w-auto px-6 py-3 rounded-xl bg-zinc-950 hover:bg-blue-600 text-white font-semibold text-sm flex items-center justify-center gap-2 transition-colors"
+              className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-zinc-950 hover:bg-blue-600 text-white font-semibold text-sm flex items-center justify-center gap-2 transition-colors"
             >
               <Home size={16} />
               Return Home
@@ -84,9 +84,9 @@ export default function NotFound() {
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45, delay: 0.16, ease }}
-            className="p-6 rounded-2xl bg-zinc-50 border border-zinc-200 max-w-lg mx-auto text-left"
+            className="p-5 rounded-2xl bg-zinc-50 border border-zinc-200 max-w-lg mx-auto text-left"
           >
-            <p className="text-xs font-semibold text-zinc-500 mb-4">
+            <p className="text-xs font-semibold text-zinc-500 mb-3">
               Popular Destinations
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

@@ -40,19 +40,19 @@ const experiences = [
 
 export default function Experience() {
   return (
-    <section id="experience" className="py-24 bg-white border-b border-zinc-200">
-      <div className="container px-6 mx-auto max-w-5xl">
+    <section id="experience" className="py-14 md:py-20 bg-white border-b border-zinc-200">
+      <div className="container px-4 sm:px-6 mx-auto max-w-6xl">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.5, ease }}
-          className="mb-14"
+          className="mb-8 md:mb-10"
         >
-          <p className="text-xs font-semibold text-blue-600 tracking-wide mb-2">
+          <p className="text-xs font-semibold text-blue-600 tracking-wide mb-1.5">
             04. Experience
           </p>
-          <h2 className="text-3xl md:text-5xl font-bold font-display tracking-tight text-zinc-950">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-display tracking-tight text-zinc-950">
             Career Journey
           </h2>
         </motion.div>
@@ -65,24 +65,24 @@ export default function Experience() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.45, delay: index * 0.06, ease }}
-              className="py-8 grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 items-start"
+              className="py-5 md:py-6 grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-6 items-start"
             >
-              <div className="md:col-span-3 flex items-center gap-2.5 text-sm font-mono tabular-nums text-zinc-500">
+              <div className="md:col-span-3 flex items-center gap-2 text-xs sm:text-sm font-mono tabular-nums text-zinc-500">
                 <exp.icon size={15} className="text-zinc-400 shrink-0" />
                 <span>{exp.date}</span>
               </div>
 
               <div className="md:col-span-4">
-                <h3 className="text-lg font-display font-bold text-zinc-950">
+                <h3 className="text-base sm:text-lg font-display font-bold text-zinc-950">
                   {exp.title}
                 </h3>
-                <p className="text-sm font-medium text-blue-600 mt-0.5">
+                <p className="text-xs sm:text-sm font-medium text-blue-600 mt-0.5">
                   {exp.company}
                 </p>
               </div>
 
               <div className="md:col-span-5">
-                <p className="text-sm text-zinc-600 leading-relaxed">
+                <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed">
                   {exp.description}
                 </p>
               </div>

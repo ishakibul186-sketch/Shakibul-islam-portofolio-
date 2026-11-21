@@ -57,25 +57,25 @@ export default function Blog() {
   }, []);
 
   return (
-    <section id="blog" className="py-24 bg-zinc-50/60 border-b border-zinc-200">
-      <div className="container px-6 mx-auto max-w-7xl">
+    <section id="blog" className="py-14 md:py-20 bg-zinc-50/60 border-b border-zinc-200">
+      <div className="container px-4 sm:px-6 mx-auto max-w-6xl">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.5, ease }}
-          className="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6"
+          className="flex flex-col md:flex-row md:items-end justify-between mb-8 md:mb-10 gap-4"
         >
           <div>
-            <p className="text-xs font-semibold text-blue-600 tracking-wide mb-2">
+            <p className="text-xs font-semibold text-blue-600 tracking-wide mb-1.5">
               05. Writing &amp; Insights
             </p>
-            <h2 className="text-3xl md:text-5xl font-bold font-display tracking-tight text-zinc-950">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-display tracking-tight text-zinc-950">
               Latest Articles
             </h2>
           </div>
 
-          <p className="text-sm text-zinc-500 max-w-md">
+          <p className="text-xs sm:text-sm text-zinc-500 max-w-md">
             Technical breakdowns on full-stack architecture, performance engineering, and modern React patterns.
           </p>
         </motion.div>
@@ -85,7 +85,7 @@ export default function Blog() {
             <Loader2 className="w-8 h-8 animate-spin text-zinc-900" />
           </div>
         ) : articles.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {articles.map((article, index) => (
               <motion.article
                 key={article.id}
@@ -97,7 +97,7 @@ export default function Blog() {
               >
                 <Link
                   to={`/articles/${article.id}`}
-                  className="relative h-48 overflow-hidden bg-zinc-100 border-b border-zinc-200 block"
+                  className="relative h-40 sm:h-44 overflow-hidden bg-zinc-100 border-b border-zinc-200 block"
                 >
                   <SafeImage
                     src={article.image}
@@ -107,9 +107,9 @@ export default function Blog() {
                   />
                 </Link>
 
-                <div className="p-6 flex flex-col flex-grow">
+                <div className="p-5 flex flex-col flex-grow">
                   {/* Unboxed Metadata */}
-                  <div className="flex flex-wrap items-center gap-2 text-xs text-zinc-500 mb-3 tabular-nums">
+                  <div className="flex flex-wrap items-center gap-2 text-xs text-zinc-500 mb-2 tabular-nums">
                     <span className="font-medium text-zinc-800">{article.category}</span>
                     <span aria-hidden="true">·</span>
                     <span>
@@ -124,22 +124,22 @@ export default function Blog() {
                   </div>
 
                   <Link to={`/articles/${article.id}`}>
-                    <h3 className="text-lg font-display font-bold text-zinc-950 mb-2.5 group-hover:text-blue-600 transition-colors line-clamp-2">
+                    <h3 className="text-base sm:text-lg font-display font-bold text-zinc-950 mb-2 group-hover:text-blue-600 transition-colors line-clamp-2">
                       {article.title}
                     </h3>
                   </Link>
 
-                  <p className="text-zinc-600 text-sm leading-relaxed mb-6 line-clamp-3 flex-grow">
+                  <p className="text-zinc-600 text-xs sm:text-sm leading-relaxed mb-4 line-clamp-3 flex-grow">
                     {article.excerpt}
                   </p>
 
                   <Link
                     to={`/articles/${article.id}`}
-                    className="inline-flex items-center text-xs font-semibold text-zinc-950 hover:text-blue-600 transition-colors mt-auto pt-4 border-t border-zinc-100"
+                    className="inline-flex items-center text-xs font-semibold text-zinc-950 hover:text-blue-600 transition-colors mt-auto pt-3 border-t border-zinc-100"
                   >
                     <span>Read Article</span>
                     <ArrowUpRight
-                      size={15}
+                      size={14}
                       className="ml-1 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-150"
                     />
                   </Link>
@@ -148,7 +148,7 @@ export default function Blog() {
             ))}
           </div>
         ) : (
-          <div className="text-center py-20 text-zinc-400">
+          <div className="text-center py-14 text-zinc-400">
             No articles published yet.
           </div>
         )}
@@ -158,16 +158,16 @@ export default function Blog() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.45, delay: 0.2, ease }}
-          className="mt-12 text-center"
+          className="mt-8 text-center"
         >
           <a
             href="https://dev.to/prohor"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 text-xs font-semibold text-zinc-800 bg-white border border-zinc-200 rounded-xl hover:bg-zinc-100 transition-colors"
+            className="inline-flex items-center gap-2 px-5 py-2.5 text-xs font-semibold text-zinc-800 bg-white border border-zinc-200 rounded-xl hover:bg-zinc-100 transition-colors"
           >
             <span>More Writing on Dev.to</span>
-            <ArrowUpRight size={15} />
+            <ArrowUpRight size={14} />
           </a>
         </motion.div>
       </div>

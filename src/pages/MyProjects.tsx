@@ -152,10 +152,10 @@ export default function MyProjects() {
 
       <Navbar />
 
-      <main className="flex-1 pt-28 md:pt-32 pb-24 bg-white">
-        <div className="container px-6 mx-auto max-w-7xl">
+      <main className="flex-1 pt-20 md:pt-24 pb-16 bg-white">
+        <div className="container px-4 sm:px-6 mx-auto max-w-6xl">
           {/* Breadcrumb */}
-          <div className="flex flex-wrap items-center justify-between gap-4 pb-6 mb-10 border-b border-zinc-200">
+          <div className="flex flex-wrap items-center justify-between gap-4 pb-4 mb-6 border-b border-zinc-200">
             <Link
               to="/"
               className="inline-flex items-center text-zinc-600 hover:text-zinc-950 transition-colors group text-sm font-medium"
@@ -174,33 +174,33 @@ export default function MyProjects() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45, ease }}
-            className="max-w-3xl mb-12"
+            className="max-w-3xl mb-8"
           >
-            <p className="text-xs font-semibold text-blue-600 tracking-wide mb-2">
+            <p className="text-xs font-semibold text-blue-600 tracking-wide mb-1.5">
               Portfolio Archive
             </p>
-            <h1 className="text-4xl md:text-6xl font-bold font-display tracking-tight text-zinc-950 mb-4">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display tracking-tight text-zinc-950 mb-3">
               Selected{" "}
               <span className="font-serif italic font-semibold text-zinc-700">
                 Projects
               </span>
             </h1>
-            <p className="text-zinc-600 text-base md:text-lg leading-relaxed">
+            <p className="text-zinc-600 text-sm sm:text-base leading-relaxed">
               A curated archive of full-stack web applications, SaaS platforms, AI systems, and production software engineered from concept to deployment.
             </p>
           </motion.div>
 
           {/* Search & Interactive Filter Tabs */}
-          <div className="bg-zinc-50 border border-zinc-200 rounded-2xl p-4 md:p-5 mb-12">
-            <div className="flex flex-col lg:flex-row gap-4 items-stretch lg:items-center justify-between">
+          <div className="bg-zinc-50 border border-zinc-200 rounded-2xl p-3.5 md:p-4 mb-8">
+            <div className="flex flex-col lg:flex-row gap-3.5 items-stretch lg:items-center justify-between">
               <div className="w-full lg:max-w-md relative">
-                <Search size={17} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
+                <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
                 <input
                   type="text"
                   placeholder="Search projects or tech stack..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 bg-white border border-zinc-200 rounded-xl text-sm text-zinc-950 placeholder:text-zinc-400 focus:outline-none focus:border-blue-600 transition-colors"
+                  className="w-full pl-9 pr-4 py-2 bg-white border border-zinc-200 rounded-xl text-sm text-zinc-950 placeholder:text-zinc-400 focus:outline-none focus:border-blue-600 transition-colors"
                 />
               </div>
 
@@ -209,7 +209,7 @@ export default function MyProjects() {
                   <button
                     key={cat}
                     onClick={() => setSelectedCategory(cat)}
-                    className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
                       selectedCategory === cat
                         ? "bg-white text-zinc-950 shadow-xs"
                         : "text-zinc-600 hover:text-zinc-950"
@@ -224,7 +224,7 @@ export default function MyProjects() {
 
           {/* Projects Grid */}
           {loading && projects.length === 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[1, 2, 3, 4, 5, 6].map((i) => (
                 <div key={i} className="bg-white rounded-2xl overflow-hidden animate-pulse border border-zinc-200">
                   <div className="aspect-video bg-zinc-100" />
@@ -258,7 +258,7 @@ export default function MyProjects() {
               )}
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredProjects.map((project, index) => (
                 <motion.article
                   key={project.id}
@@ -279,9 +279,9 @@ export default function MyProjects() {
                     />
                   </Link>
 
-                  <div className="p-6 flex-1 flex flex-col justify-between">
+                  <div className="p-5 flex-1 flex flex-col justify-between">
                     <div>
-                      <div className="flex items-center gap-2 text-xs text-zinc-500 mb-2">
+                      <div className="flex items-center gap-2 text-xs text-zinc-500 mb-1.5">
                         <span className="font-medium text-zinc-800">{project.category || "Full Stack"}</span>
                         {project.status && (
                           <>
@@ -292,23 +292,23 @@ export default function MyProjects() {
                       </div>
 
                       <Link to={`/my-projects/${project.id}`}>
-                        <h3 className="text-lg font-bold font-display text-zinc-950 group-hover:text-blue-600 transition-colors line-clamp-1">
+                        <h3 className="text-base sm:text-lg font-bold font-display text-zinc-950 group-hover:text-blue-600 transition-colors line-clamp-1">
                           {project.title}
                         </h3>
                       </Link>
 
-                      <p className="text-zinc-600 text-sm mt-2 line-clamp-2 leading-relaxed">
+                      <p className="text-zinc-600 text-xs sm:text-sm mt-1.5 line-clamp-2 leading-relaxed">
                         {project.description}
                       </p>
 
                       {project.coreServices && project.coreServices.length > 0 && (
-                        <p className="text-xs font-mono text-zinc-500 mt-4 truncate">
+                        <p className="text-xs font-mono text-zinc-500 mt-3 truncate">
                           {project.coreServices.slice(0, 4).join(" / ")}
                         </p>
                       )}
                     </div>
 
-                    <div className="pt-4 mt-5 border-t border-zinc-200 flex items-center justify-between">
+                    <div className="pt-3.5 mt-4 border-t border-zinc-200 flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         {project.deployUrl && (
                           <a

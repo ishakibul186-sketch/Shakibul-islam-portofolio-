@@ -36,8 +36,8 @@ export default function Navbar() {
           : "bg-white/80 backdrop-blur-sm border-b border-transparent"
       }`}
     >
-      <div className="container px-6 mx-auto max-w-7xl">
-        <div className="h-16 md:h-20 flex items-center justify-between gap-8">
+      <div className="container px-4 sm:px-6 mx-auto max-w-6xl">
+        <div className="h-14 md:h-16 flex items-center justify-between gap-6 md:gap-8">
           {/* Zone 1: Single text element wordmark */}
           <Link
             to="/"

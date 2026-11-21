@@ -50,19 +50,19 @@ const services = [
 
 export default function Services() {
   return (
-    <section id="services" className="py-24 bg-white border-b border-zinc-200">
-      <div className="container px-6 mx-auto max-w-7xl">
+    <section id="services" className="py-14 md:py-20 bg-white border-b border-zinc-200">
+      <div className="container px-4 sm:px-6 mx-auto max-w-6xl">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.5, ease }}
-          className="mb-14"
+          className="mb-8 md:mb-10"
         >
-          <p className="text-xs font-semibold text-blue-600 tracking-wide mb-2">
+          <p className="text-xs font-semibold text-blue-600 tracking-wide mb-1.5">
             06. Services
           </p>
-          <h2 className="text-3xl md:text-5xl font-bold font-display tracking-tight text-zinc-950">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-display tracking-tight text-zinc-950">
             How I Help Teams Ship
           </h2>
         </motion.div>
@@ -75,21 +75,21 @@ export default function Services() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.15 }}
               transition={{ duration: 0.45, delay: index * 0.05, ease }}
-              className="p-8 bg-white border-r border-b border-zinc-200 hover:bg-zinc-50/80 transition-colors duration-200 group"
+              className="p-6 bg-white border-r border-b border-zinc-200 hover:bg-zinc-50/80 transition-colors duration-200 group"
             >
-              <div className="flex items-center justify-between mb-8">
+              <div className="flex items-center justify-between mb-5">
                 <span className="text-xs font-mono tabular-nums text-zinc-400">
                   {service.num}.
                 </span>
-                <div className="p-2.5 rounded-lg bg-zinc-100 text-zinc-800 group-hover:bg-zinc-950 group-hover:text-white transition-colors duration-200">
-                  <service.icon size={18} />
+                <div className="p-2 rounded-lg bg-zinc-100 text-zinc-800 group-hover:bg-zinc-950 group-hover:text-white transition-colors duration-200">
+                  <service.icon size={17} />
                 </div>
               </div>
 
-              <h3 className="text-lg font-display font-bold mb-2.5 text-zinc-950">
+              <h3 className="text-base sm:text-lg font-display font-bold mb-2 text-zinc-950">
                 {service.title}
               </h3>
-              <p className="text-zinc-600 text-sm leading-relaxed">
+              <p className="text-zinc-600 text-xs sm:text-sm leading-relaxed">
                 {service.description}
               </p>
             </motion.div>

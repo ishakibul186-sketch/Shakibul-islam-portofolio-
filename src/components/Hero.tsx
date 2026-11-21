@@ -23,18 +23,21 @@ const metrics = [
 
 export default function Hero() {
   return (
-    <section id="home" className="relative bg-white pt-28 md:pt-36 pb-16 overflow-hidden">
-      <div className="container px-6 mx-auto max-w-7xl">
+    <section
+      id="home"
+      className="relative bg-white min-h-[calc(100svh)] flex flex-col justify-between pt-20 md:pt-24 overflow-hidden"
+    >
+      <div className="container px-4 sm:px-6 mx-auto max-w-6xl flex-1 flex flex-col justify-center py-4 md:py-6">
         {/* Split-Screen Editorial Hero */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center">
           {/* Left Column: Typographic Hierarchy */}
-          <div className="lg:col-span-7 flex flex-col justify-between py-2">
+          <div className="lg:col-span-7 flex flex-col justify-between">
             <div>
               <motion.p
-                initial={{ opacity: 0, y: 12 }}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.45, ease }}
-                className="text-sm font-medium text-zinc-500 mb-6 flex items-center gap-2"
+                transition={{ duration: 0.4, ease }}
+                className="text-xs sm:text-sm font-medium text-zinc-500 mb-3 sm:mb-4 flex flex-wrap items-center gap-2"
               >
                 <span>Shakibul Islam Prohor</span>
                 <span aria-hidden="true">·</span>
@@ -42,10 +45,10 @@ export default function Hero() {
               </motion.p>
 
               <motion.h1
-                initial={{ opacity: 0, y: 18 }}
+                initial={{ opacity: 0, y: 14 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.55, delay: 0.08, ease }}
-                className="text-4xl sm:text-5xl lg:text-6xl font-bold font-display tracking-tight text-zinc-950 leading-[1.08] mb-6 [text-wrap:balance]"
+                transition={{ duration: 0.5, delay: 0.06, ease }}
+                className="text-3xl sm:text-4xl lg:text-[2.75rem] xl:text-5xl font-bold font-display tracking-tight text-zinc-950 leading-[1.1] mb-4 [text-wrap:balance]"
               >
                 Engineering{" "}
                 <span className="font-serif italic font-semibold text-blue-600">
@@ -55,38 +58,38 @@ export default function Hero() {
               </motion.h1>
 
               <motion.p
-                initial={{ opacity: 0, y: 16 }}
+                initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.55, delay: 0.16, ease }}
-                className="max-w-xl text-base md:text-lg text-zinc-600 leading-relaxed mb-10"
+                transition={{ duration: 0.5, delay: 0.12, ease }}
+                className="max-w-xl text-sm sm:text-base text-zinc-600 leading-relaxed mb-6"
               >
                 I design and build high-performance full-stack applications with React, TypeScript, Node.js, and real-time cloud architecture—combining editorial clarity with production engineering rigor.
               </motion.p>
 
               {/* Focal Primary CTA + Quiet Secondary Link */}
               <motion.div
-                initial={{ opacity: 0, y: 14 }}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.24, ease }}
-                className="flex flex-wrap items-center gap-5"
+                transition={{ duration: 0.45, delay: 0.18, ease }}
+                className="flex flex-wrap items-center gap-4"
               >
                 <Link
                   to="/my-projects"
-                  className="group inline-flex items-center gap-2.5 px-7 py-3.5 text-sm font-semibold text-white bg-zinc-950 hover:bg-blue-600 rounded-xl transition-colors duration-200 whitespace-nowrap shrink-0"
+                  className="group inline-flex items-center gap-2 px-5 py-2.5 sm:px-6 sm:py-3 text-xs sm:text-sm font-semibold text-white bg-zinc-950 hover:bg-blue-600 rounded-xl transition-colors duration-200 whitespace-nowrap shrink-0"
                 >
                   <span>Explore Projects</span>
                   <ArrowRight
-                    size={16}
+                    size={15}
                     className="group-hover:translate-x-1 transition-transform duration-200"
                   />
                 </Link>
 
                 <a
                   href="#contact"
-                  className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-semibold text-zinc-700 hover:text-zinc-950 transition-colors whitespace-nowrap shrink-0"
+                  className="inline-flex items-center gap-1.5 px-2 py-2 text-xs sm:text-sm font-semibold text-zinc-700 hover:text-zinc-950 transition-colors whitespace-nowrap shrink-0"
                 >
                   <span>Start a conversation</span>
-                  <ArrowUpRight size={15} />
+                  <ArrowUpRight size={14} />
                 </a>
               </motion.div>
             </div>
@@ -95,8 +98,8 @@ export default function Hero() {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.34, ease }}
-              className="mt-12 pt-8 border-t border-zinc-200 flex flex-wrap items-center justify-between gap-4"
+              transition={{ duration: 0.45, delay: 0.26, ease }}
+              className="mt-6 pt-5 border-t border-zinc-200 flex flex-wrap items-center justify-between gap-3"
             >
               <span className="text-xs font-medium text-zinc-500">
                 Available for engineering roles &amp; select advisory
@@ -115,27 +118,27 @@ export default function Hero() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={social.label}
-                    className="w-10 h-10 rounded-lg border border-zinc-200 bg-white hover:bg-zinc-50 hover:border-zinc-300 flex items-center justify-center text-zinc-600 hover:text-zinc-950 transition-colors duration-150"
+                    className="w-9 h-9 rounded-lg border border-zinc-200 bg-white hover:bg-zinc-50 hover:border-zinc-300 flex items-center justify-center text-zinc-600 hover:text-zinc-950 transition-colors duration-150"
                   >
-                    <social.icon size={17} />
+                    <social.icon size={16} />
                   </a>
                 ))}
               </div>
             </motion.div>
           </div>
 
-          {/* Right Column: Matching-Height Portrait Frame */}
+          {/* Right Column: Full Uncropped 3:4 Portrait Frame */}
           <motion.div
             initial={{ opacity: 0, scale: 0.97 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.14, ease }}
-            className="lg:col-span-5"
+            transition={{ duration: 0.55, delay: 0.1, ease }}
+            className="lg:col-span-5 flex justify-center lg:justify-end"
           >
-            <div className="h-[360px] sm:h-[440px] lg:h-full min-h-[420px] rounded-2xl overflow-hidden border border-zinc-200 bg-zinc-100 relative group">
+            <div className="aspect-[3/4] w-full max-w-[300px] sm:max-w-[340px] lg:max-w-[335px] xl:max-w-[365px] rounded-2xl overflow-hidden border border-zinc-200 bg-white relative group">
               <SafeImage
                 src="/prohor-v2.png"
                 alt="Shakibul Islam Prohor — Full Stack Developer"
-                className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500"
+                className="w-full h-full object-contain bg-white group-hover:scale-[1.02] transition-transform duration-500"
                 fallbackTitle="Shakibul Islam Prohor"
               />
             </div>
@@ -144,17 +147,17 @@ export default function Hero() {
 
         {/* Full-Width 4-Column Metric Strip Below Split */}
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.35, ease }}
-          className="mt-14 grid grid-cols-2 lg:grid-cols-4 border border-zinc-200 rounded-2xl bg-zinc-50/70 divide-y lg:divide-y-0 lg:divide-x divide-zinc-200"
+          transition={{ duration: 0.45, delay: 0.28, ease }}
+          className="mt-6 lg:mt-8 grid grid-cols-2 lg:grid-cols-4 border border-zinc-200 rounded-2xl bg-zinc-50/70 divide-y lg:divide-y-0 lg:divide-x divide-zinc-200"
         >
           {metrics.map((metric, idx) => (
-            <div key={idx} className="p-6 flex flex-col justify-between">
-              <span className="text-2xl md:text-3xl font-bold font-display tracking-tight text-zinc-950 tabular-nums">
+            <div key={idx} className="px-4 py-3.5 sm:px-5 sm:py-4 flex flex-col justify-between">
+              <span className="text-lg sm:text-xl md:text-2xl font-bold font-display tracking-tight text-zinc-950 tabular-nums">
                 {metric.value}
               </span>
-              <span className="text-xs font-medium text-zinc-500 mt-1.5">
+              <span className="text-[11px] sm:text-xs font-medium text-zinc-500 mt-0.5">
                 {metric.label}
               </span>
             </div>
@@ -163,15 +166,15 @@ export default function Hero() {
       </div>
 
       {/* Subtle Editorial Marquee Divider */}
-      <div className="mt-16 border-y border-zinc-200 bg-zinc-50/50 py-3.5 overflow-hidden select-none">
+      <div className="border-y border-zinc-200 bg-zinc-50/50 py-2.5 overflow-hidden select-none">
         <div className="animate-marquee">
           {[...marqueeItems, ...marqueeItems].map((item, idx) => (
             <span
               key={idx}
-              className="inline-flex items-center text-xs font-medium text-zinc-500 tracking-wide px-6 whitespace-nowrap"
+              className="inline-flex items-center text-[11px] sm:text-xs font-medium text-zinc-500 tracking-wide px-5 whitespace-nowrap"
             >
               <span>{item}</span>
-              <span className="ml-12 text-zinc-300" aria-hidden="true">·</span>
+              <span className="ml-10 text-zinc-300" aria-hidden="true">·</span>
             </span>
           ))}
         </div>

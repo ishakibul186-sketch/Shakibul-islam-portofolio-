@@ -83,24 +83,24 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="py-24 bg-zinc-50/60">
-      <div className="container px-6 mx-auto max-w-7xl">
+    <section id="contact" className="py-14 md:py-20 bg-zinc-50/60">
+      <div className="container px-4 sm:px-6 mx-auto max-w-6xl">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.5, ease }}
-          className="mb-14"
+          className="mb-8 md:mb-10"
         >
-          <p className="text-xs font-semibold text-blue-600 tracking-wide mb-2">
+          <p className="text-xs font-semibold text-blue-600 tracking-wide mb-1.5">
             07. Contact
           </p>
-          <h2 className="text-3xl md:text-5xl font-bold font-display tracking-tight text-zinc-950">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-display tracking-tight text-zinc-950">
             Get In Touch
           </h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
           {/* Left Details */}
           <motion.div
             initial={{ opacity: 0, y: 18 }}
@@ -109,20 +109,20 @@ export default function Contact() {
             transition={{ duration: 0.5, ease }}
             className="lg:col-span-5"
           >
-            <h3 className="text-2xl font-display font-bold text-zinc-950 mb-4">
+            <h3 className="text-xl font-display font-bold text-zinc-950 mb-3">
               Let&apos;s talk about your project
             </h3>
-            <p className="text-zinc-600 mb-8 leading-relaxed text-base">
+            <p className="text-zinc-600 mb-6 leading-relaxed text-sm sm:text-base">
               Reach out for full-stack collaborations, consulting, or engineering opportunities. I respond promptly to all inquiries.
             </p>
 
-            <div className="space-y-5 mb-8 border-t border-zinc-200 pt-6">
+            <div className="space-y-4 mb-6 border-t border-zinc-200 pt-5">
               <a
                 href="mailto:ishakibul186@gmail.com"
-                className="flex items-center gap-4 group"
+                className="flex items-center gap-3.5 group"
               >
-                <div className="w-11 h-11 rounded-xl bg-white border border-zinc-200 flex items-center justify-center text-zinc-700 group-hover:border-blue-600 group-hover:text-blue-600 transition-colors">
-                  <Mail size={18} />
+                <div className="w-10 h-10 rounded-xl bg-white border border-zinc-200 flex items-center justify-center text-zinc-700 group-hover:border-blue-600 group-hover:text-blue-600 transition-colors">
+                  <Mail size={17} />
                 </div>
                 <div>
                   <p className="text-xs font-medium text-zinc-500">Email</p>
@@ -132,9 +132,9 @@ export default function Contact() {
                 </div>
               </a>
 
-              <div className="flex items-center gap-4">
-                <div className="w-11 h-11 rounded-xl bg-white border border-zinc-200 flex items-center justify-center text-zinc-700">
-                  <MapPin size={18} />
+              <div className="flex items-center gap-3.5">
+                <div className="w-10 h-10 rounded-xl bg-white border border-zinc-200 flex items-center justify-center text-zinc-700">
+                  <MapPin size={17} />
                 </div>
                 <div>
                   <p className="text-xs font-medium text-zinc-500">Location</p>
@@ -156,9 +156,9 @@ export default function Contact() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={item.label}
-                  className="w-10 h-10 rounded-lg bg-white border border-zinc-200 flex items-center justify-center text-zinc-600 hover:text-zinc-950 hover:border-zinc-300 transition-colors"
+                  className="w-9 h-9 rounded-lg bg-white border border-zinc-200 flex items-center justify-center text-zinc-600 hover:text-zinc-950 hover:border-zinc-300 transition-colors"
                 >
-                  <item.icon size={17} />
+                  <item.icon size={16} />
                 </a>
               ))}
             </div>
@@ -170,17 +170,17 @@ export default function Contact() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.5, delay: 0.08, ease }}
-            className="lg:col-span-7 bg-white border border-zinc-200 rounded-2xl p-6 sm:p-8 md:p-10"
+            className="lg:col-span-7 bg-white border border-zinc-200 rounded-2xl p-5 sm:p-7"
           >
-            <form className="space-y-5" onSubmit={handleSubmit}>
+            <form className="space-y-4" onSubmit={handleSubmit}>
               {errorMsg && (
-                <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm font-medium">
+                <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm font-medium">
                   {errorMsg}
                 </div>
               )}
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <div className="space-y-1.5">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-1">
                   <label htmlFor="contact-name" className="text-xs font-semibold text-zinc-700">
                     Your Name
                   </label>
@@ -190,12 +190,12 @@ export default function Contact() {
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-xl bg-white border border-zinc-200 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600/15 transition-colors text-sm text-zinc-950 placeholder:text-zinc-400"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-zinc-200 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600/15 transition-colors text-sm text-zinc-950 placeholder:text-zinc-400"
                     placeholder="John Doe"
                     required
                   />
                 </div>
-                <div className="space-y-1.5">
+                <div className="space-y-1">
                   <label htmlFor="contact-email" className="text-xs font-semibold text-zinc-700">
                     Your Email
                   </label>
@@ -205,14 +205,14 @@ export default function Contact() {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-xl bg-white border border-zinc-200 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600/15 transition-colors text-sm text-zinc-950 placeholder:text-zinc-400"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-zinc-200 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600/15 transition-colors text-sm text-zinc-950 placeholder:text-zinc-400"
                     placeholder="john@example.com"
                     required
                   />
                 </div>
               </div>
 
-              <div className="space-y-1.5">
+              <div className="space-y-1">
                 <label htmlFor="contact-subject" className="text-xs font-semibold text-zinc-700">
                   Subject
                 </label>
@@ -222,23 +222,23 @@ export default function Contact() {
                   name="subject"
                   value={formData.subject}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl bg-white border border-zinc-200 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600/15 transition-colors text-sm text-zinc-950 placeholder:text-zinc-400"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-zinc-200 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600/15 transition-colors text-sm text-zinc-950 placeholder:text-zinc-400"
                   placeholder="Project Inquiry"
                   required
                 />
               </div>
 
-              <div className="space-y-1.5">
+              <div className="space-y-1">
                 <label htmlFor="contact-message" className="text-xs font-semibold text-zinc-700">
                   Message
                 </label>
                 <textarea
                   id="contact-message"
-                  rows={4}
+                  rows={3}
                   name="message"
                   value={formData.message}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl bg-white border border-zinc-200 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600/15 transition-colors text-sm text-zinc-950 placeholder:text-zinc-400 resize-none"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-zinc-200 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600/15 transition-colors text-sm text-zinc-950 placeholder:text-zinc-400 resize-none"
                   placeholder="Tell me about your timeline, scope, and goals..."
                   required
                 />
@@ -247,7 +247,7 @@ export default function Contact() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3.5 text-sm font-semibold text-white bg-zinc-950 hover:bg-blue-600 rounded-xl transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full py-3 text-sm font-semibold text-white bg-zinc-950 hover:bg-blue-600 rounded-xl transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer"
               >
                 {loading ? (
                   <>
