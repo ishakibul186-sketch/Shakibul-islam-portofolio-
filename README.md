@@ -301,3 +301,4 @@ The project is pre-configured for seamless zero-config deployment on **Vercel**:
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
+

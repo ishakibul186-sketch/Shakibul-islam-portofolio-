@@ -128,7 +128,6 @@ export function generateBrandedEmailHtml(options: GenerateEmailOptions): string 
                       Shakibul Islam Prohor
                     </p>
                     <p style="margin: 0 0 12px 0; font-size: 12px; color: #64748b; line-height: 1.6;">
-                      Phone: <a href="tel:018129282535" style="color: #4f46e5; text-decoration: none; font-weight: 500;">018129282535</a> &nbsp;|&nbsp;
                       Email: <a href="mailto:ishakibul186@gmail.com" style="color: #4f46e5; text-decoration: none; font-weight: 500;">ishakibul186@gmail.com</a>
                     </p>
                     <p style="margin: 0 0 12px 0; font-size: 12px; color: #64748b;">

@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Facebook, Github, Linkedin, Mail, MapPin, Phone, Twitter, CheckCircle2, Loader2 } from "lucide-react";
+import { Facebook, Github, Linkedin, Mail, MapPin, Twitter, CheckCircle2, Loader2 } from "lucide-react";
 import { submitContactMessage } from "../lib/contactUtils";
+
+const ease = [0.16, 1, 0.3, 1] as const;
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -47,10 +49,8 @@ export default function Contact() {
     setLoading(true);
 
     try {
-      // 1. Save directly to Firebase Realtime DB at /Portofolio-Contractmassage/{index} & update totalstring
       const dbResult = await submitContactMessage(formData);
 
-      // 2. Dispatch email notification via server API (optional/fallback handled gracefully)
       try {
         await fetch("/api/contact", {
           method: "POST",
@@ -64,18 +64,13 @@ export default function Contact() {
       }
 
       if (dbResult.success) {
-        // Save details for popup display
         setSentDetails({ name, email, subject, message });
-        
-        // Reset form inputs (all text disappears and becomes empty again)
         setFormData({
           name: "",
           email: "",
           subject: "",
           message: "",
         });
-
-        // Show success modal
         setShowModal(true);
       } else {
         setErrorMsg("Failed to save message. Please try again.");
@@ -88,163 +83,179 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="py-24 relative bg-white/[0.02]">
+    <section id="contact" className="py-24 bg-zinc-50/60">
       <div className="container px-6 mx-auto max-w-7xl">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-16"
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.5, ease }}
+          className="mb-14"
         >
-          <h2 className="text-3xl md:text-5xl font-bold font-display mb-4">Get In <span className="text-gradient">Touch</span></h2>
-          <div className="w-20 h-1 bg-gradient-to-r from-purple-500 to-cyan-500 mx-auto rounded-full" />
+          <p className="text-xs font-semibold text-blue-600 tracking-wide mb-2">
+            07. Contact
+          </p>
+          <h2 className="text-3xl md:text-5xl font-bold font-display tracking-tight text-zinc-950">
+            Get In Touch
+          </h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+          {/* Left Details */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.5, ease }}
+            className="lg:col-span-5"
           >
-            <h3 className="text-2xl font-display font-semibold mb-6">Let's talk about your project</h3>
-            <p className="text-white/60 mb-8 leading-relaxed">
-              Feel free to reach out for collaborations, freelance projects, or just to say hi. I'm always open to discussing new ideas and opportunities.
+            <h3 className="text-2xl font-display font-bold text-zinc-950 mb-4">
+              Let&apos;s talk about your project
+            </h3>
+            <p className="text-zinc-600 mb-8 leading-relaxed text-base">
+              Reach out for full-stack collaborations, consulting, or engineering opportunities. I respond promptly to all inquiries.
             </p>
 
-            <div className="space-y-6 mb-8">
-              <a 
-                href="mailto:ishakibul186@gmail.com" 
-                className="flex items-center gap-4 group hover:opacity-90 transition-opacity"
+            <div className="space-y-5 mb-8 border-t border-zinc-200 pt-6">
+              <a
+                href="mailto:ishakibul186@gmail.com"
+                className="flex items-center gap-4 group"
               >
-                <div className="w-12 h-12 rounded-full glass flex items-center justify-center text-purple-400 group-hover:bg-purple-500/20 transition-colors">
-                  <Mail size={20} />
+                <div className="w-11 h-11 rounded-xl bg-white border border-zinc-200 flex items-center justify-center text-zinc-700 group-hover:border-blue-600 group-hover:text-blue-600 transition-colors">
+                  <Mail size={18} />
                 </div>
                 <div>
-                  <p className="text-sm text-white/50">Email</p>
-                  <p className="font-medium text-white">ishakibul186@gmail.com</p>
+                  <p className="text-xs font-medium text-zinc-500">Email</p>
+                  <p className="font-semibold text-sm text-zinc-950 group-hover:text-blue-600 transition-colors">
+                    ishakibul186@gmail.com
+                  </p>
                 </div>
               </a>
-              <a 
-                href="tel:018129282535" 
-                className="flex items-center gap-4 group hover:opacity-90 transition-opacity"
-              >
-                <div className="w-12 h-12 rounded-full glass flex items-center justify-center text-cyan-400 group-hover:bg-cyan-500/20 transition-colors">
-                  <Phone size={20} />
-                </div>
-                <div>
-                  <p className="text-sm text-white/50">Phone</p>
-                  <p className="font-medium text-white">018129282535</p>
-                </div>
-              </a>
+
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full glass flex items-center justify-center text-pink-400">
-                  <MapPin size={20} />
+                <div className="w-11 h-11 rounded-xl bg-white border border-zinc-200 flex items-center justify-center text-zinc-700">
+                  <MapPin size={18} />
                 </div>
                 <div>
-                  <p className="text-sm text-white/50">Location</p>
-                  <p className="font-medium text-white">Dhaka, Bangladesh</p>
+                  <p className="text-xs font-medium text-zinc-500">Location</p>
+                  <p className="font-semibold text-sm text-zinc-950">Dhaka, Bangladesh</p>
                 </div>
               </div>
             </div>
 
-            <div className="flex gap-4">
+            <div className="flex gap-2.5">
               {[
                 { icon: Github, href: "https://github.com/ishakibul186-sketch", label: "GitHub" },
                 { icon: Facebook, href: "https://www.facebook.com/prohor245", label: "Facebook" },
                 { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
                 { icon: Twitter, href: "https://twitter.com", label: "Twitter" },
               ].map((item, i) => (
-                <a 
-                  key={i} 
-                  href={item.href} 
-                  target="_blank" 
+                <a
+                  key={i}
+                  href={item.href}
+                  target="_blank"
                   rel="noopener noreferrer"
                   aria-label={item.label}
-                  className="w-10 h-10 rounded-full glass flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 hover:scale-110 transition-all"
+                  className="w-10 h-10 rounded-lg bg-white border border-zinc-200 flex items-center justify-center text-zinc-600 hover:text-zinc-950 hover:border-zinc-300 transition-colors"
                 >
-                  <item.icon size={18} />
+                  <item.icon size={17} />
                 </a>
               ))}
             </div>
           </motion.div>
 
+          {/* Right Form */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="glass-card p-8"
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.5, delay: 0.08, ease }}
+            className="lg:col-span-7 bg-white border border-zinc-200 rounded-2xl p-6 sm:p-8 md:p-10"
           >
-            <form className="space-y-6" onSubmit={handleSubmit}>
+            <form className="space-y-5" onSubmit={handleSubmit}>
               {errorMsg && (
-                <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm font-medium">
+                <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm font-medium">
                   {errorMsg}
                 </div>
               )}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-white/70">Your Name</label>
-                  <input 
-                    type="text" 
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div className="space-y-1.5">
+                  <label htmlFor="contact-name" className="text-xs font-semibold text-zinc-700">
+                    Your Name
+                  </label>
+                  <input
+                    id="contact-name"
+                    type="text"
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500 transition-colors text-white placeholder:text-white/30"
+                    className="w-full px-4 py-3 rounded-xl bg-white border border-zinc-200 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600/15 transition-colors text-sm text-zinc-950 placeholder:text-zinc-400"
                     placeholder="John Doe"
                     required
                   />
                 </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-white/70">Your Email</label>
-                  <input 
-                    type="email" 
+                <div className="space-y-1.5">
+                  <label htmlFor="contact-email" className="text-xs font-semibold text-zinc-700">
+                    Your Email
+                  </label>
+                  <input
+                    id="contact-email"
+                    type="email"
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-cyan-500 focus:outline-none focus:ring-1 focus:ring-cyan-500 transition-colors text-white placeholder:text-white/30"
+                    className="w-full px-4 py-3 rounded-xl bg-white border border-zinc-200 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600/15 transition-colors text-sm text-zinc-950 placeholder:text-zinc-400"
                     placeholder="john@example.com"
                     required
                   />
                 </div>
               </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-white/70">Subject</label>
-                <input 
-                  type="text" 
+
+              <div className="space-y-1.5">
+                <label htmlFor="contact-subject" className="text-xs font-semibold text-zinc-700">
+                  Subject
+                </label>
+                <input
+                  id="contact-subject"
+                  type="text"
                   name="subject"
                   value={formData.subject}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500 transition-colors text-white placeholder:text-white/30"
+                  className="w-full px-4 py-3 rounded-xl bg-white border border-zinc-200 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600/15 transition-colors text-sm text-zinc-950 placeholder:text-zinc-400"
                   placeholder="Project Inquiry"
                   required
                 />
               </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-white/70">Message</label>
-                <textarea 
+
+              <div className="space-y-1.5">
+                <label htmlFor="contact-message" className="text-xs font-semibold text-zinc-700">
+                  Message
+                </label>
+                <textarea
+                  id="contact-message"
                   rows={4}
                   name="message"
                   value={formData.message}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-cyan-500 focus:outline-none focus:ring-1 focus:ring-cyan-500 transition-colors text-white placeholder:text-white/30 resize-none"
-                  placeholder="Hello, I'd like to talk about..."
+                  className="w-full px-4 py-3 rounded-xl bg-white border border-zinc-200 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600/15 transition-colors text-sm text-zinc-950 placeholder:text-zinc-400 resize-none"
+                  placeholder="Tell me about your timeline, scope, and goals..."
                   required
                 />
               </div>
-              <button 
+
+              <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-4 font-medium text-white bg-gradient-to-r from-purple-600 to-cyan-600 rounded-xl hover:shadow-[0_0_20px_rgba(112,0,255,0.4)] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="w-full py-3.5 text-sm font-semibold text-white bg-zinc-950 hover:bg-blue-600 rounded-xl transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer"
               >
                 {loading ? (
                   <>
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                    Sending...
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <span>Sending Message...</span>
                   </>
                 ) : (
-                  "Send Message"
+                  <span>Send Message</span>
                 )}
               </button>
             </form>
@@ -255,42 +266,45 @@ export default function Contact() {
       {/* Success Modal */}
       <AnimatePresence>
         {showModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/50 backdrop-blur-xs">
             <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
+              initial={{ scale: 0.96, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="glass-card max-w-lg w-full p-8 relative overflow-hidden"
+              exit={{ scale: 0.96, opacity: 0 }}
+              transition={{ duration: 0.2, ease }}
+              className="bg-white border border-zinc-200 rounded-2xl max-w-lg w-full p-8 shadow-2xl"
             >
               <div className="flex flex-col items-center text-center">
-                <div className="w-16 h-16 bg-green-500/10 text-green-400 rounded-full flex items-center justify-center mb-4 border border-green-500/20">
-                  <CheckCircle2 size={36} className="animate-bounce" />
+                <div className="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mb-4 border border-emerald-200">
+                  <CheckCircle2 size={28} />
                 </div>
-                
-                <h3 className="text-2xl font-display font-semibold text-white mb-2">
-                  Message Sent Successfully!
+
+                <h3 className="text-xl font-display font-bold text-zinc-950 mb-1.5">
+                  Message Sent Successfully
                 </h3>
-                <p className="text-white/60 text-sm mb-6">
-                  Thank you for getting in touch. I will reply to your email as soon as possible.
+                <p className="text-zinc-600 text-sm mb-6">
+                  Thank you for reaching out. I will reply to your email shortly.
                 </p>
               </div>
 
-              <div className="bg-white/5 border border-white/10 rounded-xl p-4 space-y-3 text-left mb-6">
-                <h4 className="text-xs font-semibold uppercase tracking-wider text-purple-400">Sent Details:</h4>
-                <div className="text-sm text-white/80 space-y-2">
-                  <p><span className="text-white/50">Name:</span> {sentDetails.name}</p>
-                  <p><span className="text-white/50">Email:</span> {sentDetails.email}</p>
-                  <p><span className="text-white/50">Subject:</span> {sentDetails.subject}</p>
-                  <div className="mt-2 border-t border-white/10 pt-2">
-                    <p className="text-white/50 mb-1">Message:</p>
-                    <p className="text-white/70 italic text-xs leading-relaxed whitespace-pre-wrap">{sentDetails.message}</p>
+              <div className="bg-zinc-50 border border-zinc-200 rounded-xl p-4 space-y-2.5 text-left mb-6">
+                <p className="text-xs font-semibold text-zinc-500">Sent Details</p>
+                <div className="text-sm text-zinc-700 space-y-1.5">
+                  <p><span className="text-zinc-500">Name:</span> {sentDetails.name}</p>
+                  <p><span className="text-zinc-500">Email:</span> {sentDetails.email}</p>
+                  <p><span className="text-zinc-500">Subject:</span> {sentDetails.subject}</p>
+                  <div className="mt-2 border-t border-zinc-200 pt-2">
+                    <p className="text-zinc-500 text-xs mb-1">Message:</p>
+                    <p className="text-zinc-700 text-xs leading-relaxed whitespace-pre-wrap">
+                      {sentDetails.message}
+                    </p>
                   </div>
                 </div>
               </div>
 
               <button
                 onClick={() => setShowModal(false)}
-                className="w-full py-3 font-medium text-white bg-gradient-to-r from-purple-600 to-cyan-600 rounded-xl hover:shadow-[0_0_20px_rgba(112,0,255,0.4)] transition-all cursor-pointer"
+                className="w-full py-3 text-sm font-semibold text-white bg-zinc-950 hover:bg-blue-600 rounded-xl transition-colors cursor-pointer"
               >
                 Close
               </button>

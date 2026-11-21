@@ -36,11 +36,11 @@
     <link rel="shortcut icon" href="/prohor-v2.png" type="image/png" />
 
     <!-- Theme & Color Scheme -->
-    <meta name="theme-color" content="#030014" />
-    <meta name="msapplication-TileColor" content="#030014" />
-    <meta name="msapplication-navbutton-color" content="#030014" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="msapplication-TileColor" content="#ffffff" />
+    <meta name="msapplication-navbutton-color" content="#ffffff" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="color-scheme" content="light" />
 
     <!-- Geographic & Localization Metadata -->
     <meta name="geo.region" content="BD-13" />
@@ -81,7 +81,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
     <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
     <!-- Schema.org Multi-Entity Structured Data (JSON-LD) - AI & Google Search Knowledge Graph -->
     <script type="application/ld+json">
@@ -123,7 +123,6 @@
           },
           "description": "Shakibul Islam Prohor is a passionate Full Stack Developer and Software Engineer from Dhaka, Bangladesh. He specializes in designing, developing, and deploying modern web applications using React.js, TypeScript, Next.js, Node.js, Express, Tailwind CSS, and Firebase Realtime & Cloud databases. He has built enterprise portals, real-time messaging apps, and responsive interactive web applications.",
           "email": "mailto:ishakibul186@gmail.com",
-          "telephone": "+8801700000000",
           "alumniOf": {
             "@type": "EducationalOrganization",
             "name": "University of Technology",
@@ -201,14 +200,13 @@
 
     <style>
       :root {
-        --bg-color: #030014;
-        --card-bg: rgba(255, 255, 255, 0.03);
-        --card-border: rgba(255, 255, 255, 0.1);
-        --accent-purple: #9333ea;
-        --accent-cyan: #06b6d4;
-        --text-primary: #ffffff;
-        --text-secondary: rgba(255, 255, 255, 0.7);
-        --text-muted: rgba(255, 255, 255, 0.5);
+        --bg-color: #ffffff;
+        --card-bg: #fafafa;
+        --card-border: #e4e4e7;
+        --accent-blue: #2563eb;
+        --text-primary: #09090b;
+        --text-secondary: #52525b;
+        --text-muted: #71717a;
       }
       * {
         margin: 0;
@@ -218,21 +216,21 @@
       body {
         background-color: var(--bg-color);
         color: var(--text-primary);
-        font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         line-height: 1.6;
         min-height: 100vh;
         overflow-x: hidden;
       }
       .font-display {
-        font-family: 'Space Grotesk', sans-serif;
+        font-family: 'Plus Jakarta Sans', sans-serif;
       }
       .text-gradient {
-        background: linear-gradient(135deg, #a855f7 0%, #06b6d4 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        color: #2563eb;
+        font-family: 'Playfair Display', Georgia, serif;
+        font-style: italic;
       }
       .bg-gradient-bar {
-        background: linear-gradient(90deg, #9333ea 0%, #06b6d4 100%);
+        background: #09090b;
       }
       .container {
         max-width: 1100px;
@@ -260,7 +258,7 @@
         width: 40px;
         height: 40px;
         border-radius: 50%;
-        border: 2px solid var(--accent-purple);
+        border: 1px solid #e4e4e7;
       }
       .nav-links {
         display: flex;
@@ -275,22 +273,22 @@
         transition: color 0.2s;
       }
       .nav-links a:hover {
-        color: #fff;
+        color: #09090b;
       }
       .btn-portfolio {
         padding: 8px 18px;
-        background: linear-gradient(90deg, #9333ea, #06b6d4);
-        border-radius: 9999px;
-        color: #fff !important;
+        background: #09090b;
+        border-radius: 10px;
+        color: #ffffff !important;
         font-weight: 600;
         text-decoration: none;
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        transition: opacity 0.2s, transform 0.2s;
+        transition: background 0.2s, transform 0.2s;
       }
       .btn-portfolio:hover {
-        opacity: 0.9;
+        background: #2563eb;
         transform: translateY(-1px);
       }
       .hero-grid {
@@ -313,42 +311,29 @@
         width: 100%;
         max-width: 380px;
         aspect-ratio: 1/1;
-        border-radius: 24px;
-        object-cover: cover;
+        border-radius: 16px;
+        object-fit: cover;
         border: 1px solid var(--card-border);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
         background: var(--card-bg);
       }
       .status-pill {
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        padding: 6px 14px;
-        border-radius: 9999px;
-        background: rgba(6, 182, 212, 0.1);
-        border: 1px solid rgba(6, 182, 212, 0.3);
-        color: #22d3ee;
+        color: #2563eb;
         font-size: 0.85rem;
         font-weight: 600;
-        margin-bottom: 16px;
+        margin-bottom: 12px;
       }
       .pulse-dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background-color: #22d3ee;
-        animation: pulse 2s infinite;
-      }
-      @keyframes pulse {
-        0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 211, 238, 0.7); }
-        70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(34, 211, 238, 0); }
-        100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 211, 238, 0); }
+        display: none;
       }
       .title-hero {
         font-size: 2.75rem;
         font-weight: 700;
         line-height: 1.15;
         margin-bottom: 20px;
+        color: #09090b;
       }
       .lead-text {
         font-size: 1.15rem;
@@ -357,7 +342,7 @@
         line-height: 1.7;
       }
       .card {
-        background: var(--card-bg);
+        background: #ffffff;
         border: 1px solid var(--card-border);
         border-radius: 16px;
         padding: 32px;
@@ -370,10 +355,11 @@
         display: flex;
         align-items: center;
         gap: 12px;
+        color: #09090b;
       }
       .section-divider {
-        width: 60px;
-        height: 4px;
+        width: 48px;
+        height: 2px;
         border-radius: 9999px;
         margin: 12px 0 28px;
       }
@@ -392,25 +378,23 @@
         }
       }
       .feature-card {
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        backdrop-filter: blur(12px);
+        background: #fafafa;
+        border: 1px solid #e4e4e7;
         padding: 16px;
         border-radius: 12px;
         display: flex;
         align-items: flex-start;
         gap: 12px;
-        transition: transform 0.2s, border-color 0.2s;
+        transition: border-color 0.2s;
       }
       .feature-card:hover {
-        transform: translateY(-2px);
-        border-color: rgba(147, 51, 234, 0.4);
+        border-color: #a1a1aa;
       }
       .feature-icon-wrapper {
         padding: 8px;
-        background: rgba(147, 51, 234, 0.2);
+        background: #f4f4f5;
         border-radius: 8px;
-        color: #c084fc;
+        color: #18181b;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -419,12 +403,12 @@
       .feature-title {
         font-size: 0.9rem;
         font-weight: 600;
-        color: #ffffff;
+        color: #09090b;
         margin-bottom: 2px;
       }
       .feature-desc {
         font-size: 0.8rem;
-        color: rgba(255, 255, 255, 0.5);
+        color: #71717a;
       }
       .info-grid {
         display: grid;
@@ -433,16 +417,15 @@
         margin-top: 24px;
       }
       .info-box {
-        background: rgba(255, 255, 255, 0.02);
-        border: 1px solid rgba(255, 255, 255, 0.06);
+        background: #fafafa;
+        border: 1px solid #e4e4e7;
         border-radius: 12px;
         padding: 16px;
       }
       .info-box-label {
-        font-size: 0.8rem;
+        font-size: 0.75rem;
         color: var(--text-muted);
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
+        letter-spacing: 0.02em;
         margin-bottom: 4px;
       }
       .info-box-value {
@@ -453,47 +436,38 @@
       .skill-tag-group {
         display: flex;
         flex-wrap: wrap;
-        gap: 10px;
-        margin-top: 16px;
+        gap: 8px;
+        margin-top: 12px;
       }
       .skill-tag {
-        background: rgba(147, 51, 234, 0.15);
-        border: 1px solid rgba(147, 51, 234, 0.3);
-        color: #d8b4fe;
-        padding: 6px 14px;
+        background: #fafafa;
+        border: 1px solid #e4e4e7;
+        color: #27272a;
+        padding: 6px 12px;
         border-radius: 8px;
-        font-size: 0.9rem;
+        font-size: 0.875rem;
         font-weight: 500;
       }
       .skill-tag.cyan {
-        background: rgba(6, 182, 212, 0.15);
-        border: 1px solid rgba(6, 182, 212, 0.3);
-        color: #67e8f9;
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        color: #1d4ed8;
       }
       .experience-item {
-        position: relative;
-        padding-left: 28px;
-        border-left: 2px solid rgba(147, 51, 234, 0.4);
-        margin-bottom: 28px;
+        padding: 20px 0;
+        border-bottom: 1px solid #e4e4e7;
       }
-      .experience-item::before {
-        content: '';
-        position: absolute;
-        left: -7px;
-        top: 4px;
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-        background: #06b6d4;
-        border: 2px solid var(--bg-color);
+      .experience-item:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
       }
       .exp-role {
-        font-size: 1.15rem;
+        font-size: 1.125rem;
         font-weight: 700;
-        color: #fff;
+        color: #09090b;
       }
       .exp-company {
-        color: #c084fc;
+        color: #2563eb;
         font-weight: 600;
         font-size: 0.95rem;
         margin-bottom: 4px;
@@ -506,12 +480,12 @@
       .faq-item {
         margin-bottom: 20px;
         padding-bottom: 20px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        border-bottom: 1px solid #e4e4e7;
       }
       .faq-question {
         font-size: 1.1rem;
         font-weight: 600;
-        color: #67e8f9;
+        color: #09090b;
         margin-bottom: 8px;
       }
       .faq-answer {
@@ -522,7 +496,7 @@
       .social-links {
         display: flex;
         flex-wrap: wrap;
-        gap: 12px;
+        gap: 10px;
         margin-top: 20px;
       }
       .social-btn {
@@ -530,19 +504,19 @@
         align-items: center;
         gap: 8px;
         padding: 10px 18px;
-        background: rgba(255, 255, 255, 0.05);
+        background: #ffffff;
         border: 1px solid var(--card-border);
         border-radius: 10px;
-        color: #fff;
+        color: #09090b;
         text-decoration: none;
         font-size: 0.9rem;
         font-weight: 500;
         transition: all 0.2s;
       }
       .social-btn:hover {
-        background: rgba(255, 255, 255, 0.1);
-        border-color: var(--accent-cyan);
-        transform: translateY(-2px);
+        background: #fafafa;
+        border-color: #2563eb;
+        color: #2563eb;
       }
       footer {
         text-align: center;
@@ -583,10 +557,6 @@
         <section class="hero-grid" aria-labelledby="main-heading">
           <div class="avatar-wrapper">
             <div style="position: relative; display: inline-block;">
-              <!-- Decorative blur elements mirroring About.tsx -->
-              <div style="position: absolute; top: -16px; left: -16px; width: 96px; height: 96px; background: rgba(147, 51, 234, 0.3); border-radius: 50%; filter: blur(24px);"></div>
-              <div style="position: absolute; bottom: -16px; right: -16px; width: 128px; height: 128px; background: rgba(6, 182, 212, 0.3); border-radius: 50%; filter: blur(28px);"></div>
-              
               <img
                 src="/prohor-v2.png"
                 alt="Shakibul Islam Prohor - Full Stack Developer Profile Portrait"
@@ -596,10 +566,9 @@
           </div>
           <div>
             <div class="status-pill">
-              <span class="pulse-dot"></span>
-              Available for Full-time & Contract Roles
+              Available for Full-time &amp; Contract Roles
             </div>
-            <h2 class="font-display" style="font-size: 1.75rem; font-weight: 700; margin-bottom: 16px; color: #ffffff;">
+            <h2 class="font-display" style="font-size: 1.75rem; font-weight: 700; margin-bottom: 16px; color: #09090b;">
               Passionate Developer Crafting Digital Experiences
             </h2>
             <p class="lead-text" style="margin-bottom: 16px;">
@@ -731,7 +700,7 @@
           </h2>
           <div class="bg-gradient-bar section-divider"></div>
           
-          <h3 style="font-size: 1.1rem; color: #fff; margin-bottom: 8px;">Frontend Engineering</h3>
+          <h3 style="font-size: 1.1rem; color: #09090b; margin-bottom: 8px;">Frontend Engineering</h3>
           <p style="color: var(--text-secondary); font-size: 0.95rem;">
             Architecting responsive, accessible, and fast client-side applications with modern frameworks and state management.
           </p>
@@ -746,7 +715,7 @@
             <span class="skill-tag">Single Page Applications (SPA)</span>
           </div>
 
-          <h3 style="font-size: 1.1rem; color: #fff; margin-bottom: 8px;">Backend & Cloud Systems</h3>
+          <h3 style="font-size: 1.1rem; color: #09090b; margin-bottom: 8px;">Backend & Cloud Systems</h3>
           <p style="color: var(--text-secondary); font-size: 0.95rem;">
             Building secure RESTful endpoints, background workers, authentication pipelines, and real-time database listeners.
           </p>
@@ -760,7 +729,7 @@
             <span class="skill-tag cyan">Nodemailer & SMTP Integration</span>
           </div>
 
-          <h3 style="font-size: 1.1rem; color: #fff; margin-bottom: 8px;">Developer Tooling & Performance</h3>
+          <h3 style="font-size: 1.1rem; color: #09090b; margin-bottom: 8px;">Developer Tooling & Performance</h3>
           <div class="skill-tag-group">
             <span class="skill-tag">Git & GitHub</span>
             <span class="skill-tag">Vite & esbuild</span>
@@ -830,7 +799,7 @@
           <div class="faq-item">
             <h3 class="faq-question">How can I hire or contact Shakibul Islam Prohor?</h3>
             <p class="faq-answer">
-              You can get in touch with Prohor directly via email at <a href="mailto:ishakibul186@gmail.com" style="color: #67e8f9;">ishakibul186@gmail.com</a>, via GitHub (<a href="https://github.com/ishakibul186-sketch" target="_blank" rel="noopener noreferrer" style="color: #67e8f9;">ishakibul186-sketch</a>), or by submitting the contact form on his official portfolio website.
+              You can get in touch with Prohor directly via email at <a href="mailto:ishakibul186@gmail.com" style="color: #2563eb;">ishakibul186@gmail.com</a>, via GitHub (<a href="https://github.com/ishakibul186-sketch" target="_blank" rel="noopener noreferrer" style="color: #2563eb;">ishakibul186-sketch</a>), or by submitting the contact form on his official portfolio website.
             </p>
           </div>
 
@@ -847,10 +816,10 @@
       <footer>
         <p>© 2026 Shakibul Islam Prohor. All rights reserved. Dhaka, Bangladesh.</p>
         <p style="margin-top: 8px;">
-          <a href="/" style="color: #67e8f9; text-decoration: none;">Main Portfolio</a> • 
-          <a href="/my-projects" style="color: #67e8f9; text-decoration: none;">Projects</a> • 
-          <a href="/blog" style="color: #67e8f9; text-decoration: none;">Blog</a> • 
-          <a href="/#contact" style="color: #67e8f9; text-decoration: none;">Contact</a>
+          <a href="/" style="color: #2563eb; text-decoration: none;">Main Portfolio</a> • 
+          <a href="/my-projects" style="color: #2563eb; text-decoration: none;">Projects</a> • 
+          <a href="/blog" style="color: #2563eb; text-decoration: none;">Blog</a> • 
+          <a href="/#contact" style="color: #2563eb; text-decoration: none;">Contact</a>
         </p>
       </footer>
     </div>

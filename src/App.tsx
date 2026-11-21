@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
-import { AnimatePresence } from "motion/react";
+import { AnimatePresence, MotionConfig } from "motion/react";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import LoadingScreen from "./components/LoadingScreen";
@@ -44,7 +44,7 @@ function HomePage({ initialSection, meta }: HomePageProps) {
       if (el) {
         setTimeout(() => {
           el.scrollIntoView({ behavior: "smooth" });
-        }, 150);
+        }, 120);
       }
     } else if (location.pathname === "/") {
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -95,18 +95,13 @@ function MainApp() {
   const [loading, setLoading] = useState(true);
 
   return (
-    <div className="min-h-screen bg-[#030014] text-white selection:bg-purple-500/30">
-      <AnimatePresence mode="wait">
-        {loading ? (
-          <LoadingScreen key="loading" onComplete={() => setLoading(false)} />
-        ) : (
-          <div key="content" className="relative">
-            {/* Global Background Elements */}
-            <div className="fixed inset-0 z-0 pointer-events-none">
-              <div className="absolute top-0 left-0 w-full h-full bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay" />
-            </div>
-            
-            <div className="relative z-10">
+    <MotionConfig reducedMotion="user">
+      <div className="min-h-screen bg-white text-zinc-950 selection:bg-blue-600/15 selection:text-blue-900">
+        <AnimatePresence mode="wait">
+          {loading ? (
+            <LoadingScreen key="loading" onComplete={() => setLoading(false)} />
+          ) : (
+            <div key="content" className="relative bg-white">
               <Routes>
                 {/* Public Clean Routes & SEO Pages */}
                 <Route path="/" element={<HomePage />} />
@@ -162,12 +157,12 @@ function MainApp() {
                     />
                   }
                 />
-                
+
                 {/* Projects & Articles routes */}
                 <Route path="/my-projects" element={<MyProjects />} />
                 <Route path="/my-projects/:id" element={<ProjectDetails />} />
                 <Route path="/articles/:id" element={<ArticleDetails />} />
-                
+
                 {/* Admin Panel Routes */}
                 <Route
                   path="/admin"
@@ -191,10 +186,10 @@ function MainApp() {
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </div>
-          </div>
-        )}
-      </AnimatePresence>
-    </div>
+          )}
+        </AnimatePresence>
+      </div>
+    </MotionConfig>
   );
 }
 

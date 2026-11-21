@@ -1,93 +1,93 @@
 import { motion } from "motion/react";
 import { Briefcase, GraduationCap } from "lucide-react";
 
+const ease = [0.16, 1, 0.3, 1] as const;
+
 const experiences = [
   {
     title: "Senior Full Stack Developer",
     company: "Tech Innovators Inc.",
-    date: "2023 - Present",
-    description: "Leading a team of developers to build scalable enterprise applications. Architecting solutions using React, Node.js, and AWS.",
+    date: "2023 – Present",
+    description:
+      "Leading engineering teams to build scalable enterprise applications. Architecting resilient platforms using React, TypeScript, Node.js, and cloud infrastructure.",
     icon: Briefcase,
   },
   {
     title: "Frontend Developer",
     company: "Creative Digital Agency",
-    date: "2021 - 2023",
-    description: "Developed responsive and interactive user interfaces for various client projects. Improved site performance and accessibility.",
+    date: "2021 – 2023",
+    description:
+      "Developed responsive, accessible user interfaces for client products. Improved core web vitals, animation fluidity, and design system consistency.",
     icon: Briefcase,
   },
   {
     title: "Junior Web Developer",
     company: "StartUp Vision",
-    date: "2019 - 2021",
-    description: "Assisted in the development of web applications, fixed bugs, and collaborated with designers to implement UI components.",
+    date: "2019 – 2021",
+    description:
+      "Contributed to production web applications, resolved complex state bugs, and collaborated with product designers on reusable UI components.",
     icon: Briefcase,
   },
   {
     title: "B.Sc. in Computer Science",
     company: "University of Technology",
-    date: "2015 - 2019",
-    description: "Graduated with honors. Specialized in software engineering and web technologies.",
+    date: "2015 – 2019",
+    description:
+      "Graduated with honors. Specialized in software engineering, distributed databases, and modern web architecture.",
     icon: GraduationCap,
   },
 ];
 
 export default function Experience() {
   return (
-    <section id="experience" className="py-24 relative bg-white/[0.02]">
-      <div className="container px-6 mx-auto max-w-4xl">
+    <section id="experience" className="py-24 bg-white border-b border-zinc-200">
+      <div className="container px-6 mx-auto max-w-5xl">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-16"
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.5, ease }}
+          className="mb-14"
         >
-          <h2 className="text-3xl md:text-5xl font-bold font-display mb-4">My <span className="text-gradient">Journey</span></h2>
-          <div className="w-20 h-1 bg-gradient-to-r from-purple-500 to-cyan-500 mx-auto rounded-full" />
+          <p className="text-xs font-semibold text-blue-600 tracking-wide mb-2">
+            04. Experience
+          </p>
+          <h2 className="text-3xl md:text-5xl font-bold font-display tracking-tight text-zinc-950">
+            Career Journey
+          </h2>
         </motion.div>
 
-        <div className="relative">
-          {/* Timeline Line */}
-          <div className="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-purple-500/50 via-cyan-500/50 to-transparent" />
+        <div className="border-t border-zinc-200 divide-y divide-zinc-200">
+          {experiences.map((exp, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.45, delay: index * 0.06, ease }}
+              className="py-8 grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 items-start"
+            >
+              <div className="md:col-span-3 flex items-center gap-2.5 text-sm font-mono tabular-nums text-zinc-500">
+                <exp.icon size={15} className="text-zinc-400 shrink-0" />
+                <span>{exp.date}</span>
+              </div>
 
-          <div className="space-y-12">
-            {experiences.map((exp, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className={`relative flex flex-col md:flex-row items-start ${
-                  index % 2 === 0 ? "md:flex-row-reverse" : ""
-                }`}
-              >
-                {/* Timeline Dot */}
-                <div className="absolute left-0 md:left-1/2 transform -translate-x-1/2 mt-1.5 w-10 h-10 rounded-full glass flex items-center justify-center z-10 border-purple-500/30 text-cyan-400">
-                  <exp.icon size={18} />
-                </div>
+              <div className="md:col-span-4">
+                <h3 className="text-lg font-display font-bold text-zinc-950">
+                  {exp.title}
+                </h3>
+                <p className="text-sm font-medium text-blue-600 mt-0.5">
+                  {exp.company}
+                </p>
+              </div>
 
-                {/* Content */}
-                <div className={`ml-12 md:ml-0 md:w-1/2 ${index % 2 === 0 ? "md:pl-12" : "md:pr-12 text-left md:text-right"}`}>
-                  <div className="glass-card p-6 hover:border-purple-500/30 transition-colors">
-                    <span className="inline-block px-3 py-1 mb-3 text-xs font-medium text-cyan-300 bg-cyan-500/10 rounded-full">
-                      {exp.date}
-                    </span>
-                    <h3 className="text-xl font-display font-semibold mb-1 text-white">
-                      {exp.title}
-                    </h3>
-                    <h4 className="text-sm font-medium text-purple-400 mb-4">
-                      {exp.company}
-                    </h4>
-                    <p className="text-white/60 text-sm leading-relaxed">
-                      {exp.description}
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+              <div className="md:col-span-5">
+                <p className="text-sm text-zinc-600 leading-relaxed">
+                  {exp.description}
+                </p>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>

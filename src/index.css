@@ -1,106 +1,203 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
-  
-  --color-background: #030014;
-  --color-primary: #7000FF;
-  --color-secondary: #00C2FF;
-  --color-accent: #FF007A;
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --color-background: #FFFFFF;
+  --color-surface: #FAFAFA;
+  --color-ink: #09090B;
+  --color-accent: #2563EB;
 }
 
 @layer base {
-  body {
-    @apply bg-background text-white antialiased overflow-x-hidden;
-    font-family: var(--font-sans);
-  }
-  
-  h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-display);
-  }
-  
   html {
     scroll-behavior: smooth;
+    background-color: #FFFFFF;
+    color: #09090B;
   }
 
-  /* Basic prose styles since we didn't install the plugin */
-  .prose {
-    color: #cbd5e1;
-    line-height: 1.75;
+  body {
+    background-color: #FFFFFF;
+    color: #09090B;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
   }
-  .prose h1, .prose h2, .prose h3 {
-    color: white;
-    margin-top: 2em;
-    margin-bottom: 1em;
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    color: #09090B;
+  }
+
+  /* Editorial Prose Styling for White Background */
+  .prose {
+    color: #3F3F46;
+    line-height: 1.8;
+    font-size: 1.0625rem;
+  }
+  .prose h1, .prose h2, .prose h3, .prose h4 {
+    color: #09090B;
+    font-family: var(--font-display);
+    margin-top: 2.25em;
+    margin-bottom: 0.85em;
     font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .prose h2 {
+    font-size: 1.65rem;
+    padding-bottom: 0.45rem;
+    border-bottom: 1px solid #E4E4E7;
+  }
+  .prose h3 {
+    font-size: 1.3rem;
   }
   .prose p {
-    margin-bottom: 1.5em;
+    margin-bottom: 1.4em;
+  }
+  .prose strong {
+    color: #09090B;
+    font-weight: 600;
+  }
+  .prose a {
+    color: #2563EB;
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
   .prose ul, .prose ol {
     margin-left: 1.5em;
-    margin-bottom: 1.5em;
+    margin-bottom: 1.4em;
+  }
+  .prose ul {
+    list-style-type: disc;
+  }
+  .prose ol {
+    list-style-type: decimal;
   }
   .prose li {
-    margin-bottom: 0.5em;
+    margin-bottom: 0.45em;
+  }
+  .prose hr {
+    border: 0;
+    border-top: 1px solid #E4E4E7;
+    margin: 2.25em 0;
   }
   .prose blockquote {
-    border-left: 4px solid #7000FF;
-    padding-left: 1em;
-    font-style: italic;
-    color: #94a3b8;
+    background: #F4F4F5;
+    border: 1px solid #E4E4E7;
+    border-radius: 0.75rem;
+    padding: 1.15em 1.35em;
+    margin: 1.75em 0;
+    font-style: normal;
+    color: #27272A;
   }
   .prose code {
-    background: #1e1b4b;
-    padding: 0.2em 0.4em;
-    border-radius: 0.3em;
-    font-size: 0.9em;
+    background: #F4F4F5;
+    color: #18181B;
+    border: 1px solid #E4E4E7;
+    padding: 0.15em 0.4em;
+    border-radius: 0.375rem;
+    font-family: var(--font-mono);
+    font-size: 0.86em;
   }
   .prose pre {
-    background: #0f172a;
-    padding: 1em;
-    border-radius: 0.5em;
+    background: #18181B;
+    color: #F4F4F5;
+    padding: 1.25em 1.4em;
+    border-radius: 0.875rem;
     overflow-x: auto;
-    margin-bottom: 1.5em;
+    margin-bottom: 1.6em;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    line-height: 1.65;
+  }
+  .prose pre code {
+    background: transparent;
+    color: inherit;
+    border: 0;
+    padding: 0;
+    font-size: inherit;
+  }
+  .prose table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.75em 0;
+    font-size: 0.925rem;
+  }
+  .prose th, .prose td {
+    border: 1px solid #E4E4E7;
+    padding: 0.75rem 1rem;
+    text-align: left;
+  }
+  .prose th {
+    background: #FAFAFA;
+    font-weight: 600;
+    color: #09090B;
   }
   .prose img {
-    border-radius: 1em;
-    margin-top: 2em;
-    margin-bottom: 2em;
+    border-radius: 0.875rem;
+    margin: 2em 0;
+    border: 1px solid #E4E4E7;
+  }
+}
+
+@keyframes editorialMarquee {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
 @layer utilities {
-  .glass {
-    @apply bg-white/5 backdrop-blur-md border border-white/10;
+  .editorial-card {
+    @apply bg-white border border-zinc-200 rounded-2xl transition-colors duration-200;
   }
-  
-  .glass-card {
-    @apply bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl shadow-[0_8px_32px_0_rgba(31,38,135,0.37)];
+
+  .editorial-surface {
+    @apply bg-zinc-50 border border-zinc-200 rounded-2xl;
   }
-  
-  .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-cyan-400 to-pink-400;
+
+  .animate-marquee {
+    display: flex;
+    width: max-content;
+    animation: editorialMarquee 32s linear infinite;
+  }
+
+  .animate-marquee:hover {
+    animation-play-state: paused;
   }
 }
 
-/* Custom Scrollbar */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .animate-marquee {
+    animation: none;
+  }
+}
+
+/* Custom Scrollbar for White UI */
 ::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #030014;
+  background: #FFFFFF;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #333;
-  border-radius: 4px;
+  background: #D4D4D8;
+  border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: #A1A1AA;
 }
-

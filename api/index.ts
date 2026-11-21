@@ -313,7 +313,7 @@ async function injectDynamicSeo(
     let description = "Technical article, architecture analysis, and software development guide by Shakibul Islam Prohor.";
     let keywords = "Software Engineering, Web Development, Tutorials, TypeScript, React, Node.js";
     let canonical = `https://shakibul-islam-portofolio.vercel.app/articles/${articleId}`;
-    let image = "https://shakibul-islam-portofolio.vercel.app/prohor-v2.png";
+    let image = "https://shakibul-islam-portofolio.vercel.app/og-image-v2.png";
     let rootHtml = "";
 
     if (article) {
@@ -479,11 +479,11 @@ const BASELINE_HTML = `<!doctype html>
     <meta property="og:url" content="https://shakibul-islam-portofolio.vercel.app/" />
     <meta property="og:title" content="Shakibul Islam Prohor | Full Stack Developer &amp; Software Engineer" />
     <meta property="og:description" content="Official portfolio of Shakibul Islam Prohor – Full Stack Developer specializing in React, TypeScript, Node.js, and cloud architecture." />
-    <meta property="og:image" content="https://shakibul-islam-portofolio.vercel.app/prohor-v2.png" />
+    <meta property="og:image" content="https://shakibul-islam-portofolio.vercel.app/og-image-v2.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Shakibul Islam Prohor | Full Stack Developer &amp; Software Engineer" />
     <meta name="twitter:description" content="Official portfolio of Shakibul Islam Prohor – Full Stack Developer specializing in React, TypeScript, Node.js, and cloud architecture." />
-    <meta name="twitter:image" content="https://shakibul-islam-portofolio.vercel.app/prohor-v2.png" />
+    <meta name="twitter:image" content="https://shakibul-islam-portofolio.vercel.app/og-image-v2.png" />
     <script type="module" crossorigin src="/assets/main-Blcsmcmx.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/main-CqkyRn-6.css">
   </head>

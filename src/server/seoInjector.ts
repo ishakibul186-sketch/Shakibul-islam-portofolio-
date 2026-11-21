@@ -220,23 +220,23 @@ export async function injectDynamicSeo(
       category = project.metaCategory || project.category || category;
 
       const techList = Array.isArray(project.coreServices)
-        ? project.coreServices.map((s: string) => `<li style="display:inline-block;margin:4px 8px;padding:4px 12px;background:#1e1b4b;border:1px solid #4338ca;border-radius:9999px;font-size:0.875rem;">${escapeHtml(s)}</li>`).join("")
+        ? project.coreServices.map((s: string) => `<li style="display:inline-block;margin:4px 8px 4px 0;padding:4px 12px;background:#fafafa;border:1px solid #e4e4e7;border-radius:8px;font-size:0.875rem;color:#27272a;">${escapeHtml(s)}</li>`).join("")
         : "";
       const featureList = Array.isArray(project.features)
         ? project.features.map((f: string) => `<li style="margin:8px 0;">${escapeHtml(f)}</li>`).join("")
         : "";
 
       rootHtml = `
-      <div style="min-height:100vh;background-color:#030014;color:#f8fafc;font-family:sans-serif;padding:48px 24px;max-width:1000px;margin:0 auto;">
-        <nav style="margin-bottom:24px;"><a href="/my-projects" style="color:#a855f7;text-decoration:none;">&larr; Back to All Projects</a></nav>
+      <div style="min-height:100vh;background-color:#ffffff;color:#09090b;font-family:sans-serif;padding:48px 24px;max-width:1000px;margin:0 auto;">
+        <nav style="margin-bottom:24px;"><a href="/my-projects" style="color:#2563eb;text-decoration:none;">&larr; Back to All Projects</a></nav>
         <header style="margin-bottom:32px;">
-          <span style="display:inline-block;padding:4px 12px;background:#3b0764;color:#d8b4fe;border-radius:9999px;font-size:0.875rem;font-weight:600;margin-bottom:12px;">${escapeHtml(category)}</span>
-          <h1 style="font-size:2.25rem;font-weight:800;letter-spacing:-0.025em;margin:0 0 16px 0;line-height:1.2;">${escapeHtml(project.title || title)}</h1>
-          <p style="font-size:1.125rem;line-height:1.75;color:#94a3b8;margin:0;">${escapeHtml(project.description || description)}</p>
+          <p style="font-size:0.875rem;font-weight:600;color:#2563eb;margin:0 0 8px 0;">${escapeHtml(category)}</p>
+          <h1 style="font-size:2.25rem;font-weight:800;letter-spacing:-0.025em;margin:0 0 16px 0;line-height:1.2;color:#09090b;">${escapeHtml(project.title || title)}</h1>
+          <p style="font-size:1.125rem;line-height:1.75;color:#52525b;margin:0;">${escapeHtml(project.description || description)}</p>
         </header>
-        ${image ? `<div style="margin-bottom:32px;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.1);"><img src="${escapeHtml(image)}" alt="${escapeHtml(project.title || title)}" style="width:100%;height:auto;display:block;max-height:550px;object-fit:cover;" /></div>` : ""}
-        ${techList ? `<div style="margin-bottom:32px;"><h2 style="font-size:1.25rem;font-weight:700;color:#c084fc;margin-bottom:12px;">Core Technologies</h2><ul style="list-style:none;padding:0;margin:0;">${techList}</ul></div>` : ""}
-        ${featureList ? `<div style="margin-bottom:32px;"><h2 style="font-size:1.25rem;font-weight:700;color:#c084fc;margin-bottom:12px;">Key Architectural Features</h2><ul style="padding-left:24px;line-height:1.7;color:#cbd5e1;">${featureList}</ul></div>` : ""}
+        ${image ? `<div style="margin-bottom:32px;border-radius:16px;overflow:hidden;border:1px solid #e4e4e7;"><img src="${escapeHtml(image)}" alt="${escapeHtml(project.title || title)}" style="width:100%;height:auto;display:block;max-height:550px;object-fit:cover;" /></div>` : ""}
+        ${techList ? `<div style="margin-bottom:32px;"><h2 style="font-size:1.25rem;font-weight:700;color:#09090b;margin-bottom:12px;">Core Technologies</h2><ul style="list-style:none;padding:0;margin:0;">${techList}</ul></div>` : ""}
+        ${featureList ? `<div style="margin-bottom:32px;"><h2 style="font-size:1.25rem;font-weight:700;color:#09090b;margin-bottom:12px;">Key Architectural Features</h2><ul style="padding-left:24px;line-height:1.7;color:#3f3f46;">${featureList}</ul></div>` : ""}
       </div>
       `;
     }
@@ -327,14 +327,14 @@ export async function injectDynamicSeo(
       }
 
       rootHtml = `
-      <article style="min-height:100vh;background-color:#030014;color:#f8fafc;font-family:sans-serif;padding:48px 24px;max-width:850px;margin:0 auto;">
-        <nav style="margin-bottom:24px;"><a href="/blog" style="color:#a855f7;text-decoration:none;">&larr; Back to Articles</a></nav>
+      <article style="min-height:100vh;background-color:#ffffff;color:#09090b;font-family:sans-serif;padding:48px 24px;max-width:850px;margin:0 auto;">
+        <nav style="margin-bottom:24px;"><a href="/blog" style="color:#2563eb;text-decoration:none;">&larr; Back to Articles</a></nav>
         <header style="margin-bottom:32px;">
-          <h1 style="font-size:2.25rem;font-weight:800;letter-spacing:-0.025em;margin:0 0 16px 0;line-height:1.25;">${escapeHtml(article.title || title)}</h1>
-          <p style="color:#94a3b8;font-size:1rem;margin:0 0 12px 0;">By ${escapeHtml(article.author || "Shakibul Islam Prohor")} &bull; ${escapeHtml(article.date || "")}</p>
-          <p style="font-size:1.125rem;line-height:1.7;color:#cbd5e1;">${escapeHtml(article.excerpt || description)}</p>
+          <h1 style="font-size:2.25rem;font-weight:800;letter-spacing:-0.025em;margin:0 0 16px 0;line-height:1.25;color:#09090b;">${escapeHtml(article.title || title)}</h1>
+          <p style="color:#71717a;font-size:1rem;margin:0 0 12px 0;">By ${escapeHtml(article.author || "Shakibul Islam Prohor")} &bull; ${escapeHtml(article.date || "")}</p>
+          <p style="font-size:1.125rem;line-height:1.7;color:#52525b;">${escapeHtml(article.excerpt || description)}</p>
         </header>
-        ${image ? `<div style="margin-bottom:32px;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.1);"><img src="${escapeHtml(image)}" alt="${escapeHtml(article.title || title)}" style="width:100%;height:auto;max-height:480px;object-fit:cover;" /></div>` : ""}
+        ${image ? `<div style="margin-bottom:32px;border-radius:16px;overflow:hidden;border:1px solid #e4e4e7;"><img src="${escapeHtml(image)}" alt="${escapeHtml(article.title || title)}" style="width:100%;height:auto;max-height:480px;object-fit:cover;" /></div>` : ""}
       </article>
       `;
     }
